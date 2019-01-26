@@ -27,6 +27,7 @@ public class Element {
 	public String getNom() {
 		return nom;
 	}
+
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
@@ -54,6 +55,11 @@ public class Element {
 	public void setVente(double vente) {
 		this.vente = vente;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Element [code=" + code + ", nom=" + nom + ", quantite=" + quantite + ", unite=" + unite + ", achat="
+				+ achat + ", vente=" + vente + "]";
+	}
 	
 }

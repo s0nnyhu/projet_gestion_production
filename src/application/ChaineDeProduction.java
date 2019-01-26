@@ -41,6 +41,13 @@ public class ChaineDeProduction {
 	public void setSortie(HashMap<Element, Double> sortie) {
 		this.sortie = sortie;
 	}
+
+	@Override
+	public String toString() {
+		return "ChaineDeProduction [code=" + code + ", nom=" + nom + ", entree=" + entree + ", sortie=" + sortie + "]";
+	}
+	
+	
 	
 	
 }
