@@ -97,7 +97,7 @@ public class Main extends Application {
 						}
 					}
 				}		
-				
+				System.out.println(entree.toString());
 				ChaineDeProduction cp = new ChaineDeProduction(code, nom, entree, sortie);
 				chaines.add(cp);
 			}

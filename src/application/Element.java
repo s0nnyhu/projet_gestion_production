@@ -63,8 +63,7 @@ public class Element {
 
 	@Override
 	public String toString() {
-		return "Element [code=" + code + ", nom=" + nom + ", quantite=" + quantite + ", unite=" + unite + ", achat="
-				+ achat + ", vente=" + vente + "]";
+		return "Element [code=" + code + "]";
 	}
 	
 }
