@@ -8,37 +8,29 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 
 
 public class Main extends Application {
-	@Override
-	public void start(Stage primaryStage) {
-		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		//ArrayList contenant les elements lus depuis le fichier csv
 		ArrayList<Element> elements = new ArrayList<Element>();
 		
 		//ArrayList contenant les chaines lues depuis le fichier csv
 		ArrayList<ChaineDeProduction> chaines = new ArrayList<ChaineDeProduction>();
 		
-		//Lecture du fichier contenant les éléments
+		//Lecture du fichier contenant les Ã©lÃ©ments
 		try {
-			FileReader elem = new FileReader("../DonneesV1/FichiersV1/elements.csv");
+			FileReader elem = new FileReader("/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/elements.csv");
 			BufferedReader br = new BufferedReader(elem);
-			String line = br.readLine(); //saut de la premiere ligne en effectuant une lerture
+			String line = br.readLine(); //saut de la premiere ligne en effectuant une lecture
 			while( (line = br.readLine() ) != null) {
 				String[] fields = line.split(";");
 				for(int i=0; i<fields.length; i++) {
@@ -65,7 +57,7 @@ public class Main extends Application {
 		
 		//Lecture du fichier contenant les chaines de production
 		try {
-			FileReader ch = new FileReader("../DonneesV1/FichiersV1/chaines.csv");
+			FileReader ch = new FileReader("/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/chaines.csv");
 			BufferedReader br = new BufferedReader(ch);
 			String line = br.readLine(); //saut de la premiere ligne en effectuant une lerture
 			while( (line = br.readLine() ) != null) {
@@ -83,7 +75,7 @@ public class Main extends Application {
 					String str[] = in[i].replace("(", "").replace(")", "").split(",");
 					String codeElem = str[0];
 					double quantiteElem = Double.parseDouble(str[1]);
-					//Récupération des objets Elements pour remplir la HashMap "entree"
+					//RÃ©cupÃ©ration des objets Elements pour remplir la HashMap "entree"
 					for(Element elem : elements) {
 						if(elem.getCode().equals(codeElem)) {
 							entree.put(elem, quantiteElem);
@@ -98,7 +90,7 @@ public class Main extends Application {
 					String codeElem = str[0];
 					double quantiteElem = Double.parseDouble(str[1]);
 					
-					//Récupération des objets Elements pour remplir la HashMap "sortie" 
+					//RÃ©cupÃ©ration des objets Elements pour remplir la HashMap "sortie" 
 					for(Element elem : elements) {
 						if(elem.getCode().equals(codeElem)) {
 							sortie.put(elem, quantiteElem);
@@ -124,6 +116,21 @@ public class Main extends Application {
 			System.out.println(ch);
 		}
 		
-		//launch(args);
+		launch(args);
+	}
+
+	@Override
+	public void start(Stage stage) throws Exception {
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("WindowMain.fxml"));
+	        Scene scene = new Scene(root);
+	        stage.setTitle("Gestion de Production");
+	        stage.setScene(scene);
+	        stage.show();
+		}
+		catch(Exception e) {
+			System.out.println("erreur");
+		}
+		
 	}
 }

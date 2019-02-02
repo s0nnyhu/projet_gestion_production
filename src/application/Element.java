@@ -1,59 +1,64 @@
 package application;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Element {
-	private String code;
-	private String nom;
-	private double quantite;
-	private String unite;
-	private double achat;
-	private double vente;
+	private StringProperty code = new SimpleStringProperty();
+	private StringProperty nom = new SimpleStringProperty();
+	private DoubleProperty quantite = new SimpleDoubleProperty();
+	private StringProperty unite = new SimpleStringProperty();
+	private DoubleProperty achat = new SimpleDoubleProperty();
+	private DoubleProperty vente = new SimpleDoubleProperty();
 	
 	public Element(String code, String nom, double quantite, String unite, double achat, double vente) {
 		super();
-		this.code = code;
-		this.nom = nom;
-		this.quantite = quantite;
-		this.unite = unite;
-		this.achat = achat;
-		this.vente = vente;
+		this.code = new SimpleStringProperty(code);
+		this.nom = new SimpleStringProperty(nom);
+		this.quantite = new SimpleDoubleProperty(quantite);
+		this.unite = new SimpleStringProperty(unite);
+		this.achat = new SimpleDoubleProperty(achat);
+		this.vente = new SimpleDoubleProperty(vente);
 	}
 	
 	public String getCode() {
-		return code;
+		return code.getValue();
 	}
 	public void setCode(String code) {
-		this.code = code;
+		this.code.set(code);
 	}
 	public String getNom() {
-		return nom;
+		return nom.getValue();
 	}
 
 	public void setNom(String nom) {
-		this.nom = nom;
+		this.nom.set(nom);
 	}
 	public double getQuantite() {
-		return quantite;
+		return quantite.getValue();
 	}
 	public void setQuantite(double quantite) {
-		this.quantite = quantite;
+		this.quantite.set(quantite);
 	}
 	public String getUnite() {
-		return unite;
+		return unite.getValue();
 	}
 	public void setUnite(String unite) {
-		this.unite = unite;
+		this.unite.set(unite);
 	}
 	public double getAchat() {
-		return achat;
+		return achat.getValue();
 	}
 	public void setAchat(double achat) {
-		this.achat = achat;
+		this.achat.set(achat);
 	}
 	public double getVente() {
-		return vente;
+		return vente.getValue();
 	}
 	public void setVente(double vente) {
-		this.vente = vente;
+		this.vente.set(vente);
 	}
 
 	@Override
