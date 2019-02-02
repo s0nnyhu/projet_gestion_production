@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import javafx.application.Application;
@@ -13,6 +12,10 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 
 
+/**
+ * @author Régis
+ *
+ */
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
@@ -27,19 +30,19 @@ public class Main extends Application {
 		}
 	}
 	
-	public static void main(String[] args) {
+	/**
+	 * @param cheminFic
+	 * @return
+	 */
+	public static ArrayList<Element> chargerElements(String cheminFic){
 		//ArrayList contenant les elements lus depuis le fichier csv
 		ArrayList<Element> elements = new ArrayList<Element>();
-		
-		//ArrayList contenant les chaines lues depuis le fichier csv
-		ArrayList<ChaineDeProduction> chaines = new ArrayList<ChaineDeProduction>();
-		
-		//Lecture du fichier contenant les éléments
+				
 		try {
-			FileReader elem = new FileReader("../DonneesV1/FichiersV1/elements.csv");
+			FileReader elem = new FileReader(cheminFic);
 			BufferedReader br = new BufferedReader(elem);
 			String line = br.readLine(); //saut de la premiere ligne en effectuant une lerture
-			while( (line = br.readLine() ) != null) {
+			while( ( line = br.readLine() ) != null) {
 				String[] fields = line.split(";");
 				for(int i=0; i<fields.length; i++) {
 					if(fields[i].equals("NA")) {
@@ -63,18 +66,25 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 		
+		return elements;
+	}
+	
+	/**
+	 * @param cheminFic
+	 * @param elements
+	 * @return
+	 */
+	public static ArrayList<ChaineDeProduction> chargerChaines(String cheminFic, ArrayList<Element> elements){
+		//ArrayList contenant les chaines lues depuis le fichier csv
+		ArrayList<ChaineDeProduction> chaines = new ArrayList<ChaineDeProduction>();
+		
 		//Lecture du fichier contenant les chaines de production
 		try {
-			FileReader ch = new FileReader("../DonneesV1/FichiersV1/chaines.csv");
+			FileReader ch = new FileReader(cheminFic);
 			BufferedReader br = new BufferedReader(ch);
 			String line = br.readLine(); //saut de la premiere ligne en effectuant une lerture
 			while( (line = br.readLine() ) != null) {
 				String[] fields = line.split(";");
-				for(int i=0; i<fields.length; i++) {
-					if(fields[i].equals("NA")) { //Gestion des champs NaN
-						fields[i] = "0";
-					}
-				}
 				String code = fields[0];
 				String nom = fields[1];
 				HashMap<Element, Double> entree = new HashMap<Element, Double>();
@@ -116,6 +126,15 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 		
+		return chaines;
+	}
+	
+	public static void main(String[] args) {
+		String ficElements = "../DonneesV1/FichiersV1/elements.csv";
+		String ficChaines = "../DonneesV1/FichiersV1/chaines.csv";
+		
+		ArrayList<Element> elements = Main.chargerElements(ficElements);
+		ArrayList<ChaineDeProduction> chaines = Main.chargerChaines(ficChaines, elements);
 		
 		for(Element e : elements) {
 			System.out.println(e);
