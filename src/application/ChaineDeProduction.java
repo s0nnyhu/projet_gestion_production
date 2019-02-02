@@ -14,7 +14,7 @@ public class ChaineDeProduction {
 	private HashMap<Element,Double> sortie;
 	
 	public ChaineDeProduction(String code, String nom, HashMap<Element, Double> entree,
-			HashMap<Element, Double> sortie) {
+		HashMap<Element, Double> sortie) {
 		super();
 		this.code = new SimpleStringProperty(code);
 		this.nom = new SimpleStringProperty(nom);
