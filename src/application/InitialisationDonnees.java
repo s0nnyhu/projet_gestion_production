@@ -1,49 +1,22 @@
 package application;
-	
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.stage.Stage;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-
-
-/**
- * @author Régis & Sonny
- *
- */
-public class Main extends Application {
-	@Override
-	public void start(Stage stage) {
-		try {
-			Parent root = FXMLLoader.load(getClass().getResource("WindowMain.fxml"));
-	        Scene scene = new Scene(root);
-	        stage.setTitle("Gestion de Production");
-	        stage.setScene(scene);
-	        stage.show();
-		}
-		catch(Exception e) {
-			System.out.println("erreur");
-		}
-	}
+public class InitialisationDonnees {
+	protected static ArrayList<Element> elements;
+	protected static ArrayList<ChaineDeProduction> chaines;
 	
-	
-	/*
-	public static ArrayList<Element> chargerElements(String cheminFic){
-		//ArrayList contenant les elements lus depuis le fichier csv
-		ArrayList<Element> elements = new ArrayList<Element>();
-				
+	public static void initialiserElements() {
+		InitialisationDonnees.elements = new ArrayList<Element>();
 		try {
-			FileReader elem = new FileReader(cheminFic);
+			FileReader elem = new FileReader("/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/elements.csv");
 			BufferedReader br = new BufferedReader(elem);
-			String line = br.readLine(); //saut de la premiere ligne en effectuant une lerture
-			while( ( line = br.readLine() ) != null) {
+			String line = br.readLine(); //saut de la premiere ligne en effectuant une lecture
+			while( (line = br.readLine() ) != null) {
 				String[] fields = line.split(";");
 				for(int i=0; i<fields.length; i++) {
 					if(fields[i].equals("NA")) {
@@ -58,7 +31,7 @@ public class Main extends Application {
 				double vente = Double.parseDouble(fields[5]);
 				
 				Element el = new Element(code, nom, quantite, unite, achat, vente);
-				elements.add(el);
+				InitialisationDonnees.elements.add(el);
 			}
 			br.close();
 			elem.close();
@@ -66,22 +39,21 @@ public class Main extends Application {
 			System.err.println("Erreur dans le nom du fichier...");
 			e.printStackTrace();
 		}
-		
-		return elements;
 	}
 	
-
-	public static ArrayList<ChaineDeProduction> chargerChaines(String cheminFic, ArrayList<Element> elements){
-		//ArrayList contenant les chaines lues depuis le fichier csv
-		ArrayList<ChaineDeProduction> chaines = new ArrayList<ChaineDeProduction>();
-		
-		//Lecture du fichier contenant les chaines de production
+	public static void initialiserChaines() {
+		InitialisationDonnees.chaines = new ArrayList<ChaineDeProduction>();
 		try {
-			FileReader ch = new FileReader(cheminFic);
+			FileReader ch = new FileReader("/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/chaines.csv");
 			BufferedReader br = new BufferedReader(ch);
 			String line = br.readLine(); //saut de la premiere ligne en effectuant une lerture
 			while( (line = br.readLine() ) != null) {
 				String[] fields = line.split(";");
+				for(int i=0; i<fields.length; i++) {
+					if(fields[i].equals("NA")) { //Gestion des champs NaN
+						fields[i] = "0";
+					}
+				}
 				String code = fields[0];
 				String nom = fields[1];
 				HashMap<Element, Double> entree = new HashMap<Element, Double>();
@@ -90,8 +62,8 @@ public class Main extends Application {
 					String str[] = in[i].replace("(", "").replace(")", "").split(",");
 					String codeElem = str[0];
 					double quantiteElem = Double.parseDouble(str[1]);
-					//R�cup�ration des objets Elements pour remplir la HashMap "entree"
-					for(Element elem : elements) {
+					//Récupération des objets Elements pour remplir la HashMap "entree"
+					for(Element elem : InitialisationDonnees.elements) {
 						if(elem.getCode().equals(codeElem)) {
 							entree.put(elem, quantiteElem);
 						}
@@ -105,8 +77,8 @@ public class Main extends Application {
 					String codeElem = str[0];
 					double quantiteElem = Double.parseDouble(str[1]);
 					
-					//R�cup�ration des objets Elements pour remplir la HashMap "sortie" 
-					for(Element elem : elements) {
+					//Récupération des objets Elements pour remplir la HashMap "sortie" 
+					for(Element elem : InitialisationDonnees.elements) {
 						if(elem.getCode().equals(codeElem)) {
 							sortie.put(elem, quantiteElem);
 						}
@@ -122,21 +94,5 @@ public class Main extends Application {
 			System.err.println("Erreur dans le nom du fichier...");
 			e.printStackTrace();
 		}
-		
-		return chaines;
-	}
-	*/
-	
-	
-	
-	/**
-	 * Main method
-	 * Permet de charger les fichiers et de lancer l'application
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		InitialisationDonnees.initialiserElements();
-		InitialisationDonnees.initialiserChaines();
-		launch(args);
 	}
 }

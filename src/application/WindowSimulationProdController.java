@@ -1,13 +1,16 @@
 package application;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,6 +26,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class WindowSimulationProdController {
+	private ArrayList<ChaineDeProduction> chaines;
 	
     @FXML
     private TableView<ChaineDeProduction> tabView;
@@ -85,7 +89,9 @@ public class WindowSimulationProdController {
     	stage.close();
     }
     
-    void initData(ObservableList<ChaineDeProduction> oChaine) {
+    void initData(ArrayList<ChaineDeProduction> c) {
+    	this.chaines = c;
+    	ObservableList <ChaineDeProduction> oChaine = FXCollections.observableList(this.chaines);
     	this.tCode.setCellValueFactory(
                 new PropertyValueFactory<ChaineDeProduction, String>("code"));
 		this.tNom.setCellValueFactory(
@@ -94,24 +100,21 @@ public class WindowSimulationProdController {
                 new PropertyValueFactory<ChaineDeProduction, String>("strEntree"));
 		this.tSorti.setCellValueFactory(
                 new PropertyValueFactory<ChaineDeProduction, String>("strSorti"));
-		
+
     	tabView.setItems(oChaine);
     	tabTxtField = new TextField[oChaine.size()];
     	tabValueTxtField = new String[oChaine.size()];
     	for (int i = 0; i<oChaine.size(); i++) {
     		TextField tf = new TextField();
+    		tf.setPrefWidth(80);
     		tabTxtField[i] = tf;
-    		Label lbl = new Label("le");
+    		Label lbl = new Label(chaines.get(i).getCode());
     		HBox h = new HBox();
+    		h.setPadding(new Insets(15, 12, 20, 12));
+    		h.setSpacing(20);
     		h.getChildren().addAll(lbl,tabTxtField[i]);
     		vbox.getChildren().add(h);
-    		tabTxtField[i].textProperty().addListener(new ChangeListener<String>() {
-				@Override
-				public void changed(ObservableValue<? extends String> arg0, String old, String newValue) {
-					System.out.println(newValue);
-				}
-    			
-    		});
+    		
     	}
     	
     }
