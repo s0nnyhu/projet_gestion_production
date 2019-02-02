@@ -7,26 +7,29 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 
 
 /**
- * @author Régis & Sonny
+ * @author Rï¿½gis & Sonny
  *
  */
 public class Main extends Application {
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage stage) {
 		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
+			Parent root = FXMLLoader.load(getClass().getResource("WindowMain.fxml"));
+	        Scene scene = new Scene(root);
+	        stage.setTitle("Gestion de Production");
+	        stage.setScene(scene);
+	        stage.show();
+		}
+		catch(Exception e) {
+			System.out.println("erreur");
 		}
 	}
 	
@@ -93,7 +96,7 @@ public class Main extends Application {
 					String str[] = in[i].replace("(", "").replace(")", "").split(",");
 					String codeElem = str[0];
 					double quantiteElem = Double.parseDouble(str[1]);
-					//Récupération des objets Elements pour remplir la HashMap "entree"
+					//Rï¿½cupï¿½ration des objets Elements pour remplir la HashMap "entree"
 					for(Element elem : elements) {
 						if(elem.getCode().equals(codeElem)) {
 							entree.put(elem, quantiteElem);
@@ -108,7 +111,7 @@ public class Main extends Application {
 					String codeElem = str[0];
 					double quantiteElem = Double.parseDouble(str[1]);
 					
-					//Récupération des objets Elements pour remplir la HashMap "sortie" 
+					//Rï¿½cupï¿½ration des objets Elements pour remplir la HashMap "sortie" 
 					for(Element elem : elements) {
 						if(elem.getCode().equals(codeElem)) {
 							sortie.put(elem, quantiteElem);
@@ -138,7 +141,7 @@ public class Main extends Application {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String ficElements = "../DonneesV1/FichiersV1/elements.csv";
+		/*String ficElements = "../DonneesV1/FichiersV1/elements.csv";
 		String ficChaines = "../DonneesV1/FichiersV1/chaines.csv";
 		
 		ArrayList<Element> elements = Main.chargerElements(ficElements);
@@ -149,8 +152,8 @@ public class Main extends Application {
 		}
 		for(ChaineDeProduction ch : chaines) {
 			System.out.println(ch);
-		}
+		}*/
 		
-		//launch(args);
+		launch(args);
 	}
 }
