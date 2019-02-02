@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,10 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 public class WindowMainController {
@@ -26,6 +24,10 @@ public class WindowMainController {
 
     @FXML
     private Button btnEssaiProd;
+    
+    @FXML
+    private Button quitter;
+
 
     @FXML
     void openEssaisProd(ActionEvent event) throws IOException {
@@ -187,6 +189,11 @@ public class WindowMainController {
     	stage.setTitle("Stocks de production");
 
     	stage.show();   
+    }
+    
+    @FXML
+    void exit(ActionEvent event) {
+    	Platform.exit();
     }
 
 }
