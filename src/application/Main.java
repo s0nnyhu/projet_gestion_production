@@ -7,41 +7,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 
 
 /**
- * @author Régis
+ * @author RÃ©gis
  *
  */
 public class Main extends Application {
-	@Override
-	public void start(Stage primaryStage) {
-		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
-	/**
-	 * @param cheminFic
-	 * @return
-	 */
-	public static ArrayList<Element> chargerElements(String cheminFic){
 		//ArrayList contenant les elements lus depuis le fichier csv
 		ArrayList<Element> elements = new ArrayList<Element>();
 				
 		try {
-			FileReader elem = new FileReader(cheminFic);
 			BufferedReader br = new BufferedReader(elem);
-			String line = br.readLine(); //saut de la premiere ligne en effectuant une lerture
+			String line = br.readLine(); //saut de la premiere ligne en effectuant une lecture
 			while( ( line = br.readLine() ) != null) {
 				String[] fields = line.split(";");
 				for(int i=0; i<fields.length; i++) {
@@ -80,7 +66,6 @@ public class Main extends Application {
 		
 		//Lecture du fichier contenant les chaines de production
 		try {
-			FileReader ch = new FileReader(cheminFic);
 			BufferedReader br = new BufferedReader(ch);
 			String line = br.readLine(); //saut de la premiere ligne en effectuant une lerture
 			while( (line = br.readLine() ) != null) {
@@ -93,7 +78,7 @@ public class Main extends Application {
 					String str[] = in[i].replace("(", "").replace(")", "").split(",");
 					String codeElem = str[0];
 					double quantiteElem = Double.parseDouble(str[1]);
-					//Récupération des objets Elements pour remplir la HashMap "entree"
+					//RÃ©cupÃ©ration des objets Elements pour remplir la HashMap "entree"
 					for(Element elem : elements) {
 						if(elem.getCode().equals(codeElem)) {
 							entree.put(elem, quantiteElem);
@@ -108,14 +93,14 @@ public class Main extends Application {
 					String codeElem = str[0];
 					double quantiteElem = Double.parseDouble(str[1]);
 					
-					//Récupération des objets Elements pour remplir la HashMap "sortie" 
+					//RÃ©cupÃ©ration des objets Elements pour remplir la HashMap "sortie" 
 					for(Element elem : elements) {
 						if(elem.getCode().equals(codeElem)) {
 							sortie.put(elem, quantiteElem);
 						}
 					}
 				}		
-				
+				System.out.println(entree.toString());
 				ChaineDeProduction cp = new ChaineDeProduction(code, nom, entree, sortie);
 				chaines.add(cp);
 			}
@@ -143,6 +128,21 @@ public class Main extends Application {
 			System.out.println(ch);
 		}
 		
-		//launch(args);
+		launch(args);
+	}
+
+	@Override
+	public void start(Stage stage) throws Exception {
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("WindowMain.fxml"));
+	        Scene scene = new Scene(root);
+	        stage.setTitle("Gestion de Production");
+	        stage.setScene(scene);
+	        stage.show();
+		}
+		catch(Exception e) {
+			System.out.println("erreur");
+		}
+		
 	}
 }
