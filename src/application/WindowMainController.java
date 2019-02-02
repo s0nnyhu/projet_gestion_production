@@ -47,7 +47,7 @@ public class WindowMainController {
 		
 		//Lecture du fichier contenant les éléments
 		try {
-			FileReader elem = new FileReader("/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/elements.csv");
+			FileReader elem = new FileReader("../DonneesV1/FichiersV1/elements.csv");
 			BufferedReader br = new BufferedReader(elem);
 			String line = br.readLine(); //saut de la premiere ligne en effectuant une lecture
 			while( (line = br.readLine() ) != null) {
@@ -76,7 +76,7 @@ public class WindowMainController {
 		
 		//Lecture du fichier contenant les chaines de production
 		try {
-			FileReader ch = new FileReader("/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/chaines.csv");
+			FileReader ch = new FileReader("../DonneesV1/FichiersV1/chaines.csv");
 			BufferedReader br = new BufferedReader(ch);
 			String line = br.readLine(); //saut de la premiere ligne en effectuant une lerture
 			while( (line = br.readLine() ) != null) {
@@ -148,7 +148,7 @@ public class WindowMainController {
     	ArrayList<Element> elements = new ArrayList<Element>();
 		
     	try {
-			FileReader elem = new FileReader("/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/elements.csv");
+			FileReader elem = new FileReader("../DonneesV1/FichiersV1/elements.csv");
 			BufferedReader br = new BufferedReader(elem);
 			String line = br.readLine(); //saut de la premiere ligne en effectuant une lecture
 			while( (line = br.readLine() ) != null) {
