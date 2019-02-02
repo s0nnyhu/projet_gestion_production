@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,10 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 public class WindowMainController {
@@ -26,6 +24,10 @@ public class WindowMainController {
 
     @FXML
     private Button btnEssaiProd;
+    
+    @FXML
+    private Button quitter;
+
 
     @FXML
     void openEssaisProd(ActionEvent event) throws IOException {
@@ -47,7 +49,7 @@ public class WindowMainController {
 		
 		//Lecture du fichier contenant les éléments
 		try {
-			FileReader elem = new FileReader("/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/elements.csv");
+			FileReader elem = new FileReader("../DonneesV1/FichiersV1/elements.csv");
 			BufferedReader br = new BufferedReader(elem);
 			String line = br.readLine(); //saut de la premiere ligne en effectuant une lecture
 			while( (line = br.readLine() ) != null) {
@@ -76,7 +78,7 @@ public class WindowMainController {
 		
 		//Lecture du fichier contenant les chaines de production
 		try {
-			FileReader ch = new FileReader("/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/chaines.csv");
+			FileReader ch = new FileReader("../DonneesV1/FichiersV1/chaines.csv");
 			BufferedReader br = new BufferedReader(ch);
 			String line = br.readLine(); //saut de la premiere ligne en effectuant une lerture
 			while( (line = br.readLine() ) != null) {
@@ -148,7 +150,7 @@ public class WindowMainController {
     	ArrayList<Element> elements = new ArrayList<Element>();
 		
     	try {
-			FileReader elem = new FileReader("/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/elements.csv");
+			FileReader elem = new FileReader("../DonneesV1/FichiersV1/elements.csv");
 			BufferedReader br = new BufferedReader(elem);
 			String line = br.readLine(); //saut de la premiere ligne en effectuant une lecture
 			while( (line = br.readLine() ) != null) {
@@ -187,6 +189,11 @@ public class WindowMainController {
     	stage.setTitle("Stocks de production");
 
     	stage.show();   
+    }
+    
+    @FXML
+    void exit(ActionEvent event) {
+    	Platform.exit();
     }
 
 }

@@ -23,10 +23,10 @@ public class ChaineDeProduction {
 		String tmpStrEntree = "";
 		String tmpStrSorti = "";
 		for (Element e: entree.keySet()) {
-			tmpStrEntree += "(" + e.getCode() +  "," + entree.get(e) + ")";
+			tmpStrEntree += "(" + e.getNom() +  ", " + entree.get(e) + ") ";
 		}
 		for (Element e: sortie.keySet()) {
-			tmpStrSorti += "(" + e.getCode() +  "," + entree.get(e) + ")";
+			tmpStrSorti += "(" + e.getNom() +  ", " + entree.get(e) + ") ";
 		}
 		this.strEntree = (new SimpleStringProperty(tmpStrEntree));
 		this.strSorti = (new SimpleStringProperty(tmpStrSorti));
