@@ -93,8 +93,9 @@ public class WindowSimulationProdResController {
      */
     @FXML
     void exporter(ActionEvent event) {
+    	String message = "Les essais de production ont été exportés Nouveau_Stock.csv, Production.csv";
     	try {
-    		FileWriter fw = new FileWriter(new File("Nouveau_Stock.csv"));
+    		FileWriter fw = new FileWriter(new File("../DonneesV1/Nouveau_Stock.csv"));
     		fw.write("Code;Nom;Quantite;unite;achat;vente");
             fw.write(System.lineSeparator());
     		for (Element e : InitialisationDonnees.elements) {
@@ -108,7 +109,7 @@ public class WindowSimulationProdResController {
 
     	try {
     		FileWriter fw = new FileWriter(new File("../DonneesV1/Production.csv"));
-    		fw.write("Chaine,coutVente,Efficacite");
+    		fw.write("Chaine;coutVente;Efficacite");
             fw.write(System.lineSeparator());
     		for (Production p : this.production) {
                 fw.write(String.format("%s;%s;%s", p.getNom(), p.getCoutVente(), p.getEfficacite()));
@@ -119,24 +120,27 @@ public class WindowSimulationProdResController {
             ex.printStackTrace();
         }
     	
-    	try {
-    		FileWriter fw = new FileWriter(new File("../DonneesV1/Liste_Achats.csv"));
-    		fw.write("Code,Nom,Quantite");
-            fw.write(System.lineSeparator());
-    		for (Element e : this.listAchats) {
-                fw.write(String.format("%s;%s;%s", e.getCode(), e.getNom(), Math.abs(e.getQuantite())));
-                fw.write(System.lineSeparator());
-    		}
-            fw.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+    	if(!listAchats.isEmpty()) {
+	    	try {
+	    		FileWriter fw = new FileWriter("../DonneesV1/Liste_Achats.csv");
+	    		fw.write("Code;Nom;Quantite");
+	            fw.write(System.lineSeparator());
+	    		for (Element e : this.listAchats) {
+	                fw.write(String.format("%s;%s;%s", e.getCode(), e.getNom(), Math.abs(e.getQuantite())));
+	                fw.write(System.lineSeparator());
+	    		}
+	            fw.close();
+	        } catch (IOException ex) {
+	            ex.printStackTrace();
+	        }
+    		message += ", Liste_Achats.csv";
+    	}
     	
     	Alert alert = new Alert(AlertType.INFORMATION);
     	alert.getDialogPane().setPrefWidth(700);
     	alert.getDialogPane().setPrefWidth(400);
     	alert.setHeaderText("Exportation des essais de production");
-    	alert.setContentText("Les essais de production ont été exportés Nouveau_Stock.csv, Production.csv, Liste_Achats.csv!");
+    	alert.setContentText(message);
 
     	alert.showAndWait();
     	
@@ -198,8 +202,7 @@ public class WindowSimulationProdResController {
     /**
      * @param niveau
      */
-    void initData(Double[] niveau) {
-    	
+    void initData(Double[] niveau) {    	
     	int indexListeAchat = 0;
 
     	int i = 0;
@@ -283,6 +286,11 @@ public class WindowSimulationProdResController {
     		else {
     			production.add(new Production(c,coutVente, efficacite));
     		}
+    	}
+
+    	//Affichage ou non de la liste d'achats
+    	if(listAchats.isEmpty()) {
+    		listeAchats.setExpanded(false);
     	}
     	
     	ObservableList <Element> oElement = FXCollections.observableList(InitialisationDonnees.elements);
