@@ -42,6 +42,9 @@ public class WindowVisualisationStocksController {
     @FXML
     private Button btnRetour;
 
+    /**
+     * @param event
+     */
     @FXML
     void retour(ActionEvent event) {
     	Stage stage = (Stage)btnRetour.getScene().getWindow();
@@ -49,7 +52,11 @@ public class WindowVisualisationStocksController {
     }
 
     
-	void initData(ObservableList <Element> e) {
+	/**
+	 * Remplie le tableau de visualisation des stocks
+	 */
+	void initData() {
+    	ObservableList <Element> oElt = FXCollections.observableList(InitialisationDonnees.elements);
 		this.tCode.setCellValueFactory(
                 new PropertyValueFactory<Element, String>("code"));
 		this.tNom.setCellValueFactory(
@@ -62,7 +69,7 @@ public class WindowVisualisationStocksController {
                 new PropertyValueFactory<Element, Double>("achat"));
 		this.tPV.setCellValueFactory(
                 new PropertyValueFactory<Element, Double>("vente"));
-		this.tabElement.setItems(e);
+		this.tabElement.setItems(oElt);
     }
 
 }

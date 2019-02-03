@@ -10,6 +10,9 @@ public class InitialisationDonnees {
 	protected static ArrayList<Element> elements;
 	protected static ArrayList<ChaineDeProduction> chaines;
 	
+	/**
+	 * 
+	 */
 	public static void initialiserElements() {
 		InitialisationDonnees.elements = new ArrayList<Element>();
 		try {
@@ -41,6 +44,9 @@ public class InitialisationDonnees {
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	public static void initialiserChaines() {
 		InitialisationDonnees.chaines = new ArrayList<ChaineDeProduction>();
 		try {

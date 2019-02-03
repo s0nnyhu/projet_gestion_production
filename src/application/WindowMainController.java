@@ -14,7 +14,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class WindowMainController extends InitialisationDonnees{
@@ -29,50 +32,78 @@ public class WindowMainController extends InitialisationDonnees{
     private Button quitter;
 
 
+    /**
+     * @param event
+     */
     @FXML
-    void openEssaisProd(ActionEvent event) throws IOException {
-    	/* Alert box
-    	Alert alert = new Alert(AlertType.INFORMATION);
-    	alert.setTitle("Message Here...");
-    	alert.setHeaderText("Look, an Information Dialog");
-    	alert.setContentText("I have a great message for you!");
-    	alert.showAndWait().ifPresent(rs -> {
-    	    if (rs == ButtonType.OK) {
-    	        System.out.println("Pressed OK.");
-    	    }
-    	});
-    	*/
-    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowSimulationProd.fxml"));     
+    void openEssaisProd(ActionEvent event){
+    	try {
+    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowSimulationProd.fxml"));     
 
-    	Parent root = (Parent)fxmlLoader.load();          
-    	WindowSimulationProdController controller = fxmlLoader.<WindowSimulationProdController>getController();
+        	Parent root = (Parent)fxmlLoader.load();          
+        	WindowSimulationProdController controller = fxmlLoader.<WindowSimulationProdController>getController();
+        	
+        	controller.initData();
+        	Scene scene = new Scene(root); 
+        	Stage stage = new Stage();
+        	stage.setTitle("Evaluation de la production");
+        	stage.setScene(scene);    
+
+        	stage.show();   
+    	}
+    	catch(IOException e1) {
+        	Alert alert = new Alert(AlertType.ERROR);
+        	alert.getDialogPane().setMinWidth(500);
+        	alert.setTitle("Erreur");
+        	alert.setHeaderText("Une erreur est survenue!");
+        	alert.setContentText("Une erreur IOException est survenue!");
+        	alert.showAndWait().ifPresent(rs -> {
+        	    if (rs == ButtonType.OK) {
+        	        System.out.println("Pressed OK.");
+        	    }
+        	});
+    	}
     	
-    	controller.initData(InitialisationDonnees.chaines);
-    	Scene scene = new Scene(root); 
-    	Stage stage = new Stage();
-    	stage.setScene(scene);    
-
-    	stage.show();   
     	
     }
 
+    /**
+     * @param event
+     */
     @FXML
-    void openStocksView(ActionEvent event) throws IOException {
-    	ObservableList <Element> obElt = FXCollections.observableList(InitialisationDonnees.elements);
-    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowVisualisationStocks.fxml"));     
+    void openStocksView(ActionEvent event) {
+    	try {
+    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowVisualisationStocks.fxml"));     
 
-    	Parent root = (Parent)fxmlLoader.load();          
-    	WindowVisualisationStocksController controller = fxmlLoader.<WindowVisualisationStocksController>getController();
+        	Parent root = (Parent)fxmlLoader.load();          
+        	WindowVisualisationStocksController controller = fxmlLoader.<WindowVisualisationStocksController>getController();
+        	
+        	controller.initData();
+        	Scene scene = new Scene(root); 
+        	Stage stage = new Stage();
+        	stage.setScene(scene);
+        	stage.setTitle("Stocks de production");
+
+        	stage.show();   
+    	}
+    	catch(IOException e1) {
+        	Alert alert = new Alert(AlertType.ERROR);
+        	alert.getDialogPane().setMinWidth(500);
+        	alert.setTitle("Erreur");
+        	alert.setHeaderText("Une erreur est survenue!");
+        	alert.setContentText("Une erreur IOException est survenue!");
+        	alert.showAndWait().ifPresent(rs -> {
+        	    if (rs == ButtonType.OK) {
+        	        System.out.println("Pressed OK.");
+        	    }
+        	});
+    	}
     	
-    	controller.initData(obElt);
-    	Scene scene = new Scene(root); 
-    	Stage stage = new Stage();
-    	stage.setScene(scene);
-    	stage.setTitle("Stocks de production");
-
-    	stage.show();   
     }
     
+    /**
+     * @param event
+     */
     @FXML
     void exit(ActionEvent event) {
     	Platform.exit();

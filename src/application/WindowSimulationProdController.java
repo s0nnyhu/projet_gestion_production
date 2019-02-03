@@ -13,7 +13,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
@@ -22,11 +25,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class WindowSimulationProdController {
-	private ArrayList<ChaineDeProduction> chaines;
 	
     @FXML
     private TableView<ChaineDeProduction> tabView;
@@ -59,39 +62,91 @@ public class WindowSimulationProdController {
     private Button btnRetour;
     
     private TextField[] tabTxtField;
-    private String[] tabValueTxtField;
+    private Double[] tabValueTxtField;
     
     
 
+    /**
+     * @param event
+     */
     @FXML
-    void evaluer(ActionEvent event) throws IOException {
-    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowSimulationProdRes.fxml"));     
+    void evaluer(ActionEvent event) {
+    	
+    	InitialisationDonnees.initialiserElements();
+    	InitialisationDonnees.initialiserChaines();
+    	
+    	try {
+        	for (int i=0; i<tabTxtField.length;i++) {
+        		if (Double.parseDouble(tabTxtField[i].getText()) < 0) {
+        			throw new NumberFormatException();
+        		}
+        		tabValueTxtField[i] = Double.parseDouble(tabTxtField[i].getText());
+        	}
+    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowSimulationProdRes.fxml"));     
 
-    	Parent root = (Parent)fxmlLoader.load();          
-    	WindowSimulationProdResController controller = fxmlLoader.<WindowSimulationProdResController>getController();
-    	
-    	
-    	for (int i=0; i<tabTxtField.length;i++) {
-    		tabValueTxtField[i] = tabTxtField[i].getText();
+        	Parent root = (Parent)fxmlLoader.load();          
+        	WindowSimulationProdResController controller = fxmlLoader.<WindowSimulationProdResController>getController();
+        	
+        	controller.initData(tabValueTxtField);
+        	Scene scene = new Scene(root); 
+        	Stage stage = new Stage();
+        	stage.setTitle("Résultats: Evaluation");
+        	stage.setScene(scene);    
+
+        	stage.show(); 
     	}
-    	
-    	controller.initData(tabValueTxtField);
-    	Scene scene = new Scene(root); 
-    	Stage stage = new Stage();
-    	stage.setScene(scene);    
-
-    	stage.show();   
+    	catch(NumberFormatException e) {
+        	Alert alert = new Alert(AlertType.ERROR);
+        	alert.getDialogPane().setMinWidth(500);
+        	alert.setTitle("Erreur");
+        	alert.setHeaderText("Une erreur est survenue!");
+        	alert.setContentText("Les données rentrées doivent être des chiffres supérieur à 0!");
+        	alert.showAndWait().ifPresent(rs -> {
+        	    if (rs == ButtonType.OK) {
+        	        System.out.println("Pressed OK.");
+        	    }
+        	});
+    	}
+    	catch(IOException e1) {
+        	Alert alert = new Alert(AlertType.ERROR);
+        	alert.getDialogPane().setMinWidth(500);
+        	alert.setTitle("Erreur");
+        	alert.setHeaderText("Une erreur est survenue!");
+        	alert.setContentText("Une erreur IOException est survenue!");
+        	alert.showAndWait().ifPresent(rs -> {
+        	    if (rs == ButtonType.OK) {
+        	        System.out.println("Pressed OK.");
+        	    }
+        	});
+    	}
+    	catch(Exception e) {
+        	Alert alert = new Alert(AlertType.ERROR);
+        	alert.setTitle("Erreur");
+        	alert.setHeaderText("Une erreur est survenue!");
+        	alert.setContentText("Une erreur est survenue!");
+        	alert.showAndWait().ifPresent(rs -> {
+        	    if (rs == ButtonType.OK) {
+        	        System.out.println("Pressed OK.");
+        	    }
+        	});
+    	}
+    	  
     }
 
+    /**
+     * @param event
+     */
     @FXML
     void retour(ActionEvent event) {
     	Stage stage = (Stage)btnRetour.getScene().getWindow();
     	stage.close();
     }
     
-    void initData(ArrayList<ChaineDeProduction> c) {
-    	this.chaines = c;
-    	ObservableList <ChaineDeProduction> oChaine = FXCollections.observableList(this.chaines);
+    /**
+     * 
+     */
+    void initData() {
+    	ObservableList <ChaineDeProduction> oChaine = FXCollections.observableList(InitialisationDonnees.chaines);
     	this.tCode.setCellValueFactory(
                 new PropertyValueFactory<ChaineDeProduction, String>("code"));
 		this.tNom.setCellValueFactory(
@@ -103,12 +158,12 @@ public class WindowSimulationProdController {
 
     	tabView.setItems(oChaine);
     	tabTxtField = new TextField[oChaine.size()];
-    	tabValueTxtField = new String[oChaine.size()];
+    	tabValueTxtField = new Double[oChaine.size()];
     	for (int i = 0; i<oChaine.size(); i++) {
     		TextField tf = new TextField();
     		tf.setPrefWidth(80);
     		tabTxtField[i] = tf;
-    		Label lbl = new Label(chaines.get(i).getCode());
+    		Label lbl = new Label(InitialisationDonnees.chaines.get(i).getCode());
     		HBox h = new HBox();
     		h.setPadding(new Insets(15, 12, 20, 12));
     		h.setSpacing(20);
