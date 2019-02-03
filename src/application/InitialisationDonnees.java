@@ -9,6 +9,9 @@ import java.util.HashMap;
 public class InitialisationDonnees {
 	protected static ArrayList<Element> elements;
 	protected static ArrayList<ChaineDeProduction> chaines;
+
+	private static final String ficElements = "../DonneesV1/FichiersV1/elements.csv";
+	private static final String ficChaines = "../DonneesV1/FichiersV1/chaines.csv";
 	
 	/**
 	 * 
@@ -16,7 +19,7 @@ public class InitialisationDonnees {
 	public static void initialiserElements() {
 		InitialisationDonnees.elements = new ArrayList<Element>();
 		try {
-			FileReader elem = new FileReader("/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/elements.csv");
+			FileReader elem = new FileReader(ficElements);
 			BufferedReader br = new BufferedReader(elem);
 			String line = br.readLine(); //saut de la premiere ligne en effectuant une lecture
 			while( (line = br.readLine() ) != null) {
@@ -50,7 +53,7 @@ public class InitialisationDonnees {
 	public static void initialiserChaines() {
 		InitialisationDonnees.chaines = new ArrayList<ChaineDeProduction>();
 		try {
-			FileReader ch = new FileReader("/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/chaines.csv");
+			FileReader ch = new FileReader(ficChaines);
 			BufferedReader br = new BufferedReader(ch);
 			String line = br.readLine(); //saut de la premiere ligne en effectuant une lerture
 			while( (line = br.readLine() ) != null) {

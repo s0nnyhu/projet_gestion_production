@@ -77,7 +77,10 @@ public class WindowSimulationProdController {
     	
     	try {
         	for (int i=0; i<tabTxtField.length;i++) {
-        		if (Double.parseDouble(tabTxtField[i].getText()) < 0) {
+        		if(tabTxtField[i].getText().isEmpty()) {
+        			tabTxtField[i].setText("1");
+        		}
+        		if (Double.parseDouble(tabTxtField[i].getText()) <= 0) {
         			throw new NumberFormatException();
         		}
         		tabValueTxtField[i] = Double.parseDouble(tabTxtField[i].getText());
@@ -163,6 +166,7 @@ public class WindowSimulationProdController {
     		TextField tf = new TextField();
     		tf.setPrefWidth(80);
     		tabTxtField[i] = tf;
+    		tf.setPromptText("1");
     		Label lbl = new Label(InitialisationDonnees.chaines.get(i).getCode());
     		HBox h = new HBox();
     		h.setPadding(new Insets(15, 12, 20, 12));

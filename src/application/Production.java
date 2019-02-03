@@ -18,7 +18,7 @@ public class Production {
 	 */
 	public Production(ChaineDeProduction chaine, double coutVente, double efficacite) {
 		super();
-		this.nom = new SimpleStringProperty(chaine.getCode());
+		this.nom = new SimpleStringProperty(chaine.getCode()+" : "+chaine.getNom());
 		this.chaine = chaine;
 		this.coutVente = new SimpleDoubleProperty(coutVente);
 		this.efficacite = new SimpleDoubleProperty(efficacite);

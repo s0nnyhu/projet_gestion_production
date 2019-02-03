@@ -20,13 +20,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TitledPane;
 import javafx.stage.Stage;
 
 public class WindowSimulationProdResController {
 	
 	private ArrayList<Production> production = new ArrayList<Production>();
-	private ArrayList <Element> listeAchat = new ArrayList<Element>();
-
 	@FXML
 	private Button retour;	
 
@@ -69,6 +68,23 @@ public class WindowSimulationProdResController {
     @FXML
     private TextArea txtListeAchat;
     
+    private ObservableList<Element> listAchats = FXCollections.observableArrayList();    
+
+    @FXML
+    private TitledPane listeAchats;
+	
+    @FXML
+    private TableView<Element> tableauAchats;
+
+    @FXML
+    private TableColumn<Element, String> codeAchat;
+
+    @FXML
+    private TableColumn<Element, String> nomAchat;
+
+    @FXML
+    private TableColumn<Element, Double> quantiteAchat;
+        
     @FXML
     private TextArea txtProdImpossible;
     
@@ -91,7 +107,7 @@ public class WindowSimulationProdResController {
         }
 
     	try {
-    		FileWriter fw = new FileWriter(new File("Production.csv"));
+    		FileWriter fw = new FileWriter(new File("../DonneesV1/Production.csv"));
     		fw.write("Chaine,coutVente,Efficacite");
             fw.write(System.lineSeparator());
     		for (Production p : this.production) {
@@ -104,10 +120,10 @@ public class WindowSimulationProdResController {
         }
     	
     	try {
-    		FileWriter fw = new FileWriter(new File("Liste_Achats.csv"));
+    		FileWriter fw = new FileWriter(new File("../DonneesV1/Liste_Achats.csv"));
     		fw.write("Code,Nom,Quantite");
             fw.write(System.lineSeparator());
-    		for (Element e : this.listeAchat) {
+    		for (Element e : this.listAchats) {
                 fw.write(String.format("%s;%s;%s", e.getCode(), e.getNom(), Math.abs(e.getQuantite())));
                 fw.write(System.lineSeparator());
     		}
@@ -159,6 +175,18 @@ public class WindowSimulationProdResController {
     }
     
     /**
+     * @param e
+     */
+    void chargerListeAchats() {
+		this.codeAchat.setCellValueFactory(
+                new PropertyValueFactory<Element, String>("code"));
+		this.nomAchat.setCellValueFactory(
+                new PropertyValueFactory<Element, String>("nom"));
+		this.quantiteAchat.setCellValueFactory(
+                new PropertyValueFactory<Element, Double>("quantite"));
+		this.tableauAchats.setItems(listAchats);
+    }
+    /**
      * @param event
      */
     @FXML
@@ -200,7 +228,8 @@ public class WindowSimulationProdResController {
     			for (Element elEntree: c.getEntree().keySet()) {
         			for (Element elStock : InitialisationDonnees.elements) {
         				if (elEntree.getCode() == elStock.getCode()) {
-        					elStock.setQuantite(elStock.getQuantite() - (c.getEntree().get(elEntree)*niveau[i]));
+        					double newQuantite = elStock.getQuantite() - (c.getEntree().get(elEntree)*niveau[i]);
+        					elStock.setQuantite(newQuantite);
         				}
         			}
         		}
@@ -235,10 +264,9 @@ public class WindowSimulationProdResController {
         						}
         						else
         						{
-	        						listeAchat.add(e);
-	        						this.txtListeAchat.appendText(listeAchat.get(indexListeAchat).getCode() + ": " + Math.abs(listeAchat.get(indexListeAchat).getQuantite()) + "\n");
+	        						listAchats.add(e);
+	        						//this.txtListeAchat.appendText(listeAchat.get(indexListeAchat).getCode() + ": " + Math.abs(listeAchat.get(indexListeAchat).getQuantite()) + "\n");
 	        						totalAchatChaine += e.getQuantite() * e.getAchat();
-	        						System.out.println(totalAchatChaine + ":" + e.getQuantite() + "*" + e.getAchat());
 	        						indexListeAchat++;
 	        					}
 	        				}
@@ -261,6 +289,6 @@ public class WindowSimulationProdResController {
     	ObservableList <Production> oProduction = FXCollections.observableList(production);
     	chargerTabNewStock(oElement);
     	chargerSimulationProduction(oProduction);
-    	
+    	chargerListeAchats();
     }
 }

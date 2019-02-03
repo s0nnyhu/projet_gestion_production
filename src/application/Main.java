@@ -27,7 +27,7 @@ public class Main extends Application {
 	
 	/**
 	 * Main method
-	 * Charge les donner et lance l'application
+	 * Charge les données et lance l'application
 	 * @param args
 	 */
 	public static void main(String[] args) {
