@@ -1,7 +1,9 @@
-package application;
+package Vues;
 
 import java.util.ArrayList;
 
+import application.Element;
+import application.InitialisationDonnees;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -56,7 +58,7 @@ public class WindowVisualisationStocksController {
 	 * Remplie le tableau de visualisation des stocks
 	 */
 	void initData() {
-    	ObservableList <Element> oElt = FXCollections.observableList(InitialisationDonnees.elements);
+    	ObservableList <Element> oElt = FXCollections.observableList(InitialisationDonnees.getElements());
 		this.tCode.setCellValueFactory(
                 new PropertyValueFactory<Element, String>("code"));
 		this.tNom.setCellValueFactory(

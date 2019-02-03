@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="900.0" prefWidth="1165.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.WindowSimulationProdResController">
+<AnchorPane prefHeight="900.0" prefWidth="1165.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vues.WindowSimulationProdResController">
    <children>
       <TableView id="EssaiDeProd" fx:id="tabSimulationProd" layoutX="41.0" layoutY="68.0" prefHeight="429.0" prefWidth="750.0" AnchorPane.bottomAnchor="403.0" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="374.0" AnchorPane.topAnchor="68.0">
         <columns>

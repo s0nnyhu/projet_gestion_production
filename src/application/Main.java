@@ -14,7 +14,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("WindowMain.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("../Vues/WindowMain.fxml"));
 	        Scene scene = new Scene(root);
 	        stage.setTitle("Gestion de Production");
 	        stage.setScene(scene);
@@ -22,6 +22,7 @@ public class Main extends Application {
 		}
 		catch(Exception e) {
 			System.out.println("erreur");
+			e.printStackTrace();
 		}
 	}
 	

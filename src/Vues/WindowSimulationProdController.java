@@ -1,8 +1,10 @@
-package application;
+package Vues;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import application.ChaineDeProduction;
+import application.InitialisationDonnees;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -149,7 +151,7 @@ public class WindowSimulationProdController {
      * 
      */
     void initData() {
-    	ObservableList <ChaineDeProduction> oChaine = FXCollections.observableList(InitialisationDonnees.chaines);
+    	ObservableList <ChaineDeProduction> oChaine = FXCollections.observableList(InitialisationDonnees.getChaines());
     	this.tCode.setCellValueFactory(
                 new PropertyValueFactory<ChaineDeProduction, String>("code"));
 		this.tNom.setCellValueFactory(
@@ -167,7 +169,7 @@ public class WindowSimulationProdController {
     		tf.setPrefWidth(80);
     		tabTxtField[i] = tf;
     		tf.setPromptText("1");
-    		Label lbl = new Label(InitialisationDonnees.chaines.get(i).getCode());
+    		Label lbl = new Label(InitialisationDonnees.getChaines().get(i).getCode());
     		HBox h = new HBox();
     		h.setPadding(new Insets(15, 12, 20, 12));
     		h.setSpacing(20);

@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class InitialisationDonnees {
-	protected static ArrayList<Element> elements;
-	protected static ArrayList<ChaineDeProduction> chaines;
+	private static ArrayList<Element> elements;
+	private static ArrayList<ChaineDeProduction> chaines;
 
 	private static final String ficElements = "../DonneesV1/FichiersV1/elements.csv";
 	private static final String ficChaines = "../DonneesV1/FichiersV1/chaines.csv";
@@ -17,7 +17,7 @@ public class InitialisationDonnees {
 	 * 
 	 */
 	public static void initialiserElements() {
-		InitialisationDonnees.elements = new ArrayList<Element>();
+		InitialisationDonnees.setElements(new ArrayList<Element>());
 		try {
 			FileReader elem = new FileReader(ficElements);
 			BufferedReader br = new BufferedReader(elem);
@@ -37,7 +37,7 @@ public class InitialisationDonnees {
 				double vente = Double.parseDouble(fields[5]);
 				
 				Element el = new Element(code, nom, quantite, unite, achat, vente);
-				InitialisationDonnees.elements.add(el);
+				InitialisationDonnees.getElements().add(el);
 			}
 			br.close();
 			elem.close();
@@ -51,7 +51,7 @@ public class InitialisationDonnees {
 	 * 
 	 */
 	public static void initialiserChaines() {
-		InitialisationDonnees.chaines = new ArrayList<ChaineDeProduction>();
+		InitialisationDonnees.setChaines(new ArrayList<ChaineDeProduction>());
 		try {
 			FileReader ch = new FileReader(ficChaines);
 			BufferedReader br = new BufferedReader(ch);
@@ -72,7 +72,7 @@ public class InitialisationDonnees {
 					String codeElem = str[0];
 					double quantiteElem = Double.parseDouble(str[1]);
 					//Récupération des objets Elements pour remplir la HashMap "entree"
-					for(Element elem : InitialisationDonnees.elements) {
+					for(Element elem : InitialisationDonnees.getElements()) {
 						if(elem.getCode().equals(codeElem)) {
 							entree.put(elem, quantiteElem);
 						}
@@ -87,7 +87,7 @@ public class InitialisationDonnees {
 					double quantiteElem = Double.parseDouble(str[1]);
 					
 					//Récupération des objets Elements pour remplir la HashMap "sortie" 
-					for(Element elem : InitialisationDonnees.elements) {
+					for(Element elem : InitialisationDonnees.getElements()) {
 						if(elem.getCode().equals(codeElem)) {
 							sortie.put(elem, quantiteElem);
 						}
@@ -95,7 +95,7 @@ public class InitialisationDonnees {
 				}		
 				
 				ChaineDeProduction cp = new ChaineDeProduction(code, nom, entree, sortie);
-				chaines.add(cp);
+				getChaines().add(cp);
 			}
 			br.close();
 			ch.close();
@@ -103,5 +103,21 @@ public class InitialisationDonnees {
 			System.err.println("Erreur dans le nom du fichier...");
 			e.printStackTrace();
 		}
+	}
+
+	public static ArrayList<ChaineDeProduction> getChaines() {
+		return chaines;
+	}
+
+	public static void setChaines(ArrayList<ChaineDeProduction> chaines) {
+		InitialisationDonnees.chaines = chaines;
+	}
+
+	public static ArrayList<Element> getElements() {
+		return elements;
+	}
+
+	public static void setElements(ArrayList<Element> elements) {
+		InitialisationDonnees.elements = elements;
 	}
 }
