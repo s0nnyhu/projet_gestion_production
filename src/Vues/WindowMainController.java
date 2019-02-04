@@ -102,6 +102,14 @@ public class WindowMainController extends InitialisationDonnees{
     	
     }
     
+    @FXML
+    void chargerDonnees() {
+		InitialisationDonnees.initialiserElements();
+		InitialisationDonnees.initialiserChaines();
+		btnVisuStocks.setDisable(false);
+		btnEssaiProd.setDisable(false);
+    }
+    
     /**
      * @param event
      */

@@ -296,6 +296,11 @@ public class WindowSimulationProdResController {
     	if(listAchats.isEmpty()) {
     		listeAchats.setExpanded(false);
     	}
+
+    	//Activation du bouton exporter
+    	if(txtProdImpossible.equals(null)) {
+    		export.setDisable(true);
+    	}
     	
     	ObservableList <Element> oElement = FXCollections.observableList(InitialisationDonnees.getElements());
     	ObservableList <Production> oProduction = FXCollections.observableList(production);

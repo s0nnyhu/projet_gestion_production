@@ -82,7 +82,7 @@ public class WindowSimulationProdController {
         		if(tabTxtField[i].getText().isEmpty()) {
         			tabTxtField[i].setText("1");
         		}
-        		if (Double.parseDouble(tabTxtField[i].getText()) <= 0) {
+        		if (Double.parseDouble(tabTxtField[i].getText()) < 0) {
         			throw new NumberFormatException();
         		}
         		tabValueTxtField[i] = Double.parseDouble(tabTxtField[i].getText());
@@ -105,7 +105,7 @@ public class WindowSimulationProdController {
         	alert.getDialogPane().setMinWidth(500);
         	alert.setTitle("Erreur");
         	alert.setHeaderText("Une erreur est survenue!");
-        	alert.setContentText("Les données rentrées doivent être des chiffres supérieur à 0!");
+        	alert.setContentText("Les données rentrées doivent être des chiffres supérieurs à 0!");
         	alert.showAndWait().ifPresent(rs -> {
         	    if (rs == ButtonType.OK) {
         	        System.out.println("Pressed OK.");

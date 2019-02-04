@@ -15,12 +15,13 @@
                   <Font size="26.0" />
                </font>
             </Label>
-            <Button id="btnVisuStocks" fx:id="btnVisuStocks" mnemonicParsing="false" onAction="#openStocksView" prefHeight="40.0" prefWidth="300.0" text="Visualisation de l'état des stocks">
+            <Button fx:id="loadData" mnemonicParsing="false" onAction="#chargerDonnees" text="Charger les données" />
+            <Button id="btnVisuStocks" fx:id="btnVisuStocks" disable="true" mnemonicParsing="false" onAction="#openStocksView" prefHeight="40.0" prefWidth="300.0" text="Visualisation de l'état des stocks">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button id="btnEssaiProd" fx:id="btnEssaiProd" mnemonicParsing="false" onAction="#openEssaisProd" prefHeight="40.0" prefWidth="300.0" text="Simulation d'essais de production">
+            <Button id="btnEssaiProd" fx:id="btnEssaiProd" disable="true" mnemonicParsing="false" onAction="#openEssaisProd" prefHeight="40.0" prefWidth="300.0" text="Simulation d'essais de production">
                <font>
                   <Font size="14.0" />
                </font>
