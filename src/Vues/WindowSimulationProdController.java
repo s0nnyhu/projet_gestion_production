@@ -91,7 +91,7 @@ public class WindowSimulationProdController {
         	controller.initData(this.elements, this.chaines, tabValueTxtField);
         	Scene scene = new Scene(root); 
         	Stage stage = new Stage();
-        	stage.setTitle("Résultats: Evaluation");
+        	stage.setTitle("Resultats: Evaluation");
         	stage.setScene(scene);    
 
         	stage.show(); 
@@ -101,7 +101,7 @@ public class WindowSimulationProdController {
         	alert.getDialogPane().setMinWidth(500);
         	alert.setTitle("Erreur");
         	alert.setHeaderText("Une erreur est survenue!");
-        	alert.setContentText("Les données rentrées doivent être des chiffres supérieurs à 0!");
+        	alert.setContentText("Les donnees rentrees doivent etre des chiffres superieurs a 0!");
         	alert.showAndWait().ifPresent(rs -> {
         	    if (rs == ButtonType.OK) {
         	        System.out.println("Pressed OK.");

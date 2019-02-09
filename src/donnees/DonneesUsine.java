@@ -1,6 +1,9 @@
-package application;
+package donnees;
 
 import java.util.ArrayList;
+
+import application.ChaineDeProduction;
+import application.Element;
 
 public abstract class DonneesUsine {
 	protected ArrayList<Element> elements;

@@ -1,4 +1,4 @@
-package application;
+package donnees;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -6,8 +6,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import application.ChaineDeProduction;
+import application.Element;
+
 public class DonneesCSV extends GestionDonneesFichiers{
+	
 	boolean elementsLoaded;
+	
 	public DonneesCSV(String path_elements, String path_chaines) {
 		this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
@@ -21,6 +26,7 @@ public class DonneesCSV extends GestionDonneesFichiers{
 	public ArrayList<ChaineDeProduction> getChaines() {
 		return this.chaines;
 	}
+	
 	@Override
 	public void chargerDonnees(String path_elements, String path_chaines) {
 		this.chargerElements(path_elements);
@@ -28,15 +34,6 @@ public class DonneesCSV extends GestionDonneesFichiers{
 	}
 	
 	private void chargerElements(String path_elements) {
-		/*
-	 	Reader in = new FileReader("path/to/file.csv");
-		Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);
-		for (CSVRecord record : records) {
-		    String lastName = record.get("Last Name");
-		    String firstName = record.get("First Name");
-		}
-		 */
-		
 		try {
 			FileReader elem = new FileReader(path_elements);
 			BufferedReader br = new BufferedReader(elem);

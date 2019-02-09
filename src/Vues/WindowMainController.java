@@ -3,8 +3,9 @@ package Vues;
 import java.io.IOException;
 import java.util.ArrayList;
 import application.ChaineDeProduction;
-import application.DonneesCSV;
 import application.Element;
+import donnees.DonneesCSV;
+import donnees.DonneesLibraryCSV;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -111,7 +112,7 @@ public class WindowMainController{
 		this.chaines = new ArrayList<>();
 		String cheminElements = "../DonneesV1/FichiersV1/elements.csv";
 		String cheminChaines = "../DonneesV1/FichiersV1/chaines.csv";
-    	DonneesCSV data = new DonneesCSV(cheminElements, cheminChaines);
+    	DonneesLibraryCSV data = new DonneesLibraryCSV(cheminElements, cheminChaines);
 		this.elements = data.getElements();
 		this.chaines = data.getChaines();
 		if(data.getLoaded()) {

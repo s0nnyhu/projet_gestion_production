@@ -1,4 +1,4 @@
-package application;
+package donnees;
 
 public abstract class GestionDonneesFichiers extends DonneesUsine {
 

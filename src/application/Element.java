@@ -5,6 +5,10 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+/**
+ * @author Régis
+ *
+ */
 public class Element {
 	private StringProperty code = new SimpleStringProperty();
 	private StringProperty nom = new SimpleStringProperty();
@@ -105,12 +109,16 @@ public class Element {
 		this.vente.set(vente);
 	}
 
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Element [code=" + code + "]";
+		return "Element [code=" + code + ", nom=" + nom + ", quantite=" + quantite + ", unite=" + unite + ", achat="
+				+ achat + ", vente=" + vente + "]";
 	}
+
+	
 	
 }
