@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
@@ -27,6 +28,9 @@ public class WindowMainController{
     
     @FXML
     private Button quitter;
+    
+    @FXML
+    private Label loadedLabel;
 
 	protected ArrayList<Element> elements;
 	
@@ -105,11 +109,19 @@ public class WindowMainController{
     void chargerDonnees() {
 		this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
-    	DonneesCSV data = new DonneesCSV("/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/elements.csv", "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/chaines.csv");
+		String cheminElements = "../DonneesV1/FichiersV1/elements.csv";
+		String cheminChaines = "../DonneesV1/FichiersV1/chaines.csv";
+    	DonneesCSV data = new DonneesCSV(cheminElements, cheminChaines);
 		this.elements = data.getElements();
 		this.chaines = data.getChaines();
-    	btnVisuStocks.setDisable(false);
-		btnEssaiProd.setDisable(false);
+		if(data.getLoaded()) {
+	    	btnVisuStocks.setDisable(false);
+			btnEssaiProd.setDisable(false);	
+		}
+		else {
+			loadedLabel.setText("Echec du chargement des données");
+		}
+		loadedLabel.setVisible(true);
     }
     
     /**

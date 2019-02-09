@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DonneesCSV extends GestionDonneesFichiers{
-	
+	boolean elementsLoaded;
 	public DonneesCSV(String path_elements, String path_chaines) {
 		this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
@@ -28,6 +28,15 @@ public class DonneesCSV extends GestionDonneesFichiers{
 	}
 	
 	private void chargerElements(String path_elements) {
+		/*
+	 	Reader in = new FileReader("path/to/file.csv");
+		Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);
+		for (CSVRecord record : records) {
+		    String lastName = record.get("Last Name");
+		    String firstName = record.get("First Name");
+		}
+		 */
+		
 		try {
 			FileReader elem = new FileReader(path_elements);
 			BufferedReader br = new BufferedReader(elem);
@@ -51,6 +60,7 @@ public class DonneesCSV extends GestionDonneesFichiers{
 			}
 			br.close();
 			elem.close();
+			this.elementsLoaded = true;
 		} catch (IOException e) {
 			System.err.println("Erreur dans le nom du fichier...");
 			e.printStackTrace();
@@ -105,6 +115,9 @@ public class DonneesCSV extends GestionDonneesFichiers{
 			}
 			br.close();
 			ch.close();
+			if(this.elementsLoaded) {
+				this.loaded = true;
+			}
 		} catch (IOException e) {
 			System.err.println("Erreur dans le nom du fichier...");
 			e.printStackTrace();

@@ -76,7 +76,7 @@ public class WindowSimulationProdController {
     	try {
         	for (int i=0; i<tabTxtField.length;i++) {
         		if(tabTxtField[i].getText().isEmpty()) {
-        			tabTxtField[i].setText("1");
+        			tabTxtField[i].setText("0");
         		}
         		if (Double.parseDouble(tabTxtField[i].getText()) < 0) {
         			throw new NumberFormatException();
@@ -170,7 +170,7 @@ public class WindowSimulationProdController {
     		TextField tf = new TextField();
     		tf.setPrefWidth(80);
     		tabTxtField[i] = tf;
-    		tf.setPromptText("1");
+    		tf.setPromptText("0");
     		Label lbl = new Label(c.get(i).getCode());
     		HBox h = new HBox();
     		h.setPadding(new Insets(15, 12, 20, 12));
