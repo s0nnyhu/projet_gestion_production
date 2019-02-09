@@ -6,20 +6,30 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class InitialisationDonnees {
-	private static ArrayList<Element> elements;
-	private static ArrayList<ChaineDeProduction> chaines;
-
-	private static final String ficElements = "../DonneesV1/FichiersV1/elements.csv";
-	private static final String ficChaines = "../DonneesV1/FichiersV1/chaines.csv";
+public class DonneesCSV extends GestionDonneesFichiers{
 	
-	/**
-	 * 
-	 */
-	public static void initialiserElements() {
-		InitialisationDonnees.setElements(new ArrayList<Element>());
+	public DonneesCSV(String path_elements, String path_chaines) {
+		this.elements = new ArrayList<>();
+		this.chaines = new ArrayList<>();
+		this.chargerDonnees(path_elements, path_chaines);
+	}
+	
+	public ArrayList<Element> getElements() {
+		return this.elements;
+	}
+	
+	public ArrayList<ChaineDeProduction> getChaines() {
+		return this.chaines;
+	}
+	@Override
+	public void chargerDonnees(String path_elements, String path_chaines) {
+		this.chargerElements(path_elements);
+		this.chargerChaines(path_chaines);
+	}
+	
+	private void chargerElements(String path_elements) {
 		try {
-			FileReader elem = new FileReader(ficElements);
+			FileReader elem = new FileReader(path_elements);
 			BufferedReader br = new BufferedReader(elem);
 			String line = br.readLine(); //saut de la premiere ligne en effectuant une lecture
 			while( (line = br.readLine() ) != null) {
@@ -37,7 +47,7 @@ public class InitialisationDonnees {
 				double vente = Double.parseDouble(fields[5]);
 				
 				Element el = new Element(code, nom, quantite, unite, achat, vente);
-				InitialisationDonnees.getElements().add(el);
+				this.elements.add(el);
 			}
 			br.close();
 			elem.close();
@@ -46,14 +56,10 @@ public class InitialisationDonnees {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * 
-	 */
-	public static void initialiserChaines() {
-		InitialisationDonnees.setChaines(new ArrayList<ChaineDeProduction>());
+
+	private void chargerChaines(String path_chaines) {
 		try {
-			FileReader ch = new FileReader(ficChaines);
+			FileReader ch = new FileReader(path_chaines);
 			BufferedReader br = new BufferedReader(ch);
 			String line = br.readLine(); //saut de la premiere ligne en effectuant une lerture
 			while( (line = br.readLine() ) != null) {
@@ -72,7 +78,7 @@ public class InitialisationDonnees {
 					String codeElem = str[0];
 					double quantiteElem = Double.parseDouble(str[1]);
 					//Récupération des objets Elements pour remplir la HashMap "entree"
-					for(Element elem : InitialisationDonnees.getElements()) {
+					for(Element elem : this.elements) {
 						if(elem.getCode().equals(codeElem)) {
 							entree.put(elem, quantiteElem);
 						}
@@ -87,7 +93,7 @@ public class InitialisationDonnees {
 					double quantiteElem = Double.parseDouble(str[1]);
 					
 					//Récupération des objets Elements pour remplir la HashMap "sortie" 
-					for(Element elem : InitialisationDonnees.getElements()) {
+					for(Element elem : this.elements) {
 						if(elem.getCode().equals(codeElem)) {
 							sortie.put(elem, quantiteElem);
 						}
@@ -95,7 +101,7 @@ public class InitialisationDonnees {
 				}		
 				
 				ChaineDeProduction cp = new ChaineDeProduction(code, nom, entree, sortie);
-				getChaines().add(cp);
+				this.chaines.add(cp);
 			}
 			br.close();
 			ch.close();
@@ -104,20 +110,10 @@ public class InitialisationDonnees {
 			e.printStackTrace();
 		}
 	}
-
-	public static ArrayList<ChaineDeProduction> getChaines() {
-		return chaines;
-	}
-
-	public static void setChaines(ArrayList<ChaineDeProduction> chaines) {
-		InitialisationDonnees.chaines = chaines;
-	}
-
-	public static ArrayList<Element> getElements() {
-		return elements;
-	}
-
-	public static void setElements(ArrayList<Element> elements) {
-		InitialisationDonnees.elements = elements;
+	
+	
+	@Override
+	public void chargerDonnees() {
+		
 	}
 }

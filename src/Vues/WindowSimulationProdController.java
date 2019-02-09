@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import application.ChaineDeProduction;
-import application.InitialisationDonnees;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import application.Element;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,7 +25,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -66,16 +63,15 @@ public class WindowSimulationProdController {
     private TextField[] tabTxtField;
     private Double[] tabValueTxtField;
     
-    
+	protected ArrayList<Element> elements;
+	
+	protected ArrayList<ChaineDeProduction> chaines;
 
     /**
      * @param event
      */
     @FXML
     void evaluer(ActionEvent event) {
-    	
-    	InitialisationDonnees.initialiserElements();
-    	InitialisationDonnees.initialiserChaines();
     	
     	try {
         	for (int i=0; i<tabTxtField.length;i++) {
@@ -92,7 +88,7 @@ public class WindowSimulationProdController {
         	Parent root = (Parent)fxmlLoader.load();          
         	WindowSimulationProdResController controller = fxmlLoader.<WindowSimulationProdResController>getController();
         	
-        	controller.initData(tabValueTxtField);
+        	controller.initData(this.elements, this.chaines, tabValueTxtField);
         	Scene scene = new Scene(root); 
         	Stage stage = new Stage();
         	stage.setTitle("Résultats: Evaluation");
@@ -150,8 +146,14 @@ public class WindowSimulationProdController {
     /**
      * 
      */
-    void initData() {
-    	ObservableList <ChaineDeProduction> oChaine = FXCollections.observableList(InitialisationDonnees.getChaines());
+    void initData(ArrayList<Element> e, ArrayList<ChaineDeProduction> c) {
+		this.elements = new ArrayList<>();
+		this.chaines = new ArrayList<>();
+		
+		this.elements = e;
+		this.chaines = c;
+		
+    	ObservableList <ChaineDeProduction> oChaine = FXCollections.observableList(this.chaines);
     	this.tCode.setCellValueFactory(
                 new PropertyValueFactory<ChaineDeProduction, String>("code"));
 		this.tNom.setCellValueFactory(
@@ -169,7 +171,7 @@ public class WindowSimulationProdController {
     		tf.setPrefWidth(80);
     		tabTxtField[i] = tf;
     		tf.setPromptText("1");
-    		Label lbl = new Label(InitialisationDonnees.getChaines().get(i).getCode());
+    		Label lbl = new Label(c.get(i).getCode());
     		HBox h = new HBox();
     		h.setPadding(new Insets(15, 12, 20, 12));
     		h.setSpacing(20);

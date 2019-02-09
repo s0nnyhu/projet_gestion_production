@@ -1,15 +1,11 @@
 package Vues;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import application.InitialisationDonnees;
+import application.ChaineDeProduction;
+import application.DonneesCSV;
+import application.Element;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +17,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
-public class WindowMainController extends InitialisationDonnees{
+public class WindowMainController{
 
     @FXML
     private Button btnVisuStocks;
@@ -32,6 +28,9 @@ public class WindowMainController extends InitialisationDonnees{
     @FXML
     private Button quitter;
 
+	protected ArrayList<Element> elements;
+	
+	protected ArrayList<ChaineDeProduction> chaines;
 
     /**
      * @param event
@@ -44,7 +43,7 @@ public class WindowMainController extends InitialisationDonnees{
         	Parent root = (Parent)fxmlLoader.load();          
         	WindowSimulationProdController controller = fxmlLoader.<WindowSimulationProdController>getController();
         	
-        	controller.initData();
+        	controller.initData(this.elements, this.chaines);
         	Scene scene = new Scene(root); 
         	Stage stage = new Stage();
         	stage.setTitle("Evaluation de la production");
@@ -79,7 +78,7 @@ public class WindowMainController extends InitialisationDonnees{
         	Parent root = (Parent)fxmlLoader.load();          
         	WindowVisualisationStocksController controller = fxmlLoader.<WindowVisualisationStocksController>getController();
         	
-        	controller.initData();
+        	controller.initData(this.elements);
         	Scene scene = new Scene(root); 
         	Stage stage = new Stage();
         	stage.setScene(scene);
@@ -104,9 +103,12 @@ public class WindowMainController extends InitialisationDonnees{
     
     @FXML
     void chargerDonnees() {
-		InitialisationDonnees.initialiserElements();
-		InitialisationDonnees.initialiserChaines();
-		btnVisuStocks.setDisable(false);
+		this.elements = new ArrayList<>();
+		this.chaines = new ArrayList<>();
+    	DonneesCSV data = new DonneesCSV("/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/elements.csv", "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/chaines.csv");
+		this.elements = data.getElements();
+		this.chaines = data.getChaines();
+    	btnVisuStocks.setDisable(false);
 		btnEssaiProd.setDisable(false);
     }
     

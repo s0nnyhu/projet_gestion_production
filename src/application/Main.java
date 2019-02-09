@@ -24,14 +24,16 @@ public class Main extends Application {
 			System.out.println("erreur");
 			e.printStackTrace();
 		}
+		
 	}
 	
 	/**
 	 * Main method
-	 * Charge les données et lance l'application
+	 * Charge les donnï¿½es et lance l'application
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		launch(args);
+		
 	}
 }

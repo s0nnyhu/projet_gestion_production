@@ -4,15 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import application.ChaineDeProduction;
 import application.Element;
-import application.InitialisationDonnees;
 import application.Production;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -92,6 +86,11 @@ public class WindowSimulationProdResController {
     @FXML
     private TextArea txtProdImpossible;
     
+	protected ArrayList<Element> elements;
+	
+	protected ArrayList<ChaineDeProduction> chaines;
+	
+    
     /**
      * @param event
      */
@@ -102,7 +101,7 @@ public class WindowSimulationProdResController {
     		FileWriter fw = new FileWriter(new File("../DonneesV1/Nouveau_Stock.csv"));
     		fw.write("Code;Nom;Quantite;unite;achat;vente");
             fw.write(System.lineSeparator());
-    		for (Element e : InitialisationDonnees.getElements()) {
+    		for (Element e : this.elements) {
                 fw.write(String.format("%s;%s;%s;%s;%s,%s",e.getCode(), e.getNom(), e.getQuantite(), e.getUnite(), e.getAchat(), e.getVente()));
                 fw.write(System.lineSeparator());
     		}
@@ -206,7 +205,12 @@ public class WindowSimulationProdResController {
     /**
      * @param niveau
      */
-    void initData(Double[] niveau) {    	
+    void initData(ArrayList<Element> elements, ArrayList<ChaineDeProduction> chaines, Double[] niveau) {
+		this.elements = new ArrayList<>();
+		this.chaines = new ArrayList<>();
+		
+    	this.elements = elements;
+    	this.chaines = chaines;
     	int indexListeAchat = 0;
 
     	int i = 0;
@@ -215,7 +219,7 @@ public class WindowSimulationProdResController {
     	double efficacite = 0;
     	double totalAchatChaine = 0;
     	
-    	for (ChaineDeProduction c : InitialisationDonnees.getChaines()) {
+    	for (ChaineDeProduction c : this.chaines) {
         	coutVente = 0;
         	efficacite = 0;
         	totalAchatChaine = 0;
@@ -233,7 +237,7 @@ public class WindowSimulationProdResController {
     			 * dans notre tableau des élements.
     			 */
     			for (Element elEntree: c.getEntree().keySet()) {
-        			for (Element elStock : InitialisationDonnees.getElements()) {
+        			for (Element elStock : this.elements) {
         				if (elEntree.getCode() == elStock.getCode()) {
         					double newQuantite = elStock.getQuantite() - (c.getEntree().get(elEntree)*niveau[i]);
         					elStock.setQuantite(newQuantite);
@@ -246,7 +250,7 @@ public class WindowSimulationProdResController {
     			 * dans notre tableau des élements.
     			 */
     			for (Element elSorti : c.getSortie().keySet()) {
-    				for (Element elStock: InitialisationDonnees.getElements()) {
+    				for (Element elStock: this.elements) {
         				if (elSorti.getCode() == elStock.getCode()) {
         					elStock.setQuantite(elStock.getQuantite() + (c.getSortie().get(elSorti)*niveau[i]));
         					if (elStock.getVente() != 0) {
@@ -263,7 +267,7 @@ public class WindowSimulationProdResController {
     			 * de chaque élement à acheter
     			 */
     			for (Element elEntree: c.getEntree().keySet()) {
-        			for (Element e : InitialisationDonnees.getElements()) {
+        			for (Element e : this.elements) {
         				if (e.getCode() == elEntree.getCode()) {
         					if (e.getQuantite() < 0) {
         						if (e.getAchat() == 0) {
@@ -302,7 +306,7 @@ public class WindowSimulationProdResController {
     		export.setDisable(true);
     	}
     	
-    	ObservableList <Element> oElement = FXCollections.observableList(InitialisationDonnees.getElements());
+    	ObservableList <Element> oElement = FXCollections.observableList(this.elements);
     	ObservableList <Production> oProduction = FXCollections.observableList(production);
     	chargerTabNewStock(oElement);
     	chargerSimulationProduction(oProduction);
