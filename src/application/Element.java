@@ -1,5 +1,7 @@
 package application;
 
+
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -29,6 +31,10 @@ public class Element {
 		this.unite = new SimpleStringProperty(unite);
 		this.achat = new SimpleDoubleProperty(achat);
 		this.vente = new SimpleDoubleProperty(vente);
+	}
+	
+	public Element(Element e) {
+		this(e.getCode(), e.getNom(), e.getQuantite(), e.getUnite(), e.getAchat(), e.getVente());
 	}
 	
 	/**

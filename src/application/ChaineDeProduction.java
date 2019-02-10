@@ -39,6 +39,9 @@ public class ChaineDeProduction {
 
 	}
 	
+	public ChaineDeProduction(ChaineDeProduction c) {
+		this(c.getCode(), c.getNom(), c.getEntree(), c.getSortie());
+	}
 	/**
 	 * @return
 	 */

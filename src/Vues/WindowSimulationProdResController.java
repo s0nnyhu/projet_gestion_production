@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import application.CalculesActivitesChaines;
 import application.ChaineDeProduction;
 import application.Element;
 import application.Production;
@@ -22,6 +24,8 @@ import javafx.scene.control.TitledPane;
 import javafx.stage.Stage;
 
 public class WindowSimulationProdResController {
+	
+	private String possibiliteProd;
 	
 	private ArrayList<Production> production = new ArrayList<Production>();
 	@FXML
@@ -63,13 +67,11 @@ public class WindowSimulationProdResController {
     @FXML
     private TableColumn<Element, Double> colPV;
 
-    @FXML
-    private TextArea txtListeAchat;
     
-    private ObservableList<Element> listAchats = FXCollections.observableArrayList();    
+    private ArrayList<Element> listAchat;    
 
     @FXML
-    private TitledPane listeAchats;
+    private TitledPane paneListeAchat;
 	
     @FXML
     private TableView<Element> tableauAchats;
@@ -123,12 +125,12 @@ public class WindowSimulationProdResController {
             ex.printStackTrace();
         }
     	
-    	if(!listAchats.isEmpty()) {
+    	if(!listAchat.isEmpty()) {
 	    	try {
 	    		FileWriter fw = new FileWriter("../DonneesV1/Liste_Achats.csv");
 	    		fw.write("Code;Nom;Quantite");
 	            fw.write(System.lineSeparator());
-	    		for (Element e : this.listAchats) {
+	    		for (Element e : this.listAchat) {
 	                fw.write(String.format("%s;%s;%s", e.getCode(), e.getNom(), Math.abs(e.getQuantite())));
 	                fw.write(System.lineSeparator());
 	    		}
@@ -184,14 +186,14 @@ public class WindowSimulationProdResController {
     /**
      * @param e
      */
-    void chargerListeAchats() {
+    void chargerListeAchats(ObservableList <Element> o) {
 		this.codeAchat.setCellValueFactory(
                 new PropertyValueFactory<Element, String>("code"));
 		this.nomAchat.setCellValueFactory(
                 new PropertyValueFactory<Element, String>("nom"));
 		this.quantiteAchat.setCellValueFactory(
                 new PropertyValueFactory<Element, Double>("quantite"));
-		this.tableauAchats.setItems(listAchats);
+		this.tableauAchats.setItems(o);
     }
     /**
      * @param event
@@ -205,111 +207,37 @@ public class WindowSimulationProdResController {
     /**
      * @param niveau
      */
-    void initData(ArrayList<Element> elements, ArrayList<ChaineDeProduction> chaines, Double[] niveau) {
+    void initData(ArrayList<Element> el, ArrayList<ChaineDeProduction> ch, Double[] niveau) {
 		this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
+		this.listAchat = new ArrayList<>();
 		
-    	this.elements = elements;
-    	this.chaines = chaines;
-    	int indexListeAchat = 0;
-
-    	int i = 0;
-    	boolean estPossible = true;
-    	double coutVente = 0;
-    	double efficacite = 0;
-    	double totalAchatChaine = 0;
+		for (Element e : el) {
+			this.elements.add(new Element(e));
+		}
     	
-    	for (ChaineDeProduction c : this.chaines) {
-        	coutVente = 0;
-        	efficacite = 0;
-        	totalAchatChaine = 0;
-			estPossible = true;
-			
-			System.out.println("niveau: " + niveau[i]);
-    		if (niveau[i] == 0) {
-    			c.setSortie(null);
-    			estPossible = false;
-    		}
-    		else {
-    			/*
-    			 * Pour chaque élement en entrée dans la chaine de production, on récupère la quantité nécessaire et
-    			 * s'il correspond à l'élement de notre tableau des éléments, on met à jour la quantité 
-    			 * dans notre tableau des élements.
-    			 */
-    			for (Element elEntree: c.getEntree().keySet()) {
-        			for (Element elStock : this.elements) {
-        				if (elEntree.getCode() == elStock.getCode()) {
-        					double newQuantite = elStock.getQuantite() - (c.getEntree().get(elEntree)*niveau[i]);
-        					elStock.setQuantite(newQuantite);
-        				}
-        			}
-        		}
-    			/*
-    			 * Pour chaque élement en sortie de la chaine de production, on récupère la quantité sortie et
-    			 * s'il correspond à l'élement de notre tableau des éléments, on met à jour la quantité 
-    			 * dans notre tableau des élements.
-    			 */
-    			for (Element elSorti : c.getSortie().keySet()) {
-    				for (Element elStock: this.elements) {
-        				if (elSorti.getCode() == elStock.getCode()) {
-        					elStock.setQuantite(elStock.getQuantite() + (c.getSortie().get(elSorti)*niveau[i]));
-        					if (elStock.getVente() != 0) {
-            					coutVente += elStock.getQuantite() * elStock.getVente();
-        					}
-        				}
-    				}
-    			}
-    			
-    			/*
-    			 * Pour chaque élement en entrée dans la chaine de production,
-    			 * s'il correspond à l' un des élements de notre tableau d'éléments et qu'il une quantité négative,
-    			 * on remplie notre tableau de liste d'élements à acheter en fonction et on fait la somme du prix d'achat
-    			 * de chaque élement à acheter
-    			 */
-    			for (Element elEntree: c.getEntree().keySet()) {
-        			for (Element e : this.elements) {
-        				if (e.getCode() == elEntree.getCode()) {
-        					if (e.getQuantite() < 0) {
-        						if (e.getAchat() == 0) {
-        							estPossible = false;
-        						}
-        						else
-        						{
-	        						listAchats.add(e);
-	        						//this.txtListeAchat.appendText(listeAchat.get(indexListeAchat).getCode() + ": " + Math.abs(listeAchat.get(indexListeAchat).getQuantite()) + "\n");
-	        						totalAchatChaine += e.getQuantite() * e.getAchat();
-	        						indexListeAchat++;
-	        					}
-	        				}
-        				}
-        				
-        			}
-    			}
-				efficacite = coutVente-totalAchatChaine;
-    		}
-			if (estPossible == false) {
-				this.txtProdImpossible.appendText(c.getCode() + ": PRODUCTION IMPOSSIBLE\n");
-    			production.add(new Production(c, 0, 0));
-    		}
-    		else {
-    			production.add(new Production(c,coutVente, efficacite));
-    		}
-    	}
-
+		for (ChaineDeProduction c: ch) {
+			this.chaines.add(new ChaineDeProduction(c));
+		}
+    	
+    	CalculesActivitesChaines calc = new CalculesActivitesChaines();
+    	calc.calcul(elements, chaines, niveau, listAchat, production);
+    	this.possibiliteProd = calc.getListeProdImpossible();
+    	ObservableList<Element> listAchats = FXCollections.observableArrayList(listAchat);
     	//Affichage ou non de la liste d'achats
     	if(listAchats.isEmpty()) {
-    		listeAchats.setExpanded(false);
+    		paneListeAchat.setExpanded(false);
     	}
 
     	//Activation du bouton exporter
     	if(txtProdImpossible.equals(null)) {
     		export.setDisable(true);
     	}
-    	
     	ObservableList <Element> oElement = FXCollections.observableList(this.elements);
     	ObservableList <Production> oProduction = FXCollections.observableList(production);
     	chargerTabNewStock(oElement);
     	chargerSimulationProduction(oProduction);
-    	chargerListeAchats();
+    	this.txtProdImpossible.setText(possibiliteProd);
+    	chargerListeAchats(listAchats);
     }
 }
