@@ -1,4 +1,4 @@
-package application;
+package donnees;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -6,7 +6,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import application.ChaineDeProduction;
+import application.Element;
+
 public class DonneesCSV extends GestionDonneesFichiers{
+	
+	boolean elementsLoaded;
 	
 	public DonneesCSV(String path_elements, String path_chaines) {
 		this.elements = new ArrayList<>();
@@ -21,6 +26,7 @@ public class DonneesCSV extends GestionDonneesFichiers{
 	public ArrayList<ChaineDeProduction> getChaines() {
 		return this.chaines;
 	}
+	
 	@Override
 	public void chargerDonnees(String path_elements, String path_chaines) {
 		this.chargerElements(path_elements);
@@ -51,6 +57,7 @@ public class DonneesCSV extends GestionDonneesFichiers{
 			}
 			br.close();
 			elem.close();
+			this.elementsLoaded = true;
 		} catch (IOException e) {
 			System.err.println("Erreur dans le nom du fichier...");
 			e.printStackTrace();
@@ -105,6 +112,9 @@ public class DonneesCSV extends GestionDonneesFichiers{
 			}
 			br.close();
 			ch.close();
+			if(this.elementsLoaded) {
+				this.loaded = true;
+			}
 		} catch (IOException e) {
 			System.err.println("Erreur dans le nom du fichier...");
 			e.printStackTrace();
