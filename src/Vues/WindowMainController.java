@@ -110,8 +110,8 @@ public class WindowMainController{
     void chargerDonnees() {
 		this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
-		String cheminElements = "../DonneesV1/FichiersV1/elements.csv";
-		String cheminChaines = "../DonneesV1/FichiersV1/chaines.csv";
+		String cheminElements = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/elements.csv";
+		String cheminChaines = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/chaines.csv";
     	DonneesLibraryCSV data = new DonneesLibraryCSV(cheminElements, cheminChaines);
 		this.elements = data.getElements();
 		this.chaines = data.getChaines();
@@ -120,7 +120,7 @@ public class WindowMainController{
 			btnEssaiProd.setDisable(false);	
 		}
 		else {
-			loadedLabel.setText("Echec du chargement des données");
+			loadedLabel.setText("Echec du chargement des donnÃ©es");
 		}
 		loadedLabel.setVisible(true);
     }

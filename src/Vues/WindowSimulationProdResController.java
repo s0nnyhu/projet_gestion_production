@@ -225,19 +225,20 @@ public class WindowSimulationProdResController {
     	this.possibiliteProd = calc.getListeProdImpossible();
     	ObservableList<Element> listAchats = FXCollections.observableArrayList(listAchat);
     	//Affichage ou non de la liste d'achats
-    	if(listAchats.isEmpty()) {
+    	if(listAchat.isEmpty()) {
+    		paneListeAchat = new TitledPane();
     		paneListeAchat.setExpanded(false);
     	}
 
-    	//Activation du bouton exporter
-    	if(txtProdImpossible.equals(null)) {
-    		export.setDisable(true);
-    	}
     	ObservableList <Element> oElement = FXCollections.observableList(this.elements);
     	ObservableList <Production> oProduction = FXCollections.observableList(production);
     	chargerTabNewStock(oElement);
     	chargerSimulationProduction(oProduction);
     	this.txtProdImpossible.setText(possibiliteProd);
+    	//Activation du bouton exporter
+    	if(txtProdImpossible.equals(null)) {
+    		export.setDisable(true);
+    	}
     	chargerListeAchats(listAchats);
     }
 }

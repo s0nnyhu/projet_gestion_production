@@ -74,6 +74,7 @@ public class WindowSimulationProdController {
     void evaluer(ActionEvent event) {
     	
     	try {
+
         	for (int i=0; i<tabTxtField.length;i++) {
         		if(tabTxtField[i].getText().isEmpty()) {
         			tabTxtField[i].setText("0");
@@ -83,11 +84,11 @@ public class WindowSimulationProdController {
         		}
         		tabValueTxtField[i] = Double.parseDouble(tabTxtField[i].getText());
         	}
+
     		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowSimulationProdRes.fxml"));     
 
         	Parent root = (Parent)fxmlLoader.load();          
         	WindowSimulationProdResController controller = fxmlLoader.<WindowSimulationProdResController>getController();
-        	
         	controller.initData(this.elements, this.chaines, tabValueTxtField);
         	Scene scene = new Scene(root); 
         	Stage stage = new Stage();
