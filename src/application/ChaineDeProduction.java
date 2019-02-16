@@ -12,27 +12,31 @@ public class ChaineDeProduction {
 	private StringProperty strSorti = new SimpleStringProperty();
 	private HashMap<Element,Double> entree;
 	private HashMap<Element,Double> sortie;
+	private int temps;
+	
 	
 	/**
 	 * @param code
 	 * @param nom
 	 * @param entree
 	 * @param sortie
+	 * @param temps
 	 */
 	public ChaineDeProduction(String code, String nom, HashMap<Element, Double> entree,
-		HashMap<Element, Double> sortie) {
+		HashMap<Element, Double> sortie, int temps) {
 		super();
 		this.code = new SimpleStringProperty(code);
 		this.nom = new SimpleStringProperty(nom);
 		this.entree = entree;
 		this.sortie = sortie;
+		this.temps = temps;
 		String tmpStrEntree = "";
 		String tmpStrSorti = "";
 		for (Element e: entree.keySet()) {
 			tmpStrEntree += "(" + e.getNom() +  ", " + entree.get(e) + ") ";
 		}
 		for (Element e: sortie.keySet()) {
-			tmpStrSorti += "(" + e.getNom() +  ", " + entree.get(e) + ") ";
+			tmpStrSorti += "(" + e.getNom() +  ", " + sortie.get(e) + ") ";
 		}
 		this.strEntree = (new SimpleStringProperty(tmpStrEntree));
 		this.strSorti = (new SimpleStringProperty(tmpStrSorti));
@@ -40,7 +44,7 @@ public class ChaineDeProduction {
 	}
 	
 	public ChaineDeProduction(ChaineDeProduction c) {
-		this(c.getCode(), c.getNom(), c.getEntree(), c.getSortie());
+		this(c.getCode(), c.getNom(), c.getEntree(), c.getSortie(), c.getTemps());
 	}
 	/**
 	 * @return
@@ -84,13 +88,13 @@ public class ChaineDeProduction {
 	 * @return
 	 */
 	public String getStrSorti() {
-		return nom.getValue();
+		return strSorti.getValue();
 	}
 	/**
 	 * @param strSorti
 	 */
 	public void setStrSorti(String strSorti) {
-		this.nom.set(strSorti);
+		this.strSorti.set(strSorti);
 	}
 	
 	/**
@@ -117,13 +121,25 @@ public class ChaineDeProduction {
 	public void setSortie(HashMap<Element, Double> sortie) {
 		this.sortie = sortie;
 	}
+	
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * @return
 	 */
+	public int getTemps() {
+		return temps;
+	}
+
+	/**
+	 * @param temps
+	 */
+	public void setTemps(int temps) {
+		this.temps = temps;
+	}
+
 	@Override
 	public String toString() {
-		return "ChaineDeProduction [code=" + code + ", nom=" + nom + ", entree=" + entree + ", sortie=" + sortie + "]";
+		return "ChaineDeProduction [code=" + code + ", nom=" + nom + ", entree=" + entree + ", sortie=" + sortie + ", temps=" + temps + "]";
 	}
 	
 	

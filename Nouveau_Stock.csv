@@ -1,8 +1,0 @@
-Code;Nom;Quantite;unite;achat;vente
-E001;Circuit principal;192.0;pieces;50.0,20.0
-E002;Plastique;494.5;kilogrammes;3.0,0.0
-E003;Plaques aluminium;98.9;pieces;20.0,10.0
-E004;Servomoteurs;249.0;pieces;15.0,10.0
-E005;Propulsions;-23.0;pieces;0.0,15.0
-E006;Coques;6.0;pieces;0.0,0.0
-E007;Drones;4.0;pieces;0.0,150.0

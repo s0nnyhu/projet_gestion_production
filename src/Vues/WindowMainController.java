@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import application.ChaineDeProduction;
 import application.Element;
-import donnees.DonneesCSV;
 import donnees.DonneesLibraryCSV;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -110,8 +109,8 @@ public class WindowMainController{
     void chargerDonnees() {
 		this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
-		String cheminElements = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/elements.csv";
-		String cheminChaines = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV1/chaines.csv";
+		String cheminElements = "../DonneesV2/elements.csv";
+		String cheminChaines = "../DonneesV2/chaines.csv";
     	DonneesLibraryCSV data = new DonneesLibraryCSV(cheminElements, cheminChaines);
 		this.elements = data.getElements();
 		this.chaines = data.getChaines();

@@ -1,7 +1,9 @@
 package application;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -10,6 +12,7 @@ public class Production {
 	private ChaineDeProduction chaine;
 	private DoubleProperty coutVente;
 	private DoubleProperty efficacite;
+	private IntegerProperty temps;
 	
 	/**
 	 * @param chaine
@@ -22,6 +25,7 @@ public class Production {
 		this.chaine = chaine;
 		this.coutVente = new SimpleDoubleProperty(coutVente);
 		this.efficacite = new SimpleDoubleProperty(efficacite);
+		this.temps = new SimpleIntegerProperty(chaine.getTemps());
 	}
 
 	/**
@@ -80,4 +84,20 @@ public class Production {
 	public void setEfficacite(double efficacite) {
 		this.efficacite.set(efficacite);
 	}
+
+	/**
+	 * @return
+	 */
+	public IntegerProperty getTemps() {
+		return temps;
+	}
+
+	/**
+	 * @param temps
+	 */
+	public void setTemps(int temps) {
+		this.temps.set(temps);
+	}
+	
+	
 }
