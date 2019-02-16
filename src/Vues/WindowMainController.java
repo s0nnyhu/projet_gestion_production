@@ -28,6 +28,9 @@ public class WindowMainController{
     private Button btnEssaiProd;
     
     @FXML
+    private Button btnSimulationTemps;
+    
+    @FXML
     private Button quitter;
     
     @FXML
@@ -107,6 +110,36 @@ public class WindowMainController{
     }
     
     @FXML
+    void openSimulationTemps(ActionEvent event){
+    	try {
+    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowChoixChaineProd.fxml"));     
+
+        	Parent root = (Parent)fxmlLoader.load();          
+        	WindowChoixChaineProdController controller = fxmlLoader.<WindowChoixChaineProdController>getController();
+        	
+        	controller.initData(this.chaines);
+        	Scene scene = new Scene(root); 
+        	Stage stage = new Stage();
+        	stage.setScene(scene);
+        	stage.setTitle("Stocks de production");
+
+        	stage.show();   
+    	}
+    	catch(IOException e1) {
+        	Alert alert = new Alert(AlertType.ERROR);
+        	alert.getDialogPane().setMinWidth(500);
+        	alert.setTitle("Erreur");
+        	alert.setHeaderText("Une erreur est survenue!");
+        	alert.setContentText("Une erreur IOException est survenue!");
+        	alert.showAndWait().ifPresent(rs -> {
+        	    if (rs == ButtonType.OK) {
+        	        System.out.println("Pressed OK.");
+        	    }
+        	});
+    	}
+    }
+    
+    @FXML
     void chargerDonnees() {
 		this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
@@ -118,6 +151,7 @@ public class WindowMainController{
 		if(data.getLoaded()) {
 	    	btnVisuStocks.setDisable(false);
 			btnEssaiProd.setDisable(false);	
+			btnSimulationTemps.setDisable(false);
 		}
 		else {
 			loadedLabel.setText("Echec du chargement des données");
