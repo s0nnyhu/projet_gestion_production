@@ -25,12 +25,12 @@
          <center>
             <TableView fx:id="tabElement" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <columns>
-                  <TableColumn fx:id="tCode" prefWidth="103.0" text="Code" />
-                <TableColumn fx:id="tNom" prefWidth="141.0" text="Nom" />
-                <TableColumn fx:id="tQuantite" prefWidth="88.0" text="Quantité" />
-                  <TableColumn fx:id="tUnite" prefWidth="101.0" text="Unité" />
-                  <TableColumn fx:id="tPA" minWidth="0.0" prefWidth="125.0" text="Prix d'Achat" />
-                  <TableColumn fx:id="tPV" prefWidth="119.0" text="Prix de vente" />
+                <TableColumn fx:id="tNom" prefWidth="200.0" text="Element" />
+                <TableColumn fx:id="tQuantite" prefWidth="86.0" text="Quantité" />
+                  <TableColumn fx:id="tUnite" prefWidth="86.0" text="Unité" />
+                  <TableColumn fx:id="tPA" minWidth="0.0" prefWidth="103.0" text="Prix d'Achat" />
+                  <TableColumn fx:id="tPV" prefWidth="96.0" text="Prix de vente" />
+                  <TableColumn fx:id="tDemande" prefWidth="93.0" text="Demande" />
               </columns>
                <BorderPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

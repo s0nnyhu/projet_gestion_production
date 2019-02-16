@@ -18,6 +18,7 @@ public class Element {
 	private StringProperty unite = new SimpleStringProperty();
 	private DoubleProperty achat = new SimpleDoubleProperty();
 	private DoubleProperty vente = new SimpleDoubleProperty();
+	private int demande;
 	
 	/**
 	 * @param code
@@ -27,7 +28,7 @@ public class Element {
 	 * @param achat
 	 * @param vente
 	 */
-	public Element(String code, String nom, double quantite, String unite, double achat, double vente) {
+	public Element(String code, String nom, double quantite, String unite, double achat, double vente, int demande) {
 		super();
 		this.code = new SimpleStringProperty(code);
 		this.nom = new SimpleStringProperty(nom);
@@ -35,10 +36,11 @@ public class Element {
 		this.unite = new SimpleStringProperty(unite);
 		this.achat = new SimpleDoubleProperty(achat);
 		this.vente = new SimpleDoubleProperty(vente);
+		this.demande = demande;
 	}
 	
 	public Element(Element e) {
-		this(e.getCode(), e.getNom(), e.getQuantite(), e.getUnite(), e.getAchat(), e.getVente());
+		this(e.getCode(), e.getNom(), e.getQuantite(), e.getUnite(), e.getAchat(), e.getVente(), e.getDemande());
 	}
 	
 	/**
@@ -114,15 +116,25 @@ public class Element {
 	public void setVente(double vente) {
 		this.vente.set(vente);
 	}
-
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * @return
 	 */
+	public int getDemande() {
+		return demande;
+	}
+
+	/**
+	 * @param demande
+	 */
+	public void setDemande(int demande) {
+		this.demande = demande;
+	}
+
 	@Override
 	public String toString() {
 		return "Element [code=" + code + ", nom=" + nom + ", quantite=" + quantite + ", unite=" + unite + ", achat="
-				+ achat + ", vente=" + vente + "]";
+				+ achat + ", vente=" + vente + ", demande=" + demande + "]";
 	}
 
 	

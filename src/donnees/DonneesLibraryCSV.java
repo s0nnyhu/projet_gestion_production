@@ -3,6 +3,7 @@ package donnees;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.apache.commons.csv.CSVFormat;
@@ -64,8 +65,10 @@ public class DonneesLibraryCSV extends GestionDonneesFichiers{
 			    if(record.get("vente") != null){
 			    	vente = Double.parseDouble(record.get("vente"));
 			    }
+			    
+			    int demande = Integer.parseInt(record.get("Demande"));
 				
-				Element el = new Element(code, nom, quantite, unite, achat, vente);
+				Element el = new Element(code, nom, quantite, unite, achat, vente, demande);
 				this.elements.add(el);
 			}
 			elem.close();
@@ -83,13 +86,19 @@ public class DonneesLibraryCSV extends GestionDonneesFichiers{
 			for (CSVRecord record : records) {
 			    String code = record.get("Code");
 			    String nom = record.get("Nom");
+			    int temps = Integer.parseInt(record.get("Temps"));
 				
 			    HashMap<Element, Double> entree = new HashMap<Element, Double>();
 				String[] in = record.get("Entree (code,qte)").replace(" ", "").split("\\),\\(");
 				for(int i=0; i<in.length; i++) {
 					String str[] = in[i].replace("(", "").replace(")", "").split(",");
 					String codeElem = str[0];
-					double quantiteElem = Double.parseDouble(str[1]);
+
+					double quantiteElem = 0.0;
+					if(str.length == 2) {
+						quantiteElem = Double.parseDouble(str[1]);
+					}
+					
 					//Recuperation des objets Elements pour remplir la HashMap "entree"
 					for(Element elem : this.elements) {
 						if(elem.getCode().equals(codeElem)) {
@@ -113,7 +122,7 @@ public class DonneesLibraryCSV extends GestionDonneesFichiers{
 					}
 				}		
 					
-				ChaineDeProduction cp = new ChaineDeProduction(code, nom, entree, sortie);
+				ChaineDeProduction cp = new ChaineDeProduction(code, nom, entree, sortie, temps);
 				this.chaines.add(cp);
 			}
 			

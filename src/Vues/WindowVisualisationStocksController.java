@@ -23,9 +23,6 @@ public class WindowVisualisationStocksController {
     private TableView<Element> tabElement;
 
     @FXML
-    private TableColumn<Element, String> tCode;
-
-    @FXML
     private TableColumn<Element, String> tNom;
 
     @FXML
@@ -39,6 +36,9 @@ public class WindowVisualisationStocksController {
 
     @FXML
     private TableColumn<Element, Double> tPV;
+
+    @FXML
+    private TableColumn<Element, Double> tDemande;
     
     @FXML
     private Button btnRetour;
@@ -58,8 +58,6 @@ public class WindowVisualisationStocksController {
 	 */
 	void initData(ArrayList<Element> e) {
     	ObservableList <Element> oElt = FXCollections.observableList(e);
-		this.tCode.setCellValueFactory(
-                new PropertyValueFactory<Element, String>("code"));
 		this.tNom.setCellValueFactory(
                 new PropertyValueFactory<Element, String>("nom"));
 		this.tQuantite.setCellValueFactory(
@@ -70,6 +68,8 @@ public class WindowVisualisationStocksController {
                 new PropertyValueFactory<Element, Double>("achat"));
 		this.tPV.setCellValueFactory(
                 new PropertyValueFactory<Element, Double>("vente"));
+		this.tDemande.setCellValueFactory(
+                new PropertyValueFactory<Element, Double>("demande"));
 		this.tabElement.setItems(oElt);
     }
 
