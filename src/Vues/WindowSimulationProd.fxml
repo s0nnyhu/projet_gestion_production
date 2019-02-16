@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -31,28 +32,32 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <SplitPane fx:id="splitPane" prefHeight="307.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane fx:id="splitPane" dividerPositions="0.8233082706766918" prefHeight="307.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="749.0" prefWidth="1114.0">
                            <children>
-                              <TableView fx:id="tabView" layoutX="6.0" layoutY="49.0" prefHeight="472.0" prefWidth="781.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="197.0" AnchorPane.topAnchor="0.0">
+                              <TableView fx:id="tabView" layoutX="6.0" layoutY="49.0" prefHeight="749.0" prefWidth="1091.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <columns>
                                   <TableColumn fx:id="tCode" prefWidth="90.0" text="Code" />
                                   <TableColumn fx:id="tNom" prefWidth="142.00003051757812" text="Nom" />
-                                    <TableColumn fx:id="tEntree" prefWidth="540.0" text="Entrée" />
-                                    <TableColumn fx:id="tSorti" minWidth="0.0" prefWidth="357.0" text="Sortie" />
+                                    <TableColumn fx:id="tEntree" prefWidth="411.0" text="Entrée" />
+                                    <TableColumn fx:id="tSorti" minWidth="0.0" prefWidth="493.0" text="Sortie" />
                                 </columns>
                               </TableView>
-                              <AnchorPane fx:id="anchPane" layoutX="1113.0" prefHeight="745.0" prefWidth="217.0">
-                                 <children>
-                                    <VBox fx:id="vbox" layoutX="34.0" layoutY="46.0" prefHeight="712.0" prefWidth="183.0">
-                                       <padding>
-                                          <Insets left="5.0" />
-                                       </padding></VBox>
-                                    <Label alignment="CENTER" layoutX="77.0" layoutY="14.0" text="Niveau d'activation" />
-                                 </children></AnchorPane>
                            </children>
                         </AnchorPane>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                           <content>
+                              <VBox fx:id="vbox" prefHeight="751.0" prefWidth="231.0">
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                                 <children>
+                                    <Label alignment="CENTER" text="Niveau d'activation" />
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
                     </items>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
