@@ -27,7 +27,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnSimulationTemps" disable="true" mnemonicParsing="false" onAction="#openSimulationTemps" prefHeight="39.0" prefWidth="298.0" text="Simulation avec prise en comtpe du temps" />
+            <Button fx:id="btnSimulationTemps" disable="true" mnemonicParsing="false" onAction="#openSimulationTemps" prefHeight="39.0" prefWidth="298.0" text="Simulation avec prise en compte du temps" />
             <Button id="quitter" fx:id="quitter" ellipsisString="" mnemonicParsing="false" onAction="#exit" prefHeight="28.0" prefWidth="84.0" text="Quitter" textFill="#a12222" />
          </children>
       </VBox>

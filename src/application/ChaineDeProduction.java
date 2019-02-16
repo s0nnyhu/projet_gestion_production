@@ -4,8 +4,10 @@ import java.util.HashMap;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.control.CheckBox;
 
 public class ChaineDeProduction {
+	private CheckBox ckBox;
 	private StringProperty code = new SimpleStringProperty();
 	private StringProperty nom = new SimpleStringProperty();
 	private StringProperty strEntree = new SimpleStringProperty();
@@ -25,6 +27,7 @@ public class ChaineDeProduction {
 	public ChaineDeProduction(String code, String nom, HashMap<Element, Double> entree,
 		HashMap<Element, Double> sortie, int temps) {
 		super();
+		this.ckBox = new CheckBox();
 		this.code = new SimpleStringProperty(code);
 		this.nom = new SimpleStringProperty(nom);
 		this.entree = entree;
@@ -43,6 +46,14 @@ public class ChaineDeProduction {
 
 	}
 	
+	public CheckBox getCkBox() {
+		return ckBox;
+	}
+
+	public void setCkBox(CheckBox ckBox) {
+		this.ckBox = ckBox;
+	}
+
 	public ChaineDeProduction(ChaineDeProduction c) {
 		this(c.getCode(), c.getNom(), c.getEntree(), c.getSortie(), c.getTemps());
 	}
