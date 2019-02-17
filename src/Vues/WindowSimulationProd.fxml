@@ -38,6 +38,7 @@
                            <children>
                               <TableView fx:id="tabView" layoutX="6.0" layoutY="49.0" prefHeight="749.0" prefWidth="1091.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <columns>
+                                    <TableColumn fx:id="tChoisir" prefWidth="75.0" text="Choisir" />
                                   <TableColumn fx:id="tCode" prefWidth="90.0" text="Code" />
                                   <TableColumn fx:id="tNom" prefWidth="142.00003051757812" text="Nom" />
                                     <TableColumn fx:id="tEntree" prefWidth="411.0" text="Entrée" />

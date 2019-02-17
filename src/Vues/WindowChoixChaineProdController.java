@@ -58,9 +58,11 @@ public class WindowChoixChaineProdController {
     
     void initData(ArrayList<ChaineDeProduction> c) {
 		this.chaines = new ArrayList<>();
-
-		this.chaines = c;
 		
+		for (ChaineDeProduction newChaine: c) {
+			this.chaines.add(new ChaineDeProduction(newChaine));
+		}
+
     	ObservableList <ChaineDeProduction> oChaine = FXCollections.observableList(this.chaines);
     	this.colChoisir.setCellValueFactory(
                 new PropertyValueFactory<ChaineDeProduction, CheckBox>("ckBox"));
