@@ -2,6 +2,8 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -54,7 +56,7 @@ public class CalculesActivitesTempsChaines {
     			/*
     			 * Pour chaque élement en entrée dans la chaine de production,
     			 * s'il correspond à l' un des élements de notre tableau d'éléments et qu'il une quantité négative,
-    			 * on remplie notre tableau de liste d'élements à acheter en fonction et on fait la somme du prix d'achat
+    			 * on remplit notre tableau de liste d'élements à acheter en fonction et on fait la somme du prix d'achat
     			 * de chaque élement à acheter
     			 */
     			for (Element elEntree: c.getEntree().keySet()) {
@@ -81,13 +83,29 @@ public class CalculesActivitesTempsChaines {
 			if (estPossible == false) {
 				
 				this.listeProdImpossible += c.getCode() + ": PRODUCTION IMPOSSIBLE\n";
-				System.out.println(c.getCode() + ": PRODUCTION IMPOSSIBLE\n");
+				//System.out.println(c.getCode() + ": PRODUCTION IMPOSSIBLE\n");
     			production.add(new Production(c, 0, 0));
     		}
     		else {
     			production.add(new Production(c,coutVente, efficacite));
     		}
     	}
+		
+		for (int j=0; j<production.size(); j++) {
+			Production p = production.get(j);//Production courante
+			int quantiteProduite = 0;
+			for(double val : p.getChaine().getSortie().values()) {
+				quantiteProduite += val;
+			}
+			quantiteProduite *= niveau[j];
+			if(p.getDemande() <= quantiteProduite) {
+				p.setSatisDemande("Satisfaite");
+			}
+			else {
+				double percent = (quantiteProduite * 100)/p.getDemande();
+				p.setSatisDemande(String.format("%.2f", percent)+"% satisfait(s)");
+			}
+		}
 
 	}
 	

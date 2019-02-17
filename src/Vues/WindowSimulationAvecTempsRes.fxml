@@ -17,7 +17,6 @@
           <TableColumn id="coutVente" fx:id="colCoutVente" minWidth="0.0" prefWidth="181.0" text="Coût de Vente" />
           <TableColumn id="benef" fx:id="colEfficacite" minWidth="0.0" prefWidth="155.0" text="Efficacite" />
             <TableColumn id="benef" fx:id="colDemande" minWidth="0.0" prefWidth="184.0" text="Demande" />
-            <TableColumn id="benef" fx:id="colEfficacite11" minWidth="0.0" prefWidth="262.0" text="Efficacite" />
         </columns>
       </TableView>
       <Button id="retour" fx:id="retour" layoutX="957.0" layoutY="860.0" mnemonicParsing="false" onAction="#retour" text="Retour" />

@@ -16,6 +16,7 @@ public class Production {
 	private DoubleProperty efficacite;
 	private IntegerProperty temps;
 	private int demande;
+	private StringProperty satisDemande;
 	
 	/**
 	 * @param chaine
@@ -33,6 +34,7 @@ public class Production {
 		for(Map.Entry<Element, Double> e : chaine.getSortie().entrySet()) {
 			this.demande += e.getKey().getDemande();
 		}
+		this.satisDemande  = new SimpleStringProperty();
 	}
 
 	public double getDemande() {
@@ -110,5 +112,18 @@ public class Production {
 		this.temps.set(temps);
 	}
 	
-	
+	/**
+	 * @param satisDemande
+	 */
+	public void setSatisDemande(String satisDemande) {
+		this.satisDemande.set(satisDemande);
+	}
+
+	/**
+	 * @return
+	 */
+	public String getSatisDemande() {
+		return satisDemande.getValue();
+	}
+
 }
