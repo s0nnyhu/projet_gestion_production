@@ -231,7 +231,6 @@ public class WindowSimulationProdResController {
             niveau[i] = Double.parseDouble(f.getText());
             System.out.println(ch.getCode() + " " + niveau[i]);
             i++;
-            it.remove();
         }
 		
     	CalculesActivitesChaines calc = new CalculesActivitesChaines();

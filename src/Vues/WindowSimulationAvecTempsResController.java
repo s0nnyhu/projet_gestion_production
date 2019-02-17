@@ -229,9 +229,8 @@ public class WindowSimulationAvecTempsResController {
             this.chaines.add(new ChaineDeProduction((ChaineDeProduction)pair.getKey()));
             TextField f = (TextField) pair.getValue();
             niveau[i] = Double.parseDouble(f.getText());
-            System.out.println(ch.getCode() + " " + niveau[i]);
+            //System.out.println(ch.getCode() + " " + niveau[i]);
             i++;
-            it.remove();
         }
 		
     	CalculesActivitesChaines calc = new CalculesActivitesChaines();
