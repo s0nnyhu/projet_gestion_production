@@ -37,6 +37,20 @@ public class Production {
 		this.satisDemande  = new SimpleStringProperty();
 	}
 
+	public Production(ChaineDeProduction chaine, double coutVente, double efficacite, int temps) {
+		super();
+		this.nom = new SimpleStringProperty(chaine.getCode()+" : "+chaine.getNom());
+		this.chaine = chaine;
+		this.coutVente = new SimpleDoubleProperty(coutVente);
+		this.efficacite = new SimpleDoubleProperty(efficacite);
+		this.temps = new SimpleIntegerProperty(temps);
+		//Calcul de la valeur de la demande totale de la chaine de production
+		for(Map.Entry<Element, Double> e : chaine.getSortie().entrySet()) {
+			this.demande += e.getKey().getDemande();
+		}
+		this.satisDemande  = new SimpleStringProperty();
+	}
+	
 	public double getDemande() {
 		return demande;
 	}

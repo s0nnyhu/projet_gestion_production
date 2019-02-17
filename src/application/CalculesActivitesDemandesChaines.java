@@ -1,19 +1,20 @@
-
 package application;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class CalculesActivitesTempsChaines {
+public class CalculesActivitesDemandesChaines {
 	
 	private double coutVenteTotal;
 	private double efficacite;
 	private double totalAchatUsine;
 	private String listeProdImpossible;
-	private int tempsChaine;
-	public CalculesActivitesTempsChaines() {
+	
+	public CalculesActivitesDemandesChaines() {
 		this.coutVenteTotal = 0;
 		this.efficacite = 0;
 		this.totalAchatUsine = 0;
@@ -27,10 +28,8 @@ public class CalculesActivitesTempsChaines {
 		double coutVente = 0;
 		double efficacite = 0;
 		double totalAchatChaine = 0;
-		this.tempsChaine = 0;
+		
 		for (ChaineDeProduction c : chaines) {
-			this.tempsChaine = (int) (c.getTemps()*niveau[i]);
-			System.out.println("Temps chaine avec niveau d'activation: " + this.tempsChaine);
         	coutVente = 0;
         	efficacite = 0;
         	totalAchatChaine = 0;
@@ -46,7 +45,7 @@ public class CalculesActivitesTempsChaines {
     			 * s'il correspond à l'élement de notre tableau des éléments, on met à jour la quantité 
     			 * dans notre tableau des élements.
     			 */
-    			this.majEntree(c, elements, niveau, i, chaines);
+    			this.majEntree(c, elements, niveau, i);
     			/*
     			 * Pour chaque élement en sortie de la chaine de production, on récupère la quantité sortie et
     			 * s'il correspond à l'élement de notre tableau des éléments, on met à jour la quantité 
@@ -56,7 +55,7 @@ public class CalculesActivitesTempsChaines {
     			/*
     			 * Pour chaque élement en entrée dans la chaine de production,
     			 * s'il correspond à l' un des élements de notre tableau d'éléments et qu'il une quantité négative,
-    			 * on remplie notre tableau de liste d'élements à acheter en fonction et on fait la somme du prix d'achat
+    			 * on remplit notre tableau de liste d'élements à acheter en fonction et on fait la somme du prix d'achat
     			 * de chaque élement à acheter
     			 */
     			for (Element elEntree: c.getEntree().keySet()) {
@@ -83,38 +82,36 @@ public class CalculesActivitesTempsChaines {
 			if (estPossible == false) {
 				
 				this.listeProdImpossible += c.getCode() + ": PRODUCTION IMPOSSIBLE\n";
-				System.out.println(c.getCode() + ": PRODUCTION IMPOSSIBLE\n");
+				//System.out.println(c.getCode() + ": PRODUCTION IMPOSSIBLE\n");
     			production.add(new Production(c, 0, 0));
     		}
     		else {
-    			production.add(new Production(c,coutVente, efficacite, this.tempsChaine));
+    			production.add(new Production(c,coutVente, efficacite));
     		}
-			i++;
     	}
-
-	}
-	/*
-	 * On recherche pour un element si parmis les chaines renseignées (liste de chaines choisi par l'utilisateur),
-	 *  l'�lement se trouve en sortie d'un ou de plusieurs de ces chaines
-	 */
-	private void rechercheChainesProduisantElement(Element element, ArrayList<ChaineDeProduction> listChaines) {
-		for (ChaineDeProduction c: listChaines) {
-			for (Element e : c.getSortie().keySet()) {
-				if (e.getCode() == element.getCode()) {
-					System.out.println("Trouvé, element en entrée de la chaine: " + e.getCode());
-				}
+		
+		for (int j=0; j<production.size(); j++) {
+			Production p = production.get(j);//Production courante
+			int quantiteProduite = 0;
+			for(double val : p.getChaine().getSortie().values()) {
+				quantiteProduite += val;
+			}
+			quantiteProduite *= niveau[j];
+			if(p.getDemande() <= quantiteProduite) {
+				p.setSatisDemande("Satisfaite");
+			}
+			else {
+				double percent = (quantiteProduite * 100)/p.getDemande();
+				p.setSatisDemande(String.format("%.2f", percent)+"% satisfait(s)");
 			}
 		}
+		i++;
 	}
 	
-	private void majEntree(ChaineDeProduction c, ArrayList<Element> elements, Double[] niveau, int indice, ArrayList<ChaineDeProduction> listChaines) {
+	private void majEntree(ChaineDeProduction c, ArrayList<Element> elements, Double[] niveau, int indice) {
 		for (Element elEntree: c.getEntree().keySet()) {
 			for (Element elStock : elements) {
 				if (elEntree.getCode() == elStock.getCode()) {
-					if ((elStock.getQuantite()- (c.getEntree().get(elEntree)*niveau[indice])) < 0) {
-						rechercheChainesProduisantElement(elEntree, listChaines);
-						System.out.println("stock insuffisant, demandée par " + elEntree.getCode() +": " + c.getEntree().get(elEntree)*niveau[indice] + " - en stock: " + elStock.getQuantite());
-					}
 					double newQuantite = elStock.getQuantite() - (c.getEntree().get(elEntree)*niveau[indice]);
 					elStock.setQuantite(newQuantite);
 				}
@@ -135,7 +132,6 @@ public class CalculesActivitesTempsChaines {
 		}
 		return coutVente;
 	}
-	
 	
 	public String getListeProdImpossible() {
 		return listeProdImpossible;

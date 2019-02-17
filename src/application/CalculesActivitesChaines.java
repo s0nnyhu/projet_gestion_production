@@ -86,8 +86,8 @@ public class CalculesActivitesChaines {
     		else {
     			production.add(new Production(c,coutVente, efficacite));
     		}
+			i++;
     	}
-
 	}
 	
 	private void majEntree(ChaineDeProduction c, ArrayList<Element> elements, Double[] niveau, int indice) {

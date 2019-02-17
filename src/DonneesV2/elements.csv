@@ -45,8 +45,8 @@ E043;Cookies Choc marque B;0;carton;NA;8;p;400
 E044;Cookies Choc/Noix marque A;0;carton;NA;9;p;150
 E045;Cookies Choc/Noix marque B;0;carton;NA;8;p;300
 E046;Pate Madeleines Q1;0;litre;NA;NA;cb;0
-E047;Pate Madeleines Q2;0;litre;NA;NA;cb;0
+E047;Pate Madeleines Q2;0;litre;10;NA;cb;0
 E048;Madeleines marque A;0;carton;NA;8;p;200
 E049;Madeleines marque B;0;carton;NA;7;p;150
-E050;Madeleines Choc;0;carton;NA;8;p;100
+E050;Madeleines Choc;0;carton;9;8;p;100
 E051;Poudre a lever;28;kg;2;NA;cp;0
