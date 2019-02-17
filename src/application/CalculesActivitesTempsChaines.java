@@ -35,7 +35,7 @@ public class CalculesActivitesTempsChaines {
 			estPossible = true;
 			
     		if (niveau[i] == 0) {
-    			c.setSortie(null);
+    			//c.setSortie(null);
     			estPossible = false;
     		}
     		else {

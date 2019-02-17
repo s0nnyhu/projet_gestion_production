@@ -1,5 +1,7 @@
 package application;
 
+import java.util.Map;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -13,6 +15,7 @@ public class Production {
 	private DoubleProperty coutVente;
 	private DoubleProperty efficacite;
 	private IntegerProperty temps;
+	private int demande;
 	
 	/**
 	 * @param chaine
@@ -26,6 +29,14 @@ public class Production {
 		this.coutVente = new SimpleDoubleProperty(coutVente);
 		this.efficacite = new SimpleDoubleProperty(efficacite);
 		this.temps = new SimpleIntegerProperty(chaine.getTemps());
+		//Calcul de la valeur de la demande totale de la chaine de production
+		for(Map.Entry<Element, Double> e : chaine.getSortie().entrySet()) {
+			this.demande += e.getKey().getDemande();
+		}
+	}
+
+	public double getDemande() {
+		return demande;
 	}
 
 	/**

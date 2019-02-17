@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import application.CalculesActivitesChaines;
+import application.CalculesActivitesTempsChaines;
 import application.ChaineDeProduction;
 import application.Element;
 import application.Production;
@@ -48,6 +49,9 @@ public class WindowSimulationAvecTempsResController {
 
     @FXML
     private TableColumn<Production, Double> colEfficacite;
+    
+    @FXML
+    private TableColumn<Production, Double> colDemande;
     
     @FXML
     private TableView<Element> tabNewStock;
@@ -164,6 +168,8 @@ public class WindowSimulationAvecTempsResController {
                 new PropertyValueFactory<Production, Double>("coutVente"));
 		this.colEfficacite.setCellValueFactory(
                 new PropertyValueFactory<Production, Double>("efficacite"));
+		this.colDemande.setCellValueFactory(
+                new PropertyValueFactory<Production, Double>("demande"));
 		this.tabSimulationProd.setItems(p);
     }
     
@@ -233,7 +239,7 @@ public class WindowSimulationAvecTempsResController {
             i++;
         }
 		
-    	CalculesActivitesChaines calc = new CalculesActivitesChaines();
+    	CalculesActivitesTempsChaines calc = new CalculesActivitesTempsChaines();
     	calc.calcul(elements, chaines, niveau, listAchat, production);
     	this.possibiliteProd = calc.getListeProdImpossible();
     	ObservableList<Element> listAchats = FXCollections.observableArrayList(listAchat);

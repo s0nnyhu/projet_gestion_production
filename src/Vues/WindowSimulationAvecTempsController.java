@@ -139,10 +139,11 @@ public class WindowSimulationAvecTempsController {
     	}
     	catch(Exception e) {
     		System.out.println(e.getMessage());
+    		e.printStackTrace();
         	Alert alert = new Alert(AlertType.ERROR);
         	alert.setTitle("Erreur");
         	alert.setHeaderText("Une erreur est survenue!");
-        	alert.setContentText("Une erreur est survenue!");
+        	alert.setContentText("Une erreur est survenue !");
         	alert.showAndWait().ifPresent(rs -> {
         	    if (rs == ButtonType.OK) {
         	        System.out.println("Pressed OK.");

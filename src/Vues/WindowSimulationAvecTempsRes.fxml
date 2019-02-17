@@ -13,9 +13,11 @@
    <children>
       <TableView id="EssaiDeProd" fx:id="tabSimulationProd" layoutX="41.0" layoutY="68.0" prefHeight="429.0" prefWidth="750.0" AnchorPane.bottomAnchor="403.0" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="374.0" AnchorPane.topAnchor="68.0">
         <columns>
-          <TableColumn id="chaine" fx:id="colChaine" prefWidth="240.0" text="Chaine" />
-          <TableColumn id="coutVente" fx:id="colCoutVente" minWidth="0.0" prefWidth="259.0" text="Coût de Vente" />
-          <TableColumn id="benef" fx:id="colEfficacite" minWidth="0.0" prefWidth="248.0" text="Efficacite" />
+          <TableColumn id="chaine" fx:id="colChaine" prefWidth="224.0" text="Chaine" />
+          <TableColumn id="coutVente" fx:id="colCoutVente" minWidth="0.0" prefWidth="181.0" text="Coût de Vente" />
+          <TableColumn id="benef" fx:id="colEfficacite" minWidth="0.0" prefWidth="155.0" text="Efficacite" />
+            <TableColumn id="benef" fx:id="colDemande" minWidth="0.0" prefWidth="184.0" text="Demande" />
+            <TableColumn id="benef" fx:id="colEfficacite11" minWidth="0.0" prefWidth="262.0" text="Efficacite" />
         </columns>
       </TableView>
       <Button id="retour" fx:id="retour" layoutX="957.0" layoutY="860.0" mnemonicParsing="false" onAction="#retour" text="Retour" />
