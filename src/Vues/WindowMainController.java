@@ -111,16 +111,16 @@ public class WindowMainController{
     @FXML
     void openSimulationTemps(ActionEvent event){
     	try {
-    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowChoixChaineProd.fxml"));     
+    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowSimulationAvecTemps.fxml"));     
 
         	Parent root = (Parent)fxmlLoader.load();          
-        	WindowChoixChaineProdController controller = fxmlLoader.<WindowChoixChaineProdController>getController();
+        	WindowSimulationAvecTempsController controller = fxmlLoader.<WindowSimulationAvecTempsController>getController();
         	
-        	controller.initData(this.chaines);
+        	controller.initData(this.elements, this.chaines);
         	Scene scene = new Scene(root); 
         	Stage stage = new Stage();
         	stage.setScene(scene);
-        	stage.setTitle("Stocks de production");
+        	stage.setTitle("Simulation avec prise en compte du temps");
 
         	stage.show();   
     	}
