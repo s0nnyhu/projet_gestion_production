@@ -3,108 +3,69 @@ package application;
 
 import java.util.ArrayList;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 public class CalculesActivitesTempsChaines {
-	
-	private double coutVenteTotal;
-	private double efficacite;
-	private double totalAchatUsine;
-	private String listeProdImpossible;
+	private ArrayList<ChaineDeProduction> listChaineImpossible;
 	private int tempsChaine;
+	private int tempsTotalChaines;
+	final int tempsActivitesUsines = 60;
+	
 	public CalculesActivitesTempsChaines() {
-		this.coutVenteTotal = 0;
-		this.efficacite = 0;
-		this.totalAchatUsine = 0;
-	}
-
-	public void calcul(ArrayList<Element> elements, ArrayList<ChaineDeProduction> chaines, Double[] niveau,ArrayList<Element> listAchat, ArrayList<Production> production) {
-		boolean estPossible;
-		int indexListeAchat = 0;
-		int i = 0;
-		this.listeProdImpossible = "";
-		double coutVente = 0;
-		double efficacite = 0;
-		double totalAchatChaine = 0;
+		this.listChaineImpossible = new ArrayList<>();
 		this.tempsChaine = 0;
-		for (ChaineDeProduction c : chaines) {
-			this.tempsChaine = (int) (c.getTemps()*niveau[i]);
-			System.out.println("Temps chaine avec niveau d'activation: " + this.tempsChaine);
-        	coutVente = 0;
-        	efficacite = 0;
-        	totalAchatChaine = 0;
-			estPossible = true;
-			
-    		if (niveau[i] == 0) {
-    			//c.setSortie(null);
-    			estPossible = false;
-    		}
-    		else {
-    			/*
-    			 * Pour chaque élement en entrée dans la chaine de production, on récupère la quantité nécessaire et
-    			 * s'il correspond à l'élement de notre tableau des éléments, on met à jour la quantité 
-    			 * dans notre tableau des élements.
-    			 */
-    			this.majEntree(c, elements, niveau, i, chaines);
-    			/*
-    			 * Pour chaque élement en sortie de la chaine de production, on récupère la quantité sortie et
-    			 * s'il correspond à l'élement de notre tableau des éléments, on met à jour la quantité 
-    			 * dans notre tableau des élements.
-    			 */
-    			coutVente = this.majSortie(c, elements, niveau, coutVente, i);
-    			/*
-    			 * Pour chaque élement en entrée dans la chaine de production,
-    			 * s'il correspond à l' un des élements de notre tableau d'éléments et qu'il une quantité négative,
-    			 * on remplie notre tableau de liste d'élements à acheter en fonction et on fait la somme du prix d'achat
-    			 * de chaque élement à acheter
-    			 */
-    			for (Element elEntree: c.getEntree().keySet()) {
-        			for (Element e : elements) {
-        				if (e.getCode() == elEntree.getCode()) {
-        					if (e.getQuantite() < 0) {
-        						if (e.getAchat() == 0) {
-        							estPossible = false;
-        						}
-        						else
-        						{
-	        						listAchat.add(e);
-	        						//this.txtListeAchat.appendText(listeAchat.get(indexListeAchat).getCode() + ": " + Math.abs(listeAchat.get(indexListeAchat).getQuantite()) + "\n");
-	        						totalAchatChaine += e.getQuantite() * e.getAchat();
-	        						indexListeAchat++;
-	        					}
-	        				}
-        				}
-        				
-        			}
-    			}
-				efficacite = coutVente-totalAchatChaine;
-    		}
-			if (estPossible == false) {
-				
-				this.listeProdImpossible += c.getCode() + ": PRODUCTION IMPOSSIBLE\n";
-				System.out.println(c.getCode() + ": PRODUCTION IMPOSSIBLE\n");
-    			production.add(new Production(c, 0, 0));
-    		}
-    		else {
-    			production.add(new Production(c,coutVente, efficacite, this.tempsChaine));
-    		}
-			i++;
-    	}
-
+		this.tempsTotalChaines = 0;
 	}
-	/*
-	 * On recherche pour un element si parmis les chaines renseignées (liste de chaines choisi par l'utilisateur),
-	 *  l'�lement se trouve en sortie d'un ou de plusieurs de ces chaines
-	 */
-	private void rechercheChainesProduisantElement(Element element, ArrayList<ChaineDeProduction> listChaines) {
+
+	public void calcul(ArrayList<Element> elements, ArrayList<ChaineDeProduction> chaines, Double[] niveau) {
+		boolean estPossible;
+		ArrayList<ChaineDeProduction> listChaineProduisantElement = new ArrayList<>();
+		int i = 0;
+		
+		for (ChaineDeProduction c : chaines) {
+			//Mise à jour du temps de la chaine en fonction du niveau d'activité
+			c.setTemps((int) (niveau[i]*c.getTemps()));
+			
+			//Mise à jour des stocks en entrée et sortie de la chaine en fonction du niveau d'activité
+			for (Element elementChaine : c.getEntree().keySet()) {
+				c.getEntree().put(elementChaine, (double) c.getEntree().get(elementChaine) * niveau[i]);
+			}
+			for (Element elementChaine : c.getSortie().keySet()) {
+				c.getSortie().put(elementChaine, (double) c.getSortie().get(elementChaine) * niveau[i]);
+			}
+
+			for (Element elementChaine : c.getEntree().keySet()) {
+				//Si la quantité en stock est insuffisante
+				for (Element elementStocks: elements ) {
+					if (elementChaine.getCode() == elementStocks.getCode()) {
+						if (c.getEntree().get(elementChaine)> elementStocks.getQuantite()) {
+							listChaineProduisantElement = rechercheChainesProduisantElement(elementChaine, chaines);
+							/*if (listChaineProduisantElement.isEmpty()) {
+								System.out.println("Production impossible,");
+							}
+							System.out.println("element demandé supérieurs à element en stocks, demandées:" + c.getEntree().get(elementChaine) + " - stocks:" + elementStocks.getQuantite());
+						*/
+						}
+					}
+				}
+				//si l'élément ne se trouve pas en stocks, équivaut à dire qu'il est insuffisant
+				listChaineProduisantElement = rechercheChainesProduisantElement(elementChaine, chaines);
+			}
+			i++;
+		}
+
+		
+	}
+		
+	private ArrayList<ChaineDeProduction> rechercheChainesProduisantElement(Element element, ArrayList<ChaineDeProduction> listChaines) {
+		ArrayList<ChaineDeProduction> listChaineProduisantElement = new ArrayList<>();
 		for (ChaineDeProduction c: listChaines) {
 			for (Element e : c.getSortie().keySet()) {
 				if (e.getCode() == element.getCode()) {
 					System.out.println("Trouvé, element en entrée de la chaine: " + e.getCode());
+					listChaineProduisantElement.add(new ChaineDeProduction(c));
 				}
 			}
 		}
+		return listChaineProduisantElement;
 	}
 	
 	private void majEntree(ChaineDeProduction c, ArrayList<Element> elements, Double[] niveau, int indice, ArrayList<ChaineDeProduction> listChaines) {
@@ -137,11 +98,7 @@ public class CalculesActivitesTempsChaines {
 	}
 	
 	
-	public String getListeProdImpossible() {
-		return listeProdImpossible;
-	}
-
-	public void setListeProdImpossible(String listeProdImpossible) {
-		this.listeProdImpossible = listeProdImpossible;
+	public ArrayList<ChaineDeProduction> getListeProdImpossible() {
+		return this.listChaineImpossible;
 	}
 }
