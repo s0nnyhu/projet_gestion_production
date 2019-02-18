@@ -86,11 +86,6 @@ public class WindowSimulationAvecTempsController {
     @FXML
     void evaluer(ActionEvent event) {
     	try {
-    		
-    		for (ChaineDeProduction cc : this.mapChaineNiveau.keySet()) {
-    			System.out.println(cc);
-    		}
-
     		for (TextField s : this.mapChaineNiveau.values()) {
     			if(s.getText().isEmpty()) {
     				s.setText("0");
