@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
+import donnees.DonneesLibraryCSV;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -140,4 +141,6 @@ public class CalculesActivitesDemandesChaines {
 	public void setListeProdImpossible(String listeProdImpossible) {
 		this.listeProdImpossible = listeProdImpossible;
 	}
+	
+
 }

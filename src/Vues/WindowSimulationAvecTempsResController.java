@@ -9,6 +9,7 @@ import java.util.Iterator;
 
 import application.CalculesActivitesChaines;
 import application.CalculesActivitesDemandesChaines;
+import application.CalculesActivitesTempsChaines;
 import application.ChaineDeProduction;
 import application.Element;
 import application.Production;
@@ -239,25 +240,16 @@ public class WindowSimulationAvecTempsResController {
             i++;
         }
 		
-    	CalculesActivitesDemandesChaines calc = new CalculesActivitesDemandesChaines();
-    	calc.calcul(elements, chaines, niveau, listAchat, production);
-    	this.possibiliteProd = calc.getListeProdImpossible();
+    	CalculesActivitesTempsChaines calc = new CalculesActivitesTempsChaines();
+    	calc.calcul(elements, chaines, niveau);
+    	//this.possibiliteProd = calc.getListeProdImpossible();
     	ObservableList<Element> listAchats = FXCollections.observableArrayList(listAchat);
     	//Affichage ou non de la liste d'achats
-    	if(listAchat.isEmpty()) {
-    		paneListeAchat = new TitledPane();
-    		paneListeAchat.setExpanded(false);
-    	}
 
     	ObservableList <Element> oElement = FXCollections.observableList(this.elements);
     	ObservableList <Production> oProduction = FXCollections.observableList(production);
     	chargerTabNewStock(oElement);
     	chargerSimulationProduction(oProduction);
-    	this.txtProdImpossible.setText(possibiliteProd);
-    	//Activation du bouton exporter
-    	if(txtProdImpossible.equals(null)) {
-    		export.setDisable(true);
-    	}
-    	chargerListeAchats(listAchats);
+    	
     }
 }

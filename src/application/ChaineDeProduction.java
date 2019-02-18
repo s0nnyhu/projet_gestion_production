@@ -46,6 +46,7 @@ public class ChaineDeProduction {
 
 	}
 	
+	
 	public CheckBox getCkBox() {
 		return ckBox;
 	}
