@@ -135,6 +135,7 @@ public class WindowSimulationProdController {
     	}
     	catch(Exception e) {
     		System.out.println(e.getMessage());
+    		e.printStackTrace();
         	Alert alert = new Alert(AlertType.ERROR);
         	alert.setTitle("Erreur");
         	alert.setHeaderText("Une erreur est survenue!");

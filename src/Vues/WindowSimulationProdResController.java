@@ -103,7 +103,7 @@ public class WindowSimulationProdResController {
     void exporter(ActionEvent event) {
     	String message = "Les essais de production ont été exportés Nouveau_Stock.csv, Production.csv";
     	try {
-    		FileWriter fw = new FileWriter(new File("../DonneesV1/Nouveau_Stock.csv"));
+    		FileWriter fw = new FileWriter(new File("../DonneesV2/Exports/Nouveau_Stock.csv"));
     		fw.write("Code;Nom;Quantite;unite;achat;vente");
             fw.write(System.lineSeparator());
     		for (Element e : this.elements) {
@@ -116,7 +116,7 @@ public class WindowSimulationProdResController {
         }
 
     	try {
-    		FileWriter fw = new FileWriter(new File("../DonneesV1/Production.csv"));
+    		FileWriter fw = new FileWriter(new File("../DonneesV2/Exports/Production.csv"));
     		fw.write("Chaine;coutVente;Efficacite");
             fw.write(System.lineSeparator());
     		for (Production p : this.production) {
@@ -130,7 +130,7 @@ public class WindowSimulationProdResController {
     	
     	if(!listAchat.isEmpty()) {
 	    	try {
-	    		FileWriter fw = new FileWriter("../DonneesV1/Liste_Achats.csv");
+	    		FileWriter fw = new FileWriter("../DonneesV2/Exports/Liste_Achats.csv");
 	    		fw.write("Code;Nom;Quantite");
 	            fw.write(System.lineSeparator());
 	    		for (Element e : this.listAchat) {

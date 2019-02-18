@@ -103,15 +103,15 @@ public class WindowSimulationAvecTempsResController {
     /**
      * @param event
      */
-    @FXML
+	@FXML
     void exporter(ActionEvent event) {
     	String message = "Les essais de production ont été exportés Nouveau_Stock.csv, Production.csv";
     	try {
-    		FileWriter fw = new FileWriter(new File("../DonneesV1/Nouveau_Stock.csv"));
-    		fw.write("Code;Nom;Quantite;unite;achat;vente");
+    		FileWriter fw = new FileWriter(new File("../DonneesV2/Exports/Nouveau_Stock.csv"));
+    		fw.write("Code;Nom;Quantite;unite;achat;vente;Demande");
             fw.write(System.lineSeparator());
     		for (Element e : this.elements) {
-                fw.write(String.format("%s;%s;%s;%s;%s,%s",e.getCode(), e.getNom(), e.getQuantite(), e.getUnite(), e.getAchat(), e.getVente()));
+                fw.write(String.format("%s;%s;%s;%s;%s,%s,%s",e.getCode(), e.getNom(), e.getQuantite(), e.getUnite(), e.getAchat(), e.getVente(), e.getDemande()));
                 fw.write(System.lineSeparator());
     		}
             fw.close();
@@ -120,7 +120,7 @@ public class WindowSimulationAvecTempsResController {
         }
 
     	try {
-    		FileWriter fw = new FileWriter(new File("../DonneesV1/Production.csv"));
+    		FileWriter fw = new FileWriter(new File("../DonneesV2/Exports/Production.csv"));
     		fw.write("Chaine;coutVente;Efficacite");
             fw.write(System.lineSeparator());
     		for (Production p : this.production) {
@@ -134,7 +134,7 @@ public class WindowSimulationAvecTempsResController {
     	
     	if(!listAchat.isEmpty()) {
 	    	try {
-	    		FileWriter fw = new FileWriter("../DonneesV1/Liste_Achats.csv");
+	    		FileWriter fw = new FileWriter("../DonneesV2/Exports/Liste_Achats.csv");
 	    		fw.write("Code;Nom;Quantite");
 	            fw.write(System.lineSeparator());
 	    		for (Element e : this.listAchat) {

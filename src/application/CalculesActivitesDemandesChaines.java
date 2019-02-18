@@ -21,7 +21,7 @@ public class CalculesActivitesDemandesChaines {
 	}
 
 	public void calcul(ArrayList<Element> elements, ArrayList<ChaineDeProduction> chaines, Double[] niveau,ArrayList<Element> listAchat, ArrayList<Production> production) {
-		boolean estPossible;
+		boolean estPossible = false;
 		int indexListeAchat = 0;
 		int i = 0;
 		this.listeProdImpossible = "";
@@ -65,8 +65,7 @@ public class CalculesActivitesDemandesChaines {
         						if (e.getAchat() == 0) {
         							estPossible = false;
         						}
-        						else
-        						{
+        						else{
 	        						listAchat.add(e);
 	        						//this.txtListeAchat.appendText(listeAchat.get(indexListeAchat).getCode() + ": " + Math.abs(listeAchat.get(indexListeAchat).getQuantite()) + "\n");
 	        						totalAchatChaine += e.getQuantite() * e.getAchat();
@@ -80,31 +79,31 @@ public class CalculesActivitesDemandesChaines {
 				efficacite = coutVente-totalAchatChaine;
     		}
 			if (estPossible == false) {
-				
 				this.listeProdImpossible += c.getCode() + ": PRODUCTION IMPOSSIBLE\n";
-				//System.out.println(c.getCode() + ": PRODUCTION IMPOSSIBLE\n");
-    			production.add(new Production(c, 0, 0));
+				
+				Production p = new Production(c, 0, 0);
+				p.setSatisDemande("0% satisfait");
+    			production.add(p);
     		}
     		else {
-    			production.add(new Production(c,coutVente, efficacite));
+    			Production p = new Production(c,coutVente, efficacite);
+    			
+    			int quantiteProduite = 0;
+    			for(double val : p.getChaine().getSortie().values()) {
+    				quantiteProduite += val;
+    			}
+    			quantiteProduite *= niveau[i];
+    			if(p.getDemande() <= quantiteProduite) {
+    				p.setSatisDemande("Satisfaite");
+    			}
+    			else {
+    				double percent = (quantiteProduite * 100)/p.getDemande();
+    				p.setSatisDemande(String.format("%.2f", percent)+"% satisfait(s)");	
+    			}
+    			
+    			production.add(p);
     		}
     	}
-		
-		for (int j=0; j<production.size(); j++) {
-			Production p = production.get(j);//Production courante
-			int quantiteProduite = 0;
-			for(double val : p.getChaine().getSortie().values()) {
-				quantiteProduite += val;
-			}
-			quantiteProduite *= niveau[j];
-			if(p.getDemande() <= quantiteProduite) {
-				p.setSatisDemande("Satisfaite");
-			}
-			else {
-				double percent = (quantiteProduite * 100)/p.getDemande();
-				p.setSatisDemande(String.format("%.2f", percent)+"% satisfait(s)");
-			}
-		}
 		i++;
 	}
 	
