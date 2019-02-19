@@ -217,7 +217,7 @@ public class WindowSimulationAvecTempsResController {
     /**
      * @param niveau
      */
-    void initData(ArrayList<Element> el, HashMap<ChaineDeProduction, TextField> mapChaineNiveau) {
+    void initData(ArrayList<Element> el, HashMap<ChaineDeProduction, TextField> mapChaineNiveau, ArrayList<ChaineDeProduction> listChainesUsines) {
 		this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
 		this.listAchat = new ArrayList<>();

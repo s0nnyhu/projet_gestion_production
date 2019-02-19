@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.CheckBox;
 
-public class ChaineDeProduction {
+public class ChaineDeProduction implements Comparable<ChaineDeProduction> {
 	private CheckBox ckBox;
 	private StringProperty code = new SimpleStringProperty();
 	private StringProperty nom = new SimpleStringProperty();
@@ -154,6 +154,11 @@ public class ChaineDeProduction {
 		return "ChaineDeProduction [code=" + code + ", nom=" + nom + ", entree=" + entree + ", sortie=" + sortie + ", temps=" + temps + "]";
 	}
 	
+	@Override
+    public int compareTo(ChaineDeProduction comparestu) {
+        int compareTemps=((ChaineDeProduction)comparestu).getTemps();
+        return this.getTemps()-compareTemps;
+    }
 	
 	
 	

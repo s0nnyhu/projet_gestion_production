@@ -101,7 +101,7 @@ public class WindowSimulationAvecTempsController {
 
         	Parent root = (Parent)fxmlLoader.load();          
         	WindowSimulationAvecTempsResController controller = fxmlLoader.<WindowSimulationAvecTempsResController>getController();
-        	controller.initData(this.elements, this.mapChaineNiveau);
+        	controller.initData(this.elements, this.mapChaineNiveau, this.chaines);
         	Scene scene = new Scene(root); 
         	Stage stage = new Stage();
         	stage.setTitle("Resultats: Evaluation");

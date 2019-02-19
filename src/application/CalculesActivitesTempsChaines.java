@@ -2,25 +2,45 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CalculesActivitesTempsChaines {
+	private int tempsChaineIndependante;
+	private int tempsChaineDependante;
 	private ArrayList<ChaineDeProduction> listChaineImpossible;
 	private int tempsChaine;
 	private int tempsTotalChaines;
 	final int tempsActivitesUsines = 60;
+	private ArrayList<ChaineDeProduction> listChaineProduisantElement;
+	//Liste des chaines dont les quantités demandées en entrée dépendent d'autres chaines temporaire
+	ArrayList<ChaineDeProduction> listChaineDependantTmp;
+	//Liste des chaines dont les quantités demandées en entrée dépendent d'autres chaines
+	ArrayList<ChaineDeProduction> listChaineDependant;
+	//Liste des chaines dont les quantités demandées en entrée sont disponibles en stocks temporaire
+	ArrayList<ChaineDeProduction> listChaineIndependantTmp;
+	//Liste des chaines dont les quantités demandées en entrée sont disponibles en stocks
+	ArrayList<ChaineDeProduction> listChaineIndependant;
 	
 	public CalculesActivitesTempsChaines() {
+		this.tempsChaineDependante = 0;
+		this.tempsChaineIndependante = 0;
 		this.listChaineImpossible = new ArrayList<>();
+		this.listChaineProduisantElement = new ArrayList<>();
+		this.listChaineDependantTmp = new ArrayList<>();
+		this.listChaineIndependantTmp = new ArrayList<>();
+		this.listChaineDependant = new ArrayList<>();
+		this.listChaineIndependant = new ArrayList<>();
 		this.tempsChaine = 0;
 		this.tempsTotalChaines = 0;
 	}
 
-	public void calcul(ArrayList<Element> elements, ArrayList<ChaineDeProduction> chaines, Double[] niveau) {
-		boolean estPossible;
-		ArrayList<ChaineDeProduction> listChaineProduisantElement = new ArrayList<>();
+	public void calcul(ArrayList<Element> elements, ArrayList<ChaineDeProduction> chaines,  Double[] niveau) {
+		boolean stockNegatif;
+
 		int i = 0;
 		
 		for (ChaineDeProduction c : chaines) {
+			 stockNegatif = false;
 			//Mise à jour du temps de la chaine en fonction du niveau d'activité
 			c.setTemps((int) (niveau[i]*c.getTemps()));
 			
@@ -31,63 +51,128 @@ public class CalculesActivitesTempsChaines {
 			for (Element elementChaine : c.getSortie().keySet()) {
 				c.getSortie().put(elementChaine, (double) c.getSortie().get(elementChaine) * niveau[i]);
 			}
-
+			//Pour chaque élement en entrée d'une chaine
 			for (Element elementChaine : c.getEntree().keySet()) {
 				//Si la quantité en stock est insuffisante
 				for (Element elementStocks: elements ) {
 					if (elementChaine.getCode() == elementStocks.getCode()) {
 						if (c.getEntree().get(elementChaine)> elementStocks.getQuantite()) {
-							listChaineProduisantElement = rechercheChainesProduisantElement(elementChaine, chaines);
-							/*if (listChaineProduisantElement.isEmpty()) {
-								System.out.println("Production impossible,");
-							}
-							System.out.println("element demandé supérieurs à element en stocks, demandées:" + c.getEntree().get(elementChaine) + " - stocks:" + elementStocks.getQuantite());
-						*/
+							stockNegatif = true;
+							rechercheChainesProduisantElementDansChainesUser(elementChaine, chaines);
 						}
 					}
 				}
-				//si l'élément ne se trouve pas en stocks, équivaut à dire qu'il est insuffisant
-				listChaineProduisantElement = rechercheChainesProduisantElement(elementChaine, chaines);
 			}
+
+			//Si la liste des élemenent dans listChaineProduisantElement est vide et que le stock n'est pas négatif alors les élements 
+			//en entrée de la chaine sont en quantité suffisantes dans le stock, dans ce cas, on ajoute la chaine courante dans la 
+			//liste des chaines independantes.
+			if (listChaineProduisantElement.isEmpty() && stockNegatif == false) {
+				System.out.println("INDEPENDANT");
+				System.out.println(c.getCode());
+				listChaineIndependantTmp.add(c);
+			}
+			//Si la liste de chaines qu'il a choisi ne produit aucun element demandé par une chaine et que le stock est insuffisant alors
+			//Production impossible
+			else if (listChaineProduisantElement.isEmpty() && stockNegatif == true) {
+				System.out.println("IMPOSSIBLE");
+				System.out.println(c.getCode());
+				listChaineImpossible.add(c);
+			}
+			//Sinon on l'ajoute dans la liste des chaines dépendantes.
+			else if (!listChaineProduisantElement.isEmpty() && stockNegatif == true){
+				System.out.println("DEPENDANT");
+				System.out.println(c.getCode());
+				listChaineDependantTmp.add(c);
+			}
+			listChaineProduisantElement.clear();
 			i++;
 		}
-
+		
+		//Trie par temps croissant des chaines independantes
+		
+		Collections.sort(this.listChaineIndependantTmp);
+		//On parcours chaque chaine independante triée et on les démarre
+		for (ChaineDeProduction c : this.listChaineIndependantTmp) {
+			for (Element elementEntree : c.getEntree().keySet()) {
+				for (Element elementStocks: elements ) {
+					if (elementEntree.getCode() == elementStocks.getCode()) {
+						double newQuantite = elementStocks.getQuantite() - (c.getEntree().get(elementEntree));
+						if (newQuantite < 0) {
+							this.listChaineImpossible.add(c);
+						}
+						else {
+							this.listChaineIndependant.add(c);
+							elementStocks.setQuantite(newQuantite);
+						}
+					}
+				}
+			}
+		}
+		
+		
+		for (ChaineDeProduction c: this.listChaineDependantTmp) {
+			rechercherDependance(c, chaines);
+		}
+		
+		//Trie par temps croissant des chaines dependantes
+		Collections.sort(this.listChaineDependant);
+		
+		//On recupere le temps total sur la liste des chaines dependantes les uns des autres
+		for (ChaineDeProduction c : listChaineDependant) {
+			this.tempsChaineDependante += c.getTemps();
+		}
+		
+		//On recupere le temps maximum vu qu'elle démarre en parallèle
+		for (ChaineDeProduction c : listChaineDependant) {
+			if (this.tempsChaineIndependante < c.getTemps()) {
+				this.tempsChaineIndependante = c.getTemps();
+			}
+		}
 		
 	}
-		
-	private ArrayList<ChaineDeProduction> rechercheChainesProduisantElement(Element element, ArrayList<ChaineDeProduction> listChaines) {
-		ArrayList<ChaineDeProduction> listChaineProduisantElement = new ArrayList<>();
+	
+	private void rechercheChainesProduisantElementDansChainesUser(Element element, ArrayList<ChaineDeProduction> listChaines) {
 		for (ChaineDeProduction c: listChaines) {
 			for (Element e : c.getSortie().keySet()) {
 				if (e.getCode() == element.getCode()) {
 					System.out.println("Trouvé, element en entrée de la chaine: " + e.getCode());
-					listChaineProduisantElement.add(new ChaineDeProduction(c));
+					this.listChaineProduisantElement.add(new ChaineDeProduction(c));
 				}
 			}
 		}
-		return listChaineProduisantElement;
 	}
 	
-	private void majEntree(ChaineDeProduction c, ArrayList<Element> elements, Double[] niveau, int indice, ArrayList<ChaineDeProduction> listChaines) {
+	private void rechercherDependance(ChaineDeProduction c, ArrayList<ChaineDeProduction> listChaines) {
+		for (ChaineDeProduction ch : listChaines) {
+			for (Element elSortie : ch.getSortie().keySet()) {
+				if (elSortie.getCode() == c.getCode()) {
+					this.listChaineDependant.add(ch);
+				}
+			}
+		}
+	}
+	
+	private void majEntree(ChaineDeProduction c, ArrayList<Element> elements) {
 		for (Element elEntree: c.getEntree().keySet()) {
 			for (Element elStock : elements) {
 				if (elEntree.getCode() == elStock.getCode()) {
-					if ((elStock.getQuantite()- (c.getEntree().get(elEntree)*niveau[indice])) < 0) {
-						rechercheChainesProduisantElement(elEntree, listChaines);
+					/*if ((elStock.getQuantite()- (c.getEntree().get(elEntree)*niveau[indice])) < 0) {
+						rechercheChainesProduisantElement(elEntree, listChaines, listChaineProduisantElement);
 						System.out.println("stock insuffisant, demandée par " + elEntree.getCode() +": " + c.getEntree().get(elEntree)*niveau[indice] + " - en stock: " + elStock.getQuantite());
-					}
-					double newQuantite = elStock.getQuantite() - (c.getEntree().get(elEntree)*niveau[indice]);
+					}*/
+					double newQuantite = elStock.getQuantite() - (c.getEntree().get(elEntree));
 					elStock.setQuantite(newQuantite);
 				}
 			}
 		}
 	}
 	
-	private double majSortie(ChaineDeProduction c, ArrayList<Element> elements, Double[] niveau, double coutVente, int indice) {
+	private double majSortie(ChaineDeProduction c, ArrayList<Element> elements, double coutVente) {
 		for (Element elSorti : c.getSortie().keySet()) {
 			for (Element elStock: elements) {
 				if (elSorti.getCode() == elStock.getCode()) {
-					elStock.setQuantite(elStock.getQuantite() + (c.getSortie().get(elSorti)*niveau[indice]));
+					elStock.setQuantite(elStock.getQuantite() + (c.getSortie().get(elSorti)));
 					if (elStock.getVente() != 0) {
     					coutVente += elStock.getQuantite() * elStock.getVente();
 					}
