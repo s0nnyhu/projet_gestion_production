@@ -89,7 +89,7 @@ public class CalculesActivitesDemandesChaines {
     		else {
     			Production p = new Production(c,coutVente, efficacite);
     			
-    			int quantiteProduite = 0;
+    			double quantiteProduite = 0;
     			for(double val : p.getChaine().getSortie().values()) {
     				quantiteProduite += val;
     			}

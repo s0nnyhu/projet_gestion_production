@@ -6,6 +6,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.CheckBox;
 
+/**
+ * @author Régis
+ *
+ */
 public class ChaineDeProduction implements Comparable<ChaineDeProduction> {
 	private CheckBox ckBox;
 	private StringProperty code = new SimpleStringProperty();
@@ -15,6 +19,8 @@ public class ChaineDeProduction implements Comparable<ChaineDeProduction> {
 	private HashMap<Element,Double> entree;
 	private HashMap<Element,Double> sortie;
 	private int temps;
+	private int demande;
+	private StringProperty satisDemande = new SimpleStringProperty();
 	
 	
 	/**
@@ -40,13 +46,13 @@ public class ChaineDeProduction implements Comparable<ChaineDeProduction> {
 		}
 		for (Element e: sortie.keySet()) {
 			tmpStrSorti += "(" + e.getNom() +  ", " + sortie.get(e) + ") ";
+			this.demande += e.getDemande();
 		}
 		this.strEntree = (new SimpleStringProperty(tmpStrEntree));
 		this.strSorti = (new SimpleStringProperty(tmpStrSorti));
-
 	}
 	
-	
+
 	public CheckBox getCkBox() {
 		return ckBox;
 	}
@@ -83,6 +89,20 @@ public class ChaineDeProduction implements Comparable<ChaineDeProduction> {
 		this.nom.set(nom);
 	}
 	
+	/**
+	 * @return
+	 */
+	public String getSatisDemande() {
+		return satisDemande.getValue();
+	}
+
+	/**
+	 * @param satisDemande
+	 */
+	public void setSatisDemande(String satisDemande) {
+		this.satisDemande.set(satisDemande);
+	}
+
 	/**
 	 * @return
 	 */
@@ -138,6 +158,14 @@ public class ChaineDeProduction implements Comparable<ChaineDeProduction> {
 	/**
 	 * @return
 	 */
+	public int getDemande() {
+		return demande;
+	}
+
+
+	/**
+	 * @return
+	 */
 	public int getTemps() {
 		return temps;
 	}
@@ -151,7 +179,8 @@ public class ChaineDeProduction implements Comparable<ChaineDeProduction> {
 
 	@Override
 	public String toString() {
-		return "ChaineDeProduction [code=" + code + ", nom=" + nom + ", entree=" + entree + ", sortie=" + sortie + ", temps=" + temps + "]";
+		return "ChaineDeProduction [ckBox=" + ckBox + ", code=" + code + ", nom=" + nom + ", entree=" + entree + ", sortie=" + sortie + ", temps=" + temps
+				+ ", demande=" + demande + ", satisDemande=" + satisDemande + "]";
 	}
 	
 	@Override

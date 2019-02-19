@@ -14,11 +14,12 @@
    <children>
       <TableView id="EssaiDeProd" fx:id="tabSimulationProd" layoutX="41.0" layoutY="68.0" prefHeight="427.0" prefWidth="750.0" AnchorPane.bottomAnchor="403.0" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="460.0" AnchorPane.topAnchor="68.0">
         <columns>
-          <TableColumn id="chaine" fx:id="tCode" prefWidth="90.0" text="Code" />
-          <TableColumn id="coutVente" fx:id="tNom" minWidth="0.0" prefWidth="86.99996948242188" text="Nom" />
-          <TableColumn id="benef" fx:id="tEntree" minWidth="0.0" prefWidth="263.0" text="Entrée" />
-            <TableColumn id="benef" fx:id="tSortie" minWidth="0.0" prefWidth="212.0" text="Sortie" />
-            <TableColumn fx:id="tTemps" prefWidth="96.0" text="Temps" />
+          <TableColumn id="chaine" fx:id="tCode" prefWidth="39.0" text="Code" />
+          <TableColumn id="coutVente" fx:id="tNom" minWidth="0.0" prefWidth="116.0" text="Nom" />
+          <TableColumn id="benef" fx:id="tEntree" minWidth="0.0" prefWidth="260.0" text="Entrée" />
+            <TableColumn id="benef" fx:id="tSortie" minWidth="0.0" prefWidth="195.0" text="Sortie" />
+            <TableColumn fx:id="tTemps" prefWidth="44.0" text="Temps" />
+            <TableColumn fx:id="tSDemande" prefWidth="94.0" text="Demande" />
         </columns>
       </TableView>
       <Button id="retour" fx:id="retour" layoutX="1083.0" layoutY="860.0" mnemonicParsing="false" onAction="#retour" text="Retour" />

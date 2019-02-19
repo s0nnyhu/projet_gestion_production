@@ -1,26 +1,18 @@
 package Vues;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import application.CalculesActivitesChaines;
-import application.CalculesActivitesDemandesChaines;
 import application.CalculesActivitesTempsChaines;
 import application.ChaineDeProduction;
 import application.Element;
-import application.Production;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
@@ -52,6 +44,9 @@ public class WindowSimulationAvecTempsResController {
 
     @FXML
     private TableColumn<ChaineDeProduction, Integer> tTemps;
+
+    @FXML
+    private TableColumn<ChaineDeProduction, String> tSDemande;
 
     @FXML
     private Button retour;
@@ -120,6 +115,8 @@ public class WindowSimulationAvecTempsResController {
                 new PropertyValueFactory<ChaineDeProduction, String>("strSorti"));
 		this.tTemps.setCellValueFactory(
                 new PropertyValueFactory<ChaineDeProduction, Integer>("temps"));
+		this.tSDemande.setCellValueFactory(
+                new PropertyValueFactory<ChaineDeProduction, String>("satisDemande"));
 		this.tabSimulationProd.setItems(c);
     }
     
@@ -145,7 +142,7 @@ public class WindowSimulationAvecTempsResController {
     /**
      * @param e
      */
-    void chargerListeAchats(ObservableList <Element> o) {
+    /*void chargerListeAchats(ObservableList <Element> o) {
 		this.codeAchat.setCellValueFactory(
                 new PropertyValueFactory<Element, String>("code"));
 		this.nomAchat.setCellValueFactory(
@@ -153,10 +150,11 @@ public class WindowSimulationAvecTempsResController {
 		this.quantiteAchat.setCellValueFactory(
                 new PropertyValueFactory<Element, Double>("quantite"));
 		this.tableauAchats.setItems(o);
-    }
+    }*/
     /**
      * @param event
      */
+    
     @FXML
     void retour(ActionEvent event) {
     	Stage stage = (Stage) retour.getScene().getWindow();

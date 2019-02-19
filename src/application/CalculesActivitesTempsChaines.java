@@ -51,8 +51,26 @@ public class CalculesActivitesTempsChaines {
 			for (Element elementChaine : c.getSortie().keySet()) {
 				c.getSortie().put(elementChaine, (double) c.getSortie().get(elementChaine) * niveau[i]);
 			}
-			
-			this.nouvelleListProduction.add(new ChaineDeProduction(c));
+
+			ChaineDeProduction newC = new ChaineDeProduction(c);
+			//Calcul de la satisfaction de la demande
+			double quantiteProduite = 0;
+			for(double val : c.getSortie().values()) {
+				quantiteProduite += val;
+			}
+			if(!listChaineImpossible.contains(c)) {
+				if(c.getDemande() <= quantiteProduite) {
+    				newC.setSatisDemande("Satisfaite");
+    			}
+    			else {
+    				double percent = (quantiteProduite * 100)/c.getDemande();
+    				newC.setSatisDemande(String.format("%.2f", percent)+"% satisfait(s)");	
+    			}
+			}
+			else { //production impossible
+				newC.setSatisDemande("0% satisfait");
+			}
+			this.nouvelleListProduction.add(newC);
 			
 			//Pour chaque élement en entrée d'une chaine
 			for (Element elementChaine : c.getEntree().keySet()) {
@@ -89,6 +107,7 @@ public class CalculesActivitesTempsChaines {
 				listChaineDependantTmp.add(c);
 			}
 			listChaineProduisantElement.clear();
+			
 			i++;
 		}
 		

@@ -255,7 +255,7 @@ public class WindowSimulationProdResController {
     	this.txtProdImpossible.setText(possibiliteProd);
     	//Activation du bouton exporter
     	if(txtProdImpossible.equals(null)) {
-    		export.setDisable(true);
+    		export.setDisable(false);
     	}
     	chargerListeAchats(listAchats);
     }
