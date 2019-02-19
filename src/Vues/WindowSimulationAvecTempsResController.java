@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import application.CalculesActivitesChaines;
 import application.CalculesActivitesDemandesChaines;
@@ -20,7 +22,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -30,29 +34,30 @@ import javafx.stage.Stage;
 
 public class WindowSimulationAvecTempsResController {
 	
-	private String possibiliteProd;
 	
-	private ArrayList<Production> production = new ArrayList<Production>();
-	@FXML
-	private Button retour;	
-
-	@FXML
-	private Button export;	
+	 @FXML
+    private TableView<ChaineDeProduction> tabSimulationProd;
 
     @FXML
-    private TableView<Production> tabSimulationProd;
+    private TableColumn<ChaineDeProduction, String> tCode;
 
     @FXML
-    private TableColumn<Production, String> colChaine;
+    private TableColumn<ChaineDeProduction, String> tNom;
 
     @FXML
-    private TableColumn<Production, Double> colCoutVente;
+    private TableColumn<ChaineDeProduction, String> tEntree;
 
     @FXML
-    private TableColumn<Production, Double> colEfficacite;
-    
+    private TableColumn<ChaineDeProduction, String> tSortie;
+
     @FXML
-    private TableColumn<Production, String> colDemande;
+    private TableColumn<ChaineDeProduction, Integer> tTemps;
+
+    @FXML
+    private Button retour;
+
+    @FXML
+    private VBox vboxRes;
     
     @FXML
     private TableView<Element> tabNewStock;
@@ -74,9 +79,7 @@ public class WindowSimulationAvecTempsResController {
 
     @FXML
     private TableColumn<Element, Double> colPV;
-
-    
-    private ArrayList<Element> listAchat;    
+  
 
     @FXML
     private TitledPane paneListeAchat;
@@ -101,77 +104,23 @@ public class WindowSimulationAvecTempsResController {
 	protected ArrayList<ChaineDeProduction> chaines;
 	
     
-    /**
-     * @param event
-     */
-	@FXML
-    void exporter(ActionEvent event) {
-    	String message = "Les essais de production ont été exportés Nouveau_Stock.csv, Production.csv";
-    	try {
-    		FileWriter fw = new FileWriter(new File("../DonneesV2/Exports/Nouveau_Stock.csv"));
-    		fw.write("Code;Nom;Quantite;unite;achat;vente;Demande");
-            fw.write(System.lineSeparator());
-    		for (Element e : this.elements) {
-                fw.write(String.format("%s;%s;%s;%s;%s,%s,%s",e.getCode(), e.getNom(), e.getQuantite(), e.getUnite(), e.getAchat(), e.getVente(), e.getDemande()));
-                fw.write(System.lineSeparator());
-    		}
-            fw.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-    	try {
-    		FileWriter fw = new FileWriter(new File("../DonneesV2/Exports/Production.csv"));
-    		fw.write("Chaine;coutVente;Efficacite");
-            fw.write(System.lineSeparator());
-    		for (Production p : this.production) {
-                fw.write(String.format("%s;%s;%s", p.getNom(), p.getCoutVente(), p.getEfficacite()));
-                fw.write(System.lineSeparator());
-    		}
-            fw.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    	
-    	if(!listAchat.isEmpty()) {
-	    	try {
-	    		FileWriter fw = new FileWriter("../DonneesV2/Exports/Liste_Achats.csv");
-	    		fw.write("Code;Nom;Quantite");
-	            fw.write(System.lineSeparator());
-	    		for (Element e : this.listAchat) {
-	                fw.write(String.format("%s;%s;%s", e.getCode(), e.getNom(), Math.abs(e.getQuantite())));
-	                fw.write(System.lineSeparator());
-	    		}
-	            fw.close();
-	        } catch (IOException ex) {
-	            ex.printStackTrace();
-	        }
-    		message += ", Liste_Achats.csv";
-    	}
-    	
-    	Alert alert = new Alert(AlertType.INFORMATION);
-    	alert.getDialogPane().setPrefWidth(700);
-    	alert.getDialogPane().setPrefWidth(400);
-    	alert.setHeaderText("Exportation des essais de production");
-    	alert.setContentText(message);
-
-    	alert.showAndWait();
-    	
-    }
+   
 
     /**
      * @param p
      */
-    void chargerSimulationProduction(ObservableList <Production> p) {
-		this.colChaine.setCellValueFactory(
-                new PropertyValueFactory<Production, String>("nom"));
-		this.colCoutVente.setCellValueFactory(
-                new PropertyValueFactory<Production, Double>("coutVente"));
-		this.colEfficacite.setCellValueFactory(
-                new PropertyValueFactory<Production, Double>("efficacite"));
-		this.colDemande.setCellValueFactory(
-                new PropertyValueFactory<Production, String>("satisDemande"));
-		this.tabSimulationProd.setItems(p);
+    void chargerSimulationNouvelleChaine(ObservableList <ChaineDeProduction> c) {
+		this.tCode.setCellValueFactory(
+                new PropertyValueFactory<ChaineDeProduction, String>("code"));
+		this.tNom.setCellValueFactory(
+                new PropertyValueFactory<ChaineDeProduction, String>("nom"));
+		this.tEntree.setCellValueFactory(
+                new PropertyValueFactory<ChaineDeProduction, String>("strEntree"));
+		this.tSortie.setCellValueFactory(
+                new PropertyValueFactory<ChaineDeProduction, String>("strSorti"));
+		this.tTemps.setCellValueFactory(
+                new PropertyValueFactory<ChaineDeProduction, Integer>("temps"));
+		this.tabSimulationProd.setItems(c);
     }
     
     /**
@@ -217,10 +166,10 @@ public class WindowSimulationAvecTempsResController {
     /**
      * @param niveau
      */
-    void initData(ArrayList<Element> el, HashMap<ChaineDeProduction, TextField> mapChaineNiveau) {
+    void initData(ArrayList<Element> el, HashMap<ChaineDeProduction, TextField> mapChaineNiveau, ArrayList<ChaineDeProduction> listChainesUsines) {
 		this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
-		this.listAchat = new ArrayList<>();
+
 		Double niveau[] = new Double[mapChaineNiveau.values().size()];
 		
 		for (Element e : el) {
@@ -243,13 +192,40 @@ public class WindowSimulationAvecTempsResController {
     	CalculesActivitesTempsChaines calc = new CalculesActivitesTempsChaines();
     	calc.calcul(elements, chaines, niveau);
     	//this.possibiliteProd = calc.getListeProdImpossible();
-    	ObservableList<Element> listAchats = FXCollections.observableArrayList(listAchat);
-    	//Affichage ou non de la liste d'achats
+    	Set<ChaineDeProduction> impossible = new LinkedHashSet<ChaineDeProduction> (calc.getListChaineImpossible());
+    	Set<ChaineDeProduction> dependante = new LinkedHashSet<ChaineDeProduction> (calc.getListChaineDependante());
+    	Set<ChaineDeProduction> independante = new LinkedHashSet<ChaineDeProduction> (calc.getListChaineIndependante());
+    	
+    	ArrayList <ChaineDeProduction> nouvelleListeChaine = new ArrayList<>();
+    	nouvelleListeChaine = calc.getNouvelleListProduction();
+    	if (!impossible.isEmpty()) {
+    		Label labelInfo = new Label("La production pour les chaines suivantes est impossible!");
+    		vboxRes.getChildren().add(labelInfo);
+        	for (ChaineDeProduction c : impossible) {
+        		Label labelDetail = new Label(c.getCode() + " - Quantité en entrée insuffisante!");
+                vboxRes.getChildren().add(labelDetail); 
+        	}
+        	Label space = new Label("");
+        	vboxRes.getChildren().add(space);
+    	}
 
+    	if (calc.getTempsMis() > calc.getTempsActivitesUsines() || calc.getTempsMis() == 0) {
+    		Label labelTemps = new Label ("Le temps mis pour la production choisi est: " + calc.getTempsMis());
+            Label labelInfo = new Label("La production n'est pas possible dans les délais!");
+            vboxRes.getChildren().addAll(labelTemps, labelInfo); 
+    	}
+    	else {
+    		Label labelTemps = new Label ("Le temps mis pour la production choisi est: " + calc.getTempsMis());
+            Label labelInfo = new Label("La production est possible dans les délais!");
+            vboxRes.getChildren().addAll(labelTemps, labelInfo); 
+    	}
+    	
+    	
+    	
     	ObservableList <Element> oElement = FXCollections.observableList(this.elements);
-    	ObservableList <Production> oProduction = FXCollections.observableList(production);
+    	ObservableList <ChaineDeProduction> oChaineProduction = FXCollections.observableList(nouvelleListeChaine);
     	chargerTabNewStock(oElement);
-    	chargerSimulationProduction(oProduction);
+    	chargerSimulationNouvelleChaine(oChaineProduction);
     	
     }
 }
