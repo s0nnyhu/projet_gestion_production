@@ -86,7 +86,6 @@ public class WindowSimulationAvecTempsController {
     @FXML
     void evaluer(ActionEvent event) {
     	try {
-    		
     		for (TextField s : this.mapChaineNiveau.values()) {
     			if(s.getText().isEmpty()) {
     				s.setText("0");

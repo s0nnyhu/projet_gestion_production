@@ -34,7 +34,7 @@ public class CalculesActivitesChaines {
 			estPossible = true;
 			
     		if (niveau[i] == 0) {
-    			c.setSortie(null);
+    			//c.setSortie(null);
     			estPossible = false;
     		}
     		else {
@@ -77,14 +77,30 @@ public class CalculesActivitesChaines {
     			}
 				efficacite = coutVente-totalAchatChaine;
     		}
-			if (estPossible == false) {
-				
+    		if (estPossible == false) {
 				this.listeProdImpossible += c.getCode() + ": PRODUCTION IMPOSSIBLE\n";
-				System.out.println(c.getCode() + ": PRODUCTION IMPOSSIBLE\n");
-    			production.add(new Production(c, 0, 0));
+				
+				Production p = new Production(c, 0, 0);
+				p.setSatisDemande("0% satisfait");
+    			production.add(p);
     		}
     		else {
-    			production.add(new Production(c,coutVente, efficacite));
+    			Production p = new Production(c,coutVente, efficacite);
+    			
+    			int quantiteProduite = 0;
+    			for(double val : p.getChaine().getSortie().values()) {
+    				quantiteProduite += val;
+    			}
+    			quantiteProduite *= niveau[i];
+    			if(p.getDemande() <= quantiteProduite) {
+    				p.setSatisDemande("Satisfaite");
+    			}
+    			else {
+    				double percent = (quantiteProduite * 100)/p.getDemande();
+    				p.setSatisDemande(String.format("%.2f", percent)+"% satisfait(s)");	
+    			}
+    			
+    			production.add(p);
     		}
 			i++;
     	}

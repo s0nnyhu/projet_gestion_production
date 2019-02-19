@@ -1,5 +1,6 @@
 package application;
 
+import java.util.Comparator;
 import java.util.Map;
 
 import javafx.beans.property.DoubleProperty;
@@ -9,7 +10,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Production {
+public class Production{
 	private StringProperty nom;
 	private ChaineDeProduction chaine;
 	private DoubleProperty coutVente;
@@ -140,4 +141,13 @@ public class Production {
 		return satisDemande.getValue();
 	}
 
+	//Comparateur de Production en fonction du temps
+	public class ComparateurTempsProd implements Comparator<Production>{	
+		@Override
+		public int compare(Production p1, Production p2) {
+			return p1.getTemps().getValue().compareTo(p2.getTemps().getValue());
+		}
+		
+	}
+	
 }
