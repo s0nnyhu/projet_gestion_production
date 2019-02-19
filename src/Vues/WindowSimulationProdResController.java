@@ -48,6 +48,9 @@ public class WindowSimulationProdResController {
 
     @FXML
     private TableColumn<Production, Double> colEfficacite;
+
+    @FXML
+    private TableColumn<Production, String> colDemande;
     
     @FXML
     private TableView<Element> tabNewStock;
@@ -164,6 +167,8 @@ public class WindowSimulationProdResController {
                 new PropertyValueFactory<Production, Double>("coutVente"));
 		this.colEfficacite.setCellValueFactory(
                 new PropertyValueFactory<Production, Double>("efficacite"));
+		this.colDemande.setCellValueFactory(
+                new PropertyValueFactory<Production, String>("satisDemande"));
 		this.tabSimulationProd.setItems(p);
     }
     
