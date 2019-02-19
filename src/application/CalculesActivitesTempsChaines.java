@@ -132,6 +132,14 @@ public class CalculesActivitesTempsChaines {
 			}
 		}
 		
+		for (ChaineDeProduction cImpossible : this.listChaineImpossible) {
+			for (ChaineDeProduction cNew : this.nouvelleListProduction) {
+				if (cNew.getCode() == cImpossible.getCode()) {
+					cNew.setSatisDemande("Non satisfaite");
+				}
+			}
+		}
+
 		
 		for (ChaineDeProduction c: this.listChaineDependantTmp) {
 			rechercherDependance(c, chaines);
