@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import application.CalculesActivitesChaines;
+import application.CalculesActivitesDemandesChaines;
 import application.ChaineDeProduction;
 import application.Element;
 import application.Production;
@@ -238,7 +238,7 @@ public class WindowSimulationProdResController {
             i++;
         }
 		
-    	CalculesActivitesChaines calc = new CalculesActivitesChaines();
+    	CalculesActivitesDemandesChaines calc = new CalculesActivitesDemandesChaines();
     	calc.calcul(elements, chaines, niveau, listAchat, production);
     	this.possibiliteProd = calc.getListeProdImpossible();
     	ObservableList<Element> listAchats = FXCollections.observableArrayList(listAchat);

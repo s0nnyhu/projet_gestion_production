@@ -35,7 +35,11 @@ public class CalculesActivitesTempsChaines {
 		this.listChaineIndependant = new ArrayList<>();
 		this.nouvelleListProduction = new ArrayList<>();
 	}
-
+	/*
+	 * rajouter un champs de priorité
+	 * séquencement
+	 * 
+	 */
 	public void calcul(ArrayList<Element> elements, ArrayList<ChaineDeProduction> chaines,  Double[] niveau) {
 		boolean stockNegatif;
 		int i = 0;
