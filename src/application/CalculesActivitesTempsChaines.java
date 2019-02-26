@@ -163,10 +163,6 @@ public class CalculesActivitesTempsChaines {
 		
 	}
 	
-	private boolean prodPossible(ChaineDeProduction c) {
-		return (!listChaineImpossible.contains(c));
-	}
-	
 	private void rechercheChainesProduisantElementDansChainesUser(Element element, ArrayList<ChaineDeProduction> listChaines) {
 		for (ChaineDeProduction c: listChaines) {
 			for (Element e : c.getSortie().keySet()) {
