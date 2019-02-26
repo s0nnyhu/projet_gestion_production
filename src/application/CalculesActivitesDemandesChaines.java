@@ -10,20 +10,14 @@ import javafx.collections.ObservableList;
 
 public class CalculesActivitesDemandesChaines {
 	
-	private double coutVenteTotal;
-	private double efficacite;
-	private double totalAchatUsine;
 	private String listeProdImpossible;
 	
 	public CalculesActivitesDemandesChaines() {
-		this.coutVenteTotal = 0;
-		this.efficacite = 0;
-		this.totalAchatUsine = 0;
+
 	}
 
 	public void calcul(ArrayList<Element> elements, ArrayList<ChaineDeProduction> chaines, Double[] niveau,ArrayList<Element> listAchat, ArrayList<Production> production) {
 		boolean estPossible = false;
-		int indexListeAchat = 0;
 		int i = 0;
 		this.listeProdImpossible = "";
 		double coutVente = 0;
@@ -37,7 +31,7 @@ public class CalculesActivitesDemandesChaines {
 			estPossible = true;
 			
     		if (niveau[i] == 0) {
-    			//c.setSortie(null);
+    			//Si le niveau de production est à 0, la chaine ne produit rien
     			estPossible = false;
     		}
     		else {
@@ -52,7 +46,10 @@ public class CalculesActivitesDemandesChaines {
     			 * s'il correspond à l'élement de notre tableau des éléments, on met à jour la quantité 
     			 * dans notre tableau des élements.
     			 */
-    			coutVente = this.majSortie(c, elements, niveau, coutVente, i);
+    			this.majSortie(c, elements, niveau, i);
+    			
+    			//Calcul du cout de vente des éléments en sortie pour la chaine actuelle
+    			coutVente = this.calculCoutVente(c, elements);
     			/*
     			 * Pour chaque élement en entrée dans la chaine de production,
     			 * s'il correspond à l' un des élements de notre tableau d'éléments et qu'il une quantité négative,
@@ -68,9 +65,7 @@ public class CalculesActivitesDemandesChaines {
         						}
         						else{
 	        						listAchat.add(e);
-	        						//this.txtListeAchat.appendText(listeAchat.get(indexListeAchat).getCode() + ": " + Math.abs(listeAchat.get(indexListeAchat).getQuantite()) + "\n");
-	        						totalAchatChaine += e.getQuantite() * e.getAchat();
-	        						indexListeAchat++;
+	        						totalAchatChaine += Math.abs(e.getQuantite()) * e.getAchat();
 	        					}
 	        				}
         				}
@@ -119,11 +114,21 @@ public class CalculesActivitesDemandesChaines {
 		}
 	}
 	
-	private double majSortie(ChaineDeProduction c, ArrayList<Element> elements, Double[] niveau, double coutVente, int indice) {
+	private void majSortie(ChaineDeProduction c, ArrayList<Element> elements, Double[] niveau, int indice) {
 		for (Element elSorti : c.getSortie().keySet()) {
 			for (Element elStock: elements) {
 				if (elSorti.getCode() == elStock.getCode()) {
 					elStock.setQuantite(elStock.getQuantite() + (c.getSortie().get(elSorti)*niveau[indice]));
+				}
+			}
+		}
+	}
+	
+	private double calculCoutVente(ChaineDeProduction c, ArrayList<Element> elements) {
+		double coutVente = 0;
+		for (Element elSorti : c.getSortie().keySet()) {
+			for (Element elStock: elements) {
+				if (elSorti.getCode() == elStock.getCode()) {
 					if (elStock.getVente() != 0) {
     					coutVente += elStock.getQuantite() * elStock.getVente();
 					}
