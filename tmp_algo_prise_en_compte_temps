@@ -1,0 +1,73 @@
+final int 60;
+//chaine dont un des elements en entrees ne peuvent etre acheter
+arraylist chaines_prod_elements_stocks_limitee
+
+//chaines pouvant demarrer simultanement car les elements en entrees ont un prix d'achat
+arraylist chaine_demarrage_simultanees
+
+//chaines temporaire des dependances:
+hasmap chaines_temporaires_dep
+
+//arraylist chaine_finale
+arraylist list_chaines_finale
+
+
+Pour Chaque chaine de production:
+    Si tous_les_elements_en_entrees ONT un prix d'achats:
+        ajouter chaine dans chaines_demarrage_simultanees
+    Sinon :
+        ajouter chaine dans chaines_prod_elements_stocks_limitee
+
+//Verification globale pour connaitre si les dependances ne sont pas necessaires, savoir donc si les quantites en stocks sont suffisantes
+Pour chaque chaine dans chaines_prod_elements_stocks_limitee:
+    Verifier si les quantites demandés par chaque élements sont disponibles en quantités suffisantes dans le stock*
+    Si oui:
+        return true;
+    Sinon:
+        return false;
+
+//Si true est retourner par la fonction au dessus:
+//alors possibilité de démarrage simultanées car tous les élements sont dispo en quantités suffisantes:
+Si true:
+    ajouter dans list_chaines_finale chaines_demarrage_simultanees et chaines_prod_elements_stocks_limitee
+
+
+Si false:
+    Pour chaque chaine dans chaines_prod_elements_stocks_limitee:
+        Si les elements en entrees de la chaine se trouvent dans les elements en sorties de chaines_demarrage_simultanees:
+            ajouter chaine dans chaines_temporaires_dep [ <code chaine ayant dependance, chaine dont il est dependant>]
+        Si les elements en entrees de la chaine se trouvant dans les elements en sorties de chaines_prod_elements_stocks_limitee:
+            ajouter chaine dans chaines_temporaires_dep [ <code chaine ayant dependance, chaine dont il est dependant>]
+        
+
+
+
+
+
+
+
+
+
+
+
+Si quantite_demande_par_la_chaine < quantites en stocks
+
+#demarrer au plus tot dependance
+
+    
+//Verification globale pour connaitre si les dependances ne sont pas necessaires, savoir donc si les quantites en stocks sont suffisantes
+Pour chaque chaine dans chaines_prod_elements_stocks_limitee:
+    ajouter elements_entres dans elements_entres_stocks_limitee
+
+//Regroupage des élements communs pour checker les quantites demandes:
+Pour chaque elementsA dans elements_entres_stocks_limitee:
+    Pour chaque elementsB dans elements_entres_stocks_limitee:
+        Si elementsA == elementsB:
+                
+
+
+Pour Chaque chaine de production:
+    Si element_en_stocks suffisant:
+        ajouter dans chaine_prod_element_stocks_suffisant
+    Sinon:
+        ajouter dans chaine_prod_element_stocks_insuffisant
