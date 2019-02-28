@@ -188,7 +188,7 @@ public class WindowSimulationAvecTempsResController {
         }
 		
     	CalculesActivitesTempsChaines calc = new CalculesActivitesTempsChaines();
-    	calc.calcul2(elements, chaines, niveau);
+    	calc.calcul(elements, chaines, niveau);
     	//this.possibiliteProd = calc.getListeProdImpossible();
     	Set<ChaineDeProduction> impossible = new LinkedHashSet<ChaineDeProduction> (calc.getListChaineImpossible());
     	Set<ChaineDeProduction> dependante = new LinkedHashSet<ChaineDeProduction> (calc.getListChaineDependante());
