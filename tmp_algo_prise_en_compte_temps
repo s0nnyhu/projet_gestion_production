@@ -1,73 +1,54 @@
-final int 60;
-//chaine dont un des elements en entrees ne peuvent etre acheter
-arraylist chaines_prod_elements_stocks_limitee
+	public void calculTemps(ArrayList<Element> elements, ArrayList<ChaineDeProduction> chaines, Double[] niveau) {
+		ArrayList<ChaineDeProduction> chaines_independantes = new ArrayList<>();
+		ArrayList<ChaineDeProduction> chaines_entrees_limites = new ArrayList<>();
+		HashMap<Element, Double> elements_entrees_des_chaines_limitees = new HashMap<>();
+		//Liste des chaines se disputant une meme entree
+		LinkedHashSet<ChaineDeProduction> chaine_disputant_meme_entree = new LinkedHashSet<>();
+		for(ChaineDeProduction c: chaines) {
+			boolean achetable = true;
+			//Si un des élements en entrées n'a pas de prix d'achat, alors on met achetable à false et on ajoute la chaine courantes
+			//dans la liste des chaines dont les elements en entrees sont en quantités limités
+			for (Element eltsEntrees : c.getEntree().keySet()) {
+				if (eltsEntrees.getAchat() == 0) {
+					achetable = false;
+				}
+			}
+			if(achetable) {
+				chaines_independantes.add(c);
+			}
+			else {
+				chaines_entrees_limites.add(c);
+			}
+		}
+		
+		//Pour chaque chaines dont les élements en entrées sont en quantités limités, on sépare ceux qui se disputent les meme chaines
+		boolean entree_commun = true;
+		for(ChaineDeProduction c1: chaines_entrees_limites) {
+			for(ChaineDeProduction c2: chaines_entrees_limites) {
+				for (Element e1: c1.getEntree().keySet()) {
+					for (Element e2: c2.getEntree().keySet()) {
+						if ((e1.getCode() == e2.getCode()) && (c1.getCode() != c2.getCode())) {
+							chaine_disputant_meme_entree.add(c1);
+							chaine_disputant_meme_entree.add(c2);
+						}
+					}
+				}
+			}
+		}
+		
+		for (ChaineDeProduction c: chaines_independantes) {
+			System.out.println("Chaine demarrage independantes: " + c.getCode());
+		}
+		
+		for (ChaineDeProduction c : chaine_disputant_meme_entree) {
+			System.out.println("Chaine dont les quantites demandées en entrée sont limitées (non achetable) et se dipsutant un element commun: " + c.getCode());
+		}
+		
+		for (ChaineDeProduction c1 : chaines_entrees_limites) {
+			if (!chaine_disputant_meme_entree.contains(c1)) {
+				System.out.println("Chaine dont les quantites demandées en entrée sont limitées (non achetable): " + c1.getCode());
+			}
+		}
+		
 
-//chaines pouvant demarrer simultanement car les elements en entrees ont un prix d'achat
-arraylist chaine_demarrage_simultanees
-
-//chaines temporaire des dependances:
-hasmap chaines_temporaires_dep
-
-//arraylist chaine_finale
-arraylist list_chaines_finale
-
-
-Pour Chaque chaine de production:
-    Si tous_les_elements_en_entrees ONT un prix d'achats:
-        ajouter chaine dans chaines_demarrage_simultanees
-    Sinon :
-        ajouter chaine dans chaines_prod_elements_stocks_limitee
-
-//Verification globale pour connaitre si les dependances ne sont pas necessaires, savoir donc si les quantites en stocks sont suffisantes
-Pour chaque chaine dans chaines_prod_elements_stocks_limitee:
-    Verifier si les quantites demandés par chaque élements sont disponibles en quantités suffisantes dans le stock*
-    Si oui:
-        return true;
-    Sinon:
-        return false;
-
-//Si true est retourner par la fonction au dessus:
-//alors possibilité de démarrage simultanées car tous les élements sont dispo en quantités suffisantes:
-Si true:
-    ajouter dans list_chaines_finale chaines_demarrage_simultanees et chaines_prod_elements_stocks_limitee
-
-
-Si false:
-    Pour chaque chaine dans chaines_prod_elements_stocks_limitee:
-        Si les elements en entrees de la chaine se trouvent dans les elements en sorties de chaines_demarrage_simultanees:
-            ajouter chaine dans chaines_temporaires_dep [ <code chaine ayant dependance, chaine dont il est dependant>]
-        Si les elements en entrees de la chaine se trouvant dans les elements en sorties de chaines_prod_elements_stocks_limitee:
-            ajouter chaine dans chaines_temporaires_dep [ <code chaine ayant dependance, chaine dont il est dependant>]
-        
-
-
-
-
-
-
-
-
-
-
-
-Si quantite_demande_par_la_chaine < quantites en stocks
-
-#demarrer au plus tot dependance
-
-    
-//Verification globale pour connaitre si les dependances ne sont pas necessaires, savoir donc si les quantites en stocks sont suffisantes
-Pour chaque chaine dans chaines_prod_elements_stocks_limitee:
-    ajouter elements_entres dans elements_entres_stocks_limitee
-
-//Regroupage des élements communs pour checker les quantites demandes:
-Pour chaque elementsA dans elements_entres_stocks_limitee:
-    Pour chaque elementsB dans elements_entres_stocks_limitee:
-        Si elementsA == elementsB:
-                
-
-
-Pour Chaque chaine de production:
-    Si element_en_stocks suffisant:
-        ajouter dans chaine_prod_element_stocks_suffisant
-    Sinon:
-        ajouter dans chaine_prod_element_stocks_insuffisant
+	}
