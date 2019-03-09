@@ -164,14 +164,14 @@ public class CalculesActivitesTempsChaines2 {
 			for (ChaineDeProduction c1 : chaines_entrees_limites_non_concurrence) {
 				for(Element elEntree : c1.getEntree().keySet()) {
 					for (Element elSorti: c.getSortie().keySet()) {
-						if (elEntree.getCode() == elSorti.getCode()) {
+						if ((elEntree.getCode() == elSorti.getCode()) && elEntree.getAchat()==0) {
 							chaines_entrees_limites_non_concurrence_dependances.put(c, c1.getCode());
 						}
 					}
 				}
 			}
 		}
-		
+		//Affiche les chaines dont dependent les chaines dont les elements en entrees sont non achetable mais aucune concurrence
 		for (ChaineDeProduction c : chaines_entrees_limites_non_concurrence_dependances.keySet()) {
 			System.out.println("La chaine: " + chaines_entrees_limites_non_concurrence_dependances.get(c) + " depand de la chaine " + c.getCode());
 		}
