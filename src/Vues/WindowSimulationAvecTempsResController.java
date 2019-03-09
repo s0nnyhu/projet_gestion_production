@@ -188,42 +188,7 @@ public class WindowSimulationAvecTempsResController {
         }
 		
     	CalculesActivitesTempsChaines calc = new CalculesActivitesTempsChaines();
-    	calc.calcul(elements, chaines, niveau);
-    	//this.possibiliteProd = calc.getListeProdImpossible();
-    	Set<ChaineDeProduction> impossible = new LinkedHashSet<ChaineDeProduction> (calc.getListChaineImpossible());
-    	Set<ChaineDeProduction> dependante = new LinkedHashSet<ChaineDeProduction> (calc.getListChaineDependante());
-    	Set<ChaineDeProduction> independante = new LinkedHashSet<ChaineDeProduction> (calc.getListChaineIndependante());
-    	
-    	ArrayList <ChaineDeProduction> nouvelleListeChaine = new ArrayList<>();
-    	nouvelleListeChaine = calc.getNouvelleListProduction();
-    	if (!impossible.isEmpty()) {
-    		Label labelInfo = new Label("La production pour les chaines suivantes est impossible!");
-    		vboxRes.getChildren().add(labelInfo);
-        	for (ChaineDeProduction c : impossible) {
-        		Label labelDetail = new Label(c.getCode() + " - Quantité en entrée insuffisante!");
-                vboxRes.getChildren().add(labelDetail); 
-        	}
-        	Label space = new Label("");
-        	vboxRes.getChildren().add(space);
-    	}
-
-    	if (calc.getTempsMis() > calc.getTempsActivitesUsines() || calc.getTempsMis() == 0) {
-    		Label labelTemps = new Label ("Le temps mis pour la production choisi est: " + calc.getTempsMis());
-            Label labelInfo = new Label("La production n'est pas possible dans les délais!");
-            vboxRes.getChildren().addAll(labelTemps, labelInfo); 
-    	}
-    	else {
-    		Label labelTemps = new Label ("Le temps mis pour la production choisi est: " + calc.getTempsMis());
-            Label labelInfo = new Label("La production est possible dans les délais!");
-            vboxRes.getChildren().addAll(labelTemps, labelInfo); 
-    	}
-    	
-    	
-    	
-    	ObservableList <Element> oElement = FXCollections.observableList(this.elements);
-    	ObservableList <ChaineDeProduction> oChaineProduction = FXCollections.observableList(nouvelleListeChaine);
-    	chargerTabNewStock(oElement);
-    	chargerSimulationNouvelleChaine(oChaineProduction);
+    	calc.calculTemps(this.elements, this.chaines, niveau);
     	
     }
 }
