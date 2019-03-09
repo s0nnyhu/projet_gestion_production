@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class CalculesActivitesTempsChaines {
+public class CalculesActivitesTempsChaines2 {
 	private String listeProdImpossible;
 	
-	public CalculesActivitesTempsChaines() {
+	public CalculesActivitesTempsChaines2() {
 
 	}
 
