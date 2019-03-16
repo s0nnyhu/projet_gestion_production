@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import application.CalculesActivitesTempsChaines2;
+import application.CalculesActivitesTempsChaines;
 import application.ChaineDeProduction;
 import application.Element;
 import javafx.collections.FXCollections;
@@ -187,8 +187,8 @@ public class WindowSimulationAvecTempsResController {
             i++;
         }
 		
-    	CalculesActivitesTempsChaines2 calc = new CalculesActivitesTempsChaines2();
-    	calc.calculTemps(this.elements, this.chaines, niveau);
+    	CalculesActivitesTempsChaines calc = new CalculesActivitesTempsChaines();
+    	calc.calculTemps(this.elements, listChainesUsines, this.chaines, niveau);
     	
     }
 }

@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class CalculesActivitesTempsChaines2 {
+public class CalculesActivitesTempsChaines {
 	private String listeProdImpossible;
 	
-	public CalculesActivitesTempsChaines2() {
+	public CalculesActivitesTempsChaines() {
 
 	}
 
@@ -101,7 +101,7 @@ public class CalculesActivitesTempsChaines2 {
 		i++;
 	}
 	
-	public void calculTemps(ArrayList<Element> elements, ArrayList<ChaineDeProduction> chaines, Double[] niveau) {
+	public void calculTemps(ArrayList<Element> elements, ArrayList<ChaineDeProduction> list_chaines_usine, ArrayList<ChaineDeProduction> chaines, Double[] niveau) {
 		ArrayList<ChaineDeProduction> chaines_independantes = new ArrayList<>();
 		ArrayList<ChaineDeProduction> chaines_entrees_limites = new ArrayList<>();
 		ArrayList<ChaineDeProduction> chaines_entrees_limites_non_concurrence = new ArrayList<>();
@@ -111,9 +111,12 @@ public class CalculesActivitesTempsChaines2 {
 		//Listes des dépendances pour les chaines en entree limités:
 		//Exemple <chaine1, C001><chaine2, c001> <chaine3,C004>
 		HashMap<ChaineDeProduction, String> chaines_entrees_limites_non_concurrence_dependances = new HashMap<>();
-		//Listes des dépendances pour les chaines en entree limités avec concurrence:
-		//Exemple <chaine1, C001><chaine2, c001> <chaine3,C004>
-		HashMap<ChaineDeProduction, String> chaines_entrees_limites_concurrence_dependances = new HashMap<>();
+		//Listes des chaines dont les elements en entrées sont limitée et qu'aucune chaine selectionne ne produit cet element
+		ArrayList<ChaineDeProduction> chaines_entrees_limites_sans_dependances = new ArrayList<>();
+		//Listes des dépendances pour les chaines en entrée limités avec concurrence:
+		ArrayList<ChaineDeProduction> chaines_entrees_limites_concurrence_dependances_fils = new ArrayList<>();
+		//Listes des chaines dont les dependances se trouvent dans chaines_entrees_limites_concurrence_dependances
+		ArrayList<ChaineDeProduction> chaines_entrees_limites_concurrence_peres = new ArrayList<>();
 		
 		int i = 0;
 		for(ChaineDeProduction c: chaines) {
@@ -193,10 +196,37 @@ public class CalculesActivitesTempsChaines2 {
 				}
 			}
 		}
+
 		
-		if (chaines_entrees_limites_non_concurrence_dependances.isEmpty() && !chaines_entrees_limites_non_concurrence.isEmpty()) {
-			System.out.println("Une des chaines depend d'une autre chaine mais cette dernière ne fait pas partie des chaines que vous avez sélectionné");
+		for (ChaineDeProduction c : chaines_entrees_limites_non_concurrence) {
+			if (!chaines_entrees_limites_non_concurrence_dependances.containsValue(c.getCode())) {
+				chaines_entrees_limites_sans_dependances.add(c);
+			}
 		}
+		
+		//Si les elements en entrée d'une chaine ne sont pas achetable et qu'aucune chaine produisant cet élement en entrée n'a
+		//été selectionné, alors on regarde dans le stock si l'élement en question est en quantité suffisante
+		for (ChaineDeProduction c : chaines_entrees_limites_sans_dependances) {
+			for (ChaineDeProduction c1 : list_chaines_usine) {
+				if (c.getCode() == c1.getCode()) {
+					for (Element eUsine : c1.getEntree().keySet()) {
+						for (Element eChaine : c.getEntree().keySet()) {
+							if (eUsine.getCode() == eChaine.getCode()) {
+								if (eUsine.getQuantite() < c.getEntree().get(eChaine)) {
+									System.out.println(c.getCode() + " ne dispose pas d'élement suffisant pour produire");
+									System.out.println("Element concerné: " + eChaine.getCode() + ":" + eChaine.getNom());
+								}
+								else {
+									System.out.println("OK");
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		
 		//Affiche les chaines dont dependent les chaines dont les elements en entrees sont non achetable mais aucune concurrence
 		for (ChaineDeProduction c : chaines_entrees_limites_non_concurrence_dependances.keySet()) {
 			System.out.println("La chaine: " + chaines_entrees_limites_non_concurrence_dependances.get(c) + " depend de la chaine " + c.getCode());
@@ -214,13 +244,57 @@ public class CalculesActivitesTempsChaines2 {
 				for(Element elEntree : c1.getEntree().keySet()) {
 					for (Element elSorti: c.getSortie().keySet()) {
 						if (elEntree.getCode() == elSorti.getCode()) {
-							System.out.println("La chaine " + c1.getCode() + " depend de " + c.getCode());
-							chaines_entrees_limites_concurrence_dependances.put(c, c1.getCode());
+							//System.out.println("La chaine " + c1.getCode() + " depend de " + c.getCode());
+							chaines_entrees_limites_concurrence_dependances_fils.add(c);
+							chaines_entrees_limites_concurrence_peres.add(c1);
 						}
 					}
 				}
 			}
 		}
+		
+		int j = 0;
+		int temps = 0;
+		//Blocage ici, il faut checker la stratégie a prendre lorsque les chaines se disputent les memes elements
+		//Checker si la quantité totale des elements en entree est disponible pour toutes les chaines
+		//Checker celui qui prendra le moins de temps.
+		for (ChaineDeProduction c: chaine_disputant_meme_entree) {
+			temps = c.getTemps();
+			ArrayList<ChaineDeProduction> a = new ArrayList<>();
+			a = this.get_dependances_chaines_concurrence(chaines_entrees_limites_concurrence_dependances_fils, 
+															chaines_entrees_limites_concurrence_peres, c.getCode());
+			
+			
+			for (ChaineDeProduction tmp : a) {
+				this.majEntree(c, elements);
+				this.majSortie(c, elements);
+			}
+			System.out.println(c.getCode() + " a un temps de " + c.getTemps() + " et pour dependances:");
+			for (ChaineDeProduction tmp : a) {
+				System.out.println("\t> " + tmp.getCode() + " avec un temps de " + tmp.getTemps());
+				temps += tmp.getTemps();
+			}
+			
+			System.out.println("Temps total pour la chaine " + c.getCode() + ": " + temps);
+			System.out.println("-------");
+		}		
+		
+	}
+	
+
+	
+	private ArrayList<ChaineDeProduction> get_dependances_chaines_concurrence(ArrayList<ChaineDeProduction> list_dependances,
+			ArrayList<ChaineDeProduction> list_peres, String code) {
+		int i = 0;
+		ArrayList<ChaineDeProduction> a = new ArrayList<>();
+		
+		for (ChaineDeProduction c : list_dependances) {
+			if (list_peres.get(i).getCode() == code) {
+				a.add(c);
+			}
+			i++;
+		}
+		return a;
 	}
 	
 	
