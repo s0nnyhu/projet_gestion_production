@@ -185,19 +185,14 @@ public class CalculesActivitesTempsChaines {
 			}
 		}
 		
-		//MAJ des stocks pour les chaine independantes
-		for (ChaineDeProduction c: chaines_independantes) {
-			this.majEntree(c, elements);
-			this.majSortie(c, elements);
-		}
-		
-		
 		
 		/*
 		 * CHAINES INDEPENDANTES
 		 */
 		// Rappel: Les elements en entrées des chaines_independantes sont tous achetable
 		for (ChaineDeProduction c : chaines_independantes) {
+			this.majEntree(c, elements);
+			this.majSortie(c, elements);
 			System.out.println(c.getCode() + " mettra " + c.getTemps() + "h pour produire les élements suivants:");
 			for (Element e : c.getSortie().keySet()) {
 				System.out.println("\t > " + c.getSortie().get(e) + " " + e.getNom());
@@ -254,7 +249,7 @@ public class CalculesActivitesTempsChaines {
 						else if(eChaine.getCode() == eStock.getCode()){
 							if ((eStock.getQuantite() < c.getEntree().get(eChaine))) {
 								System.out.println(c.getCode() + " ne dispose pas d'élement suffisant pour produire");
-								System.out.println("Element concerné: " + eChaine.getCode() + ":" + eChaine.getNom());
+								System.out.println("\tElement concerné: " + eChaine.getCode() + ":" + eChaine.getNom());
 							}
 						}
 					}
@@ -331,6 +326,9 @@ public class CalculesActivitesTempsChaines {
 	}
 	
 
+	public String getChaineIndependant(String str) {
+		return str;
+	}
 	
 	private ArrayList<ChaineDeProduction> get_dependances_chaines_concurrence(ArrayList<ChaineDeProduction> list_dependances,
 			ArrayList<ChaineDeProduction> list_peres, String code) {
