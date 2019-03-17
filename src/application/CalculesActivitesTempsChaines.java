@@ -213,7 +213,7 @@ public class CalculesActivitesTempsChaines {
 						for (Element eChaine : c.getEntree().keySet()) {
 							if (eUsine.getCode() == eChaine.getCode()) {
 								if (eUsine.getQuantite() < c.getEntree().get(eChaine)) {
-									System.out.println(c.getCode() + " ne dispose pas d'élement suffisant pour produire");
+									System.out.println(c.getCode() + " ne dispose pas d'elements suffisants pour produire");
 									System.out.println("Element concerné: " + eChaine.getCode() + ":" + eChaine.getNom());
 								}
 								else {

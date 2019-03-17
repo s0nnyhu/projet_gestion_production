@@ -3,6 +3,7 @@ package Vues;
 import java.util.ArrayList;
 
 import application.Element;
+import application.Stockage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,6 +43,19 @@ public class WindowVisualisationStocksController {
 
     @FXML
     private TableColumn<Element, String> tStockage;
+	
+    @FXML
+    private TableView<Stockage> tabStockage;
+
+    @FXML
+    private TableColumn<Stockage, String> tNomSto;
+
+    @FXML
+    private TableColumn<Stockage, Integer> tQuantiteSto;
+
+    @FXML
+    private TableColumn<Stockage, Double> tCapacite;
+
     
     @FXML
     private Button btnRetour;
@@ -58,8 +72,9 @@ public class WindowVisualisationStocksController {
     
 	/**
 	 * Remplie le tableau de visualisation des stocks
+	 * @param stockages 
 	 */
-	void initData(ArrayList<Element> e) {
+	void initData(ArrayList<Element> e, ArrayList<Stockage> s) {
     	ObservableList <Element> oElt = FXCollections.observableList(e);
 		this.tNom.setCellValueFactory(
                 new PropertyValueFactory<Element, String>("nom"));
@@ -72,10 +87,19 @@ public class WindowVisualisationStocksController {
 		this.tPV.setCellValueFactory(
                 new PropertyValueFactory<Element, Double>("vente"));
 		this.tStockage.setCellValueFactory(
-                new PropertyValueFactory<Element, String>("stockage"));
+                new PropertyValueFactory<Element, String>("nomStock"));
 		this.tDemande.setCellValueFactory(
                 new PropertyValueFactory<Element, Double>("demande"));
 		this.tabElement.setItems(oElt);
+		
+    	ObservableList <Stockage> oSto = FXCollections.observableList(s);
+		this.tNomSto.setCellValueFactory(
+                new PropertyValueFactory<Stockage, String>("nom"));
+		this.tQuantiteSto.setCellValueFactory(
+                new PropertyValueFactory<Stockage, Integer>("quantiteDispo"));
+		this.tCapacite.setCellValueFactory(
+                new PropertyValueFactory<Stockage, Double>("capacite"));
+		this.tabStockage.setItems(oSto);
     }
 
 }

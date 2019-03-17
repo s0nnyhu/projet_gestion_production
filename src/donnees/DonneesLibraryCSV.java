@@ -75,9 +75,9 @@ public class DonneesLibraryCSV extends GestionDonneesFichiers{
 			    	capacite = Double.parseDouble(record.get("Capacite"));
 			    }
 			    
-			    double qteDispo = 0.0;
+			    int qteDispo = 0;
 			    if(record.get("Quantite disponible") != null){
-			    	qteDispo = Double.parseDouble(record.get("Quantite disponible"));
+			    	qteDispo = Integer.parseInt(record.get("Quantite disponible"));
 			    }
 				
 				Stockage st = new Stockage(code, nom, capacite, qteDispo);
@@ -111,11 +111,11 @@ public class DonneesLibraryCSV extends GestionDonneesFichiers{
 			    	achat = Double.parseDouble(record.get("achat"));
 			    }
 			    
-			    String stockage = record.get("stockage");
+			    Stockage stockage = null;
 			    if(this.stockageLoaded) {
 			    	for(Stockage sto : this.stockages) {
-			    		if(sto.getCode().equals(stockage)) {
-			    			stockage = sto.getNom();
+			    		if(sto.getCode().equals(record.get("stockage"))) {
+			    			stockage = sto;
 			    		}
 			    	}
 			    }
