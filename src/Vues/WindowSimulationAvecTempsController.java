@@ -7,6 +7,7 @@ import java.util.Iterator;
 
 import application.ChaineDeProduction;
 import application.Element;
+import application.Stockage;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -79,6 +80,8 @@ public class WindowSimulationAvecTempsController {
 	
 	protected ArrayList<ChaineDeProduction> chaines;
 	
+	protected ArrayList<Stockage> stockages;
+	
 
     /**
      * @param event
@@ -100,7 +103,7 @@ public class WindowSimulationAvecTempsController {
 
         	Parent root = (Parent)fxmlLoader.load();          
         	WindowSimulationAvecTempsResController controller = fxmlLoader.<WindowSimulationAvecTempsResController>getController();
-        	controller.initData(this.elements, this.mapChaineNiveau, this.chaines);
+        	controller.initData(this.elements, this.mapChaineNiveau, this.chaines, this.stockages);
         	Scene scene = new Scene(root); 
         	Stage stage = new Stage();
         	stage.setTitle("Resultats: Evaluation");
@@ -158,17 +161,24 @@ public class WindowSimulationAvecTempsController {
     }
     
     /**
+     * @param stockages 
      * 
      */
-    void initData(ArrayList<Element> e, ArrayList<ChaineDeProduction> c) {
+    void initData(ArrayList<Element> e, ArrayList<ChaineDeProduction> c, ArrayList<Stockage> sto) {
     	this.mapChaineNiveau = new HashMap<>();
 		this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
+		this.stockages = new ArrayList<>();
 		
 		for (ChaineDeProduction newChaine: c) {
 			this.chaines.add(new ChaineDeProduction(newChaine));
 		}
+		
 		this.elements = e;
+		
+		for (Stockage copySto : sto) {
+			this.stockages.add(new Stockage(copySto));
+		}
 		
     	ObservableList <ChaineDeProduction> oChaine = FXCollections.observableList(this.chaines);
     	this.tChoisir.setCellValueFactory(

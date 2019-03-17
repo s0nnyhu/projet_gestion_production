@@ -96,12 +96,13 @@ public class CalculesActivitesTempsChaines {
     			}
     			
     			production.add(p);
-    		}
+    		}			
     	}
+		
 		i++;
 	}
 	
-	public void calculTemps(ArrayList<Element> elements, ArrayList<ChaineDeProduction> list_chaines_usine, ArrayList<ChaineDeProduction> chaines, Double[] niveau) {
+	public void calculTemps(ArrayList<Element> elements, ArrayList<ChaineDeProduction> list_chaines_usine, ArrayList<ChaineDeProduction> chaines, Double[] niveau, ArrayList<Stockage> stockages) {
 		ArrayList<ChaineDeProduction> chaines_independantes = new ArrayList<>();
 		ArrayList<ChaineDeProduction> chaines_entrees_limites = new ArrayList<>();
 		ArrayList<ChaineDeProduction> chaines_entrees_limites_non_concurrence = new ArrayList<>();
@@ -123,7 +124,6 @@ public class CalculesActivitesTempsChaines {
 		
 		HashMap<ChaineDeProduction, ArrayList<ChaineDeProduction>> chaines_entrees_limites_concurrence_peres_fils = new HashMap<>();
 		HashMap<ChaineDeProduction, ArrayList<ChaineDeProduction>> chaines_entrees_limites_non_concurrence_peres_fils = new HashMap<>();
-		
 		
 		int i = 0;
 		for(ChaineDeProduction c: chaines) {
@@ -152,6 +152,42 @@ public class CalculesActivitesTempsChaines {
 			else {
 				chaines_entrees_limites.add(c);
 			}
+			
+			//Gestion du stockage des sorties des chaines
+			HashMap<Element, Double> sorties = c.getSortie();
+			String stockImpossible = "";
+			for(Element sortie : sorties.keySet()) { //pour chaque sortie
+				double qteProduite = sortie.getQuantite(); //on recupère la quantité produite
+				int nbCuves = (int) Math.ceil(qteProduite/sortie.getStockage().getCapacite()); //on calcule le nombre de cuves à utiliser
+				if(nbCuves < sortie.getStockage().getQuantiteDispo()) {
+					for(Stockage sto : stockages) {
+						if(sortie.getStockage().getCode().equals(sto.getCode())) {
+							sto.reduireQuantite(nbCuves); // on met a jour les moyens de stockage dispo							
+						}
+					}
+				}
+				else {
+					stockImpossible += "Il manque "+nbCuves+" recipent(s) pour stocker des "+sortie.getNom()+"\n";
+				}
+			}
+			//Gestion du stockage des entree des chaines
+			HashMap<Element, Double> entrees = c.getEntree();
+			for(Element entree : entrees.keySet()) { //pour chaque sortie
+				double qteProduite = entree.getQuantite(); //on recupère la quantité produite
+				Stockage simulStockage = new Stockage(entree.getStockage());
+				int nbCuves = (int) Math.ceil(qteProduite/simulStockage.getCapacite()); //on calcule le nombre de cuves à utiliser
+				if(nbCuves < entree.getStockage().getQuantiteDispo()) {
+					for(Stockage sto : stockages) {
+						if(entree.getStockage().getCode().equals(sto.getCode())) {
+							sto.reduireQuantite(nbCuves); // on met a jour les moyens de stockage dispo							
+						}
+					}
+				}
+				else {
+					stockImpossible += "Il manque "+nbCuves+" recipent(s) pour stocker des "+entree.getNom()+" en entree de la chaine "+c.getNom()+"\n";
+				}
+			}
+			System.out.println(stockImpossible);
 			i++;
 		}
 		

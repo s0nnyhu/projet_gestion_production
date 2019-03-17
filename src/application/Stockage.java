@@ -88,6 +88,13 @@ public class Stockage {
 	public void setQuantiteDispo(int quantiteDispo) {
 		this.quantiteDispo = quantiteDispo;
 	}
+	
+	/**
+	 * @param q
+	 */
+	public void reduireQuantite(int q) {
+		this.setQuantiteDispo(quantiteDispo-q);
+	}
 
 
 	@Override

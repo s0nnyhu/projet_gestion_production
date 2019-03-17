@@ -9,6 +9,7 @@ import java.util.Set;
 import application.CalculesActivitesTempsChaines;
 import application.ChaineDeProduction;
 import application.Element;
+import application.Stockage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -98,6 +99,8 @@ public class WindowSimulationAvecTempsResController {
 	
 	protected ArrayList<ChaineDeProduction> chaines;
 	
+	protected ArrayList<Stockage> stockages;
+	
     
    
 
@@ -162,18 +165,24 @@ public class WindowSimulationAvecTempsResController {
     }
 
     /**
+     * @param sto 
      * @param niveau
      */
-    void initData(ArrayList<Element> el, HashMap<ChaineDeProduction, TextField> mapChaineNiveau, ArrayList<ChaineDeProduction> listChainesUsines) {
+    void initData(ArrayList<Element> el, HashMap<ChaineDeProduction, TextField> mapChaineNiveau, ArrayList<ChaineDeProduction> listChainesUsines, ArrayList<Stockage> sto) {
 		this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
+		this.stockages = new ArrayList<>();
 
 		Double niveau[] = new Double[mapChaineNiveau.values().size()];
 		
 		for (Element e : el) {
 			this.elements.add(new Element(e));
 		}
-    	
+
+		for (Stockage s : sto) {
+			this.stockages.add(new Stockage(s));
+		}
+		
 		int i = 0;
     	Iterator it = mapChaineNiveau.entrySet().iterator();
         while (it.hasNext()) {
@@ -188,7 +197,7 @@ public class WindowSimulationAvecTempsResController {
         }
 		
     	CalculesActivitesTempsChaines calc = new CalculesActivitesTempsChaines();
-    	calc.calculTemps(this.elements, listChainesUsines, this.chaines, niveau);
+    	calc.calculTemps(this.elements, listChainesUsines, this.chaines, niveau, this.stockages);
     	
     }
 }
