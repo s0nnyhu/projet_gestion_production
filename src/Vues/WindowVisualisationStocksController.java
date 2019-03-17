@@ -39,6 +39,9 @@ public class WindowVisualisationStocksController {
 
     @FXML
     private TableColumn<Element, Double> tDemande;
+
+    @FXML
+    private TableColumn<Element, String> tStockage;
     
     @FXML
     private Button btnRetour;
@@ -68,6 +71,8 @@ public class WindowVisualisationStocksController {
                 new PropertyValueFactory<Element, Double>("achat"));
 		this.tPV.setCellValueFactory(
                 new PropertyValueFactory<Element, Double>("vente"));
+		this.tStockage.setCellValueFactory(
+                new PropertyValueFactory<Element, String>("stockage"));
 		this.tDemande.setCellValueFactory(
                 new PropertyValueFactory<Element, Double>("demande"));
 		this.tabElement.setItems(oElt);

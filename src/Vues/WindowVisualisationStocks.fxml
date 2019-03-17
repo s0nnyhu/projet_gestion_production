@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vues.WindowVisualisationStocksController">
+<AnchorPane prefHeight="533.0" prefWidth="812.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vues.WindowVisualisationStocksController">
    <children>
       <BorderPane layoutX="81.0" layoutY="123.0" prefHeight="500.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -25,12 +25,13 @@
          <center>
             <TableView fx:id="tabElement" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <columns>
-                <TableColumn fx:id="tNom" prefWidth="200.0" text="Element" />
-                <TableColumn fx:id="tQuantite" prefWidth="86.0" text="Quantité" />
+                <TableColumn fx:id="tNom" prefWidth="203.0" text="Element" />
+                <TableColumn fx:id="tQuantite" prefWidth="83.0" text="Quantité" />
                   <TableColumn fx:id="tUnite" prefWidth="86.0" text="Unité" />
-                  <TableColumn fx:id="tPA" minWidth="0.0" prefWidth="103.0" text="Prix d'Achat" />
-                  <TableColumn fx:id="tPV" prefWidth="96.0" text="Prix de vente" />
-                  <TableColumn fx:id="tDemande" prefWidth="93.0" text="Demande" />
+                  <TableColumn fx:id="tPA" minWidth="0.0" prefWidth="93.0" text="Prix d'Achat" />
+                  <TableColumn fx:id="tPV" prefWidth="100.0" text="Prix de vente" />
+                  <TableColumn fx:id="tStockage" prefWidth="151.0" text="Stockage" />
+                  <TableColumn fx:id="tDemande" prefWidth="63.0" text="Demande" />
               </columns>
                <BorderPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

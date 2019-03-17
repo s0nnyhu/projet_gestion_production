@@ -144,7 +144,8 @@ public class WindowMainController{
 		this.chaines = new ArrayList<>();
 		String cheminElements = "../DonneesV2/elements.csv";
 		String cheminChaines = "../DonneesV2/chaines.csv";
-    	DonneesLibraryCSV data = new DonneesLibraryCSV(cheminElements, cheminChaines);
+		String cheminStockages = "../DonneesV2/stockage.csv";
+    	DonneesLibraryCSV data = new DonneesLibraryCSV(cheminElements, cheminChaines, cheminStockages);
 		this.elements = data.getElements();
 		this.chaines = data.getChaines();
 		if(data.getLoaded()) {

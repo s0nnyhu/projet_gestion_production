@@ -11,15 +11,24 @@ import org.apache.commons.csv.CSVRecord;
 
 import application.ChaineDeProduction;
 import application.Element;
+import application.Stockage;
 
 public class DonneesLibraryCSV extends GestionDonneesFichiers{
 	boolean elementsLoaded;
+	boolean stockageLoaded;
 
 	public DonneesLibraryCSV(String cheminElements, String cheminChaines) {
 		// TODO Auto-generated constructor stub
 		this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
 		this.chargerDonnees(cheminElements, cheminChaines);
+	}
+
+	public DonneesLibraryCSV(String cheminElements, String cheminChaines, String cheminStockages) {
+		this.stockages = new ArrayList<>();
+		this.elements = new ArrayList<>();
+		this.chaines = new ArrayList<>();
+		this.chargerDonnees(cheminElements, cheminChaines, cheminStockages);
 	}
 
 	public ArrayList<Element> getElements() {
@@ -29,6 +38,11 @@ public class DonneesLibraryCSV extends GestionDonneesFichiers{
 	public ArrayList<ChaineDeProduction> getChaines() {
 		return this.chaines;
 	}
+	
+	public ArrayList<Stockage> getStockages(){
+		return this.stockages;
+	}
+	
 	@Override
 	public void chargerDonnees() {
 		// TODO Auto-generated method stub
@@ -41,8 +55,43 @@ public class DonneesLibraryCSV extends GestionDonneesFichiers{
 		this.chargerChaines(path_chaines);
 	}
 	
+	@Override
+	public void chargerDonnees(String path_elements, String path_chaines, String path_stockage) {
+		this.chargerStockage(path_stockage);
+		this.chargerElements(path_elements);
+		this.chargerChaines(path_chaines);
+	}
+	
+	private void chargerStockage(String path_stockage) {
+		try {
+			FileReader sto = new FileReader(path_stockage);
+			Iterable<CSVRecord> records = CSVFormat.EXCEL.withDelimiter(';').withFirstRecordAsHeader().parse(sto);
+			for (CSVRecord record : records) {
+			    String code = record.get("Code");
+			    String nom = record.get("Nom");
+			    
+		    	double capacite = 0.0;
+			    if(record.get("Capacite") != null) {
+			    	capacite = Double.parseDouble(record.get("Capacite"));
+			    }
+			    
+			    double qteDispo = 0.0;
+			    if(record.get("Quantite disponible") != null){
+			    	qteDispo = Double.parseDouble(record.get("Quantite disponible"));
+			    }
+				
+				Stockage st = new Stockage(code, nom, capacite, qteDispo);
+				this.stockages.add(st);
+			}
+			sto.close();
+			this.stockageLoaded = true;
+		} catch (IOException e) {
+			System.err.println("Erreur dans le nom du fichier stockages...");
+			e.printStackTrace();
+		}
+	}
+	
 	private void chargerElements(String path_elements) {
-		
 		try {
 			FileReader elem = new FileReader(path_elements);
 			Iterable<CSVRecord> records = CSVFormat.EXCEL.withNullString("NA").withDelimiter(';').withFirstRecordAsHeader().parse(elem);
@@ -63,6 +112,13 @@ public class DonneesLibraryCSV extends GestionDonneesFichiers{
 			    }
 			    
 			    String stockage = record.get("stockage");
+			    if(this.stockageLoaded) {
+			    	for(Stockage sto : this.stockages) {
+			    		if(sto.getCode().equals(stockage)) {
+			    			stockage = sto.getNom();
+			    		}
+			    	}
+			    }
 			    
 			    double vente = 0.0;
 			    if(record.get("vente") != null){
