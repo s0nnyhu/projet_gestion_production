@@ -8,7 +8,7 @@ public class Stockage {
 	private String code;
 	private String nom;
 	private double capacite;
-	private double quantiteDispo;
+	private int quantiteDispo;
 	
 	
 	/**
@@ -17,7 +17,7 @@ public class Stockage {
 	 * @param capacite
 	 * @param quantiteDispo
 	 */
-	public Stockage(String code, String nom, double capacite, double quantiteDispo) {
+	public Stockage(String code, String nom, double capacite, int quantiteDispo) {
 		this.code = code;
 		this.nom = nom;
 		this.capacite = capacite;
@@ -78,14 +78,14 @@ public class Stockage {
 	/**
 	 * @return
 	 */
-	public double getQuantiteDispo() {
+	public int getQuantiteDispo() {
 		return quantiteDispo;
 	}
 	
 	/**
 	 * @param quantiteDispo
 	 */
-	public void setQuantiteDispo(double quantiteDispo) {
+	public void setQuantiteDispo(int quantiteDispo) {
 		this.quantiteDispo = quantiteDispo;
 	}
 

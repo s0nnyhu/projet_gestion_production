@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import application.ChaineDeProduction;
 import application.Element;
+import application.Stockage;
 import donnees.DonneesLibraryCSV;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -39,6 +40,8 @@ public class WindowMainController{
 	
 	protected ArrayList<ChaineDeProduction> chaines;
 
+	protected ArrayList<Stockage> stockages;
+	
     /**
      * @param event
      */
@@ -85,7 +88,7 @@ public class WindowMainController{
         	Parent root = (Parent)fxmlLoader.load();          
         	WindowVisualisationStocksController controller = fxmlLoader.<WindowVisualisationStocksController>getController();
         	
-        	controller.initData(this.elements);
+        	controller.initData(this.elements, this.stockages);
         	Scene scene = new Scene(root); 
         	Stage stage = new Stage();
         	stage.setScene(scene);
@@ -142,12 +145,14 @@ public class WindowMainController{
     void chargerDonnees() {
 		this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
-		String cheminElements = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV2/elements.csv";
-		String cheminChaines = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV2/chaines.csv";
-		String cheminStockages = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV2/stockage.csv";
+		this.stockages = new ArrayList<>();
+		String cheminElements = "../DonneesV2/elements.csv";
+		String cheminChaines = "../DonneesV2/chaines.csv";
+		String cheminStockages = "../DonneesV2/stockage.csv";
     	DonneesLibraryCSV data = new DonneesLibraryCSV(cheminElements, cheminChaines, cheminStockages);
 		this.elements = data.getElements();
 		this.chaines = data.getChaines();
+		this.stockages = data.getStockages();
 		if(data.getLoaded()) {
 	    	btnVisuStocks.setDisable(false);
 			btnEssaiProd.setDisable(false);	

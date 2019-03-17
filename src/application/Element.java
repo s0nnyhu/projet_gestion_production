@@ -18,7 +18,8 @@ public class Element {
 	private StringProperty unite = new SimpleStringProperty();
 	private DoubleProperty achat = new SimpleDoubleProperty();
 	private DoubleProperty vente = new SimpleDoubleProperty();
-	private StringProperty stockage = new SimpleStringProperty();
+	private Stockage stockage;
+	private StringProperty nomStock = new SimpleStringProperty();
 	private int demande;
 	
 	/**
@@ -29,7 +30,7 @@ public class Element {
 	 * @param achat
 	 * @param vente
 	 */
-	public Element(String code, String nom, double quantite, String unite, double achat, double vente, String stockage, int demande) {
+	public Element(String code, String nom, double quantite, String unite, double achat, double vente, Stockage stockage, int demande) {
 		super();
 		this.code = new SimpleStringProperty(code);
 		this.nom = new SimpleStringProperty(nom);
@@ -37,10 +38,10 @@ public class Element {
 		this.unite = new SimpleStringProperty(unite);
 		this.achat = new SimpleDoubleProperty(achat);
 		this.vente = new SimpleDoubleProperty(vente);
-		this.stockage = new SimpleStringProperty(stockage);
+		this.stockage = stockage;
+		this.nomStock = new SimpleStringProperty(stockage.getNom());
 		this.demande = demande;
 	}
-	
 	/**
 	 * @param e
 	 */
@@ -48,12 +49,21 @@ public class Element {
 		this(e.getCode(), e.getNom(), e.getQuantite(), e.getUnite(), e.getAchat(), e.getVente(), e.getStockage(), e.getDemande());
 	}
 	
-	public String getStockage() {
-		return stockage.getValue();
+	
+	public String getNomStock() {
+		return nomStock.getValue();
 	}
 
-	public void setStockage(String stockage) {
-		this.stockage.set(stockage);
+	public void setNomStock(String nomStock) {
+		this.nomStock.set(nomStock);
+	}
+
+	public Stockage getStockage() {
+		return stockage;
+	}
+
+	public void setStockage(Stockage stockage) {
+		this.stockage = stockage;
 	}
 
 	/**
