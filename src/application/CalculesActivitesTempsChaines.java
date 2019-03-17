@@ -108,15 +108,22 @@ public class CalculesActivitesTempsChaines {
 
 		//Liste des chaines se disputant une meme entree
 		LinkedHashSet<ChaineDeProduction> chaine_disputant_meme_entree = new LinkedHashSet<>();
-		//Listes des dépendances pour les chaines en entree limités:
-		//Exemple <chaine1, C001><chaine2, c001> <chaine3,C004>
-		HashMap<ChaineDeProduction, String> chaines_entrees_limites_non_concurrence_dependances = new HashMap<>();
-		//Listes des chaines dont les elements en entrées sont limitée et qu'aucune chaine selectionne ne produit cet element
-		ArrayList<ChaineDeProduction> chaines_entrees_limites_sans_dependances = new ArrayList<>();
+
 		//Listes des dépendances pour les chaines en entrée limités avec concurrence:
 		ArrayList<ChaineDeProduction> chaines_entrees_limites_concurrence_dependances_fils = new ArrayList<>();
-		//Listes des chaines dont les dependances se trouvent dans chaines_entrees_limites_concurrence_dependances
+		//Listes des chaines dont les dependances se trouvent dans chaines_entrees_limites_concurrence_dependances_fils
 		ArrayList<ChaineDeProduction> chaines_entrees_limites_concurrence_peres = new ArrayList<>();
+		
+		//Listes des dépendances pour les chaines en entrée limités sans concurrence:
+		ArrayList<ChaineDeProduction> chaines_entrees_limites_non_concurrence_dependances_fils = new ArrayList<>();
+		//Listes des chaines dont les dependances se trouvent dans chaines_entrees_limites_non_concurrence_dependances_fils
+		ArrayList<ChaineDeProduction> chaines_entrees_limites_non_concurrence_peres = new ArrayList<>();
+		
+		
+		
+		HashMap<ChaineDeProduction, ArrayList<ChaineDeProduction>> chaines_entrees_limites_concurrence_peres_fils = new HashMap<>();
+		HashMap<ChaineDeProduction, ArrayList<ChaineDeProduction>> chaines_entrees_limites_non_concurrence_peres_fils = new HashMap<>();
+		
 		
 		int i = 0;
 		for(ChaineDeProduction c: chaines) {
@@ -164,21 +171,20 @@ public class CalculesActivitesTempsChaines {
 		}
 		
 		for (ChaineDeProduction c: chaines_independantes) {
-			System.out.println("Chaine demarrage independantes: " + c.getCode());
+			//System.out.println("Chaine demarrage independantes: " + c.getCode());
 		}
 		
 		for (ChaineDeProduction c : chaine_disputant_meme_entree) {
-			System.out.println("Chaine dont les quantites demandées en entrée sont limitées (non achetable) et se dipsutant un element commun: " + c.getCode());
+			//System.out.println("Chaine dont les quantites demandées en entrée sont limitées (non achetable) et se dipsutant un element commun: " + c.getCode());
 		}
 		
 		for (ChaineDeProduction c1 : chaines_entrees_limites) {
 			if (!chaine_disputant_meme_entree.contains(c1)) {
 				chaines_entrees_limites_non_concurrence.add(c1);
-				System.out.println("Chaine dont les quantites demandées en entrée sont limitées (non achetable): " + c1.getCode());
+				//System.out.println("Chaine dont les quantites demandées en entrée sont limitées (non achetable): " + c1.getCode());
 			}
 		}
 		
-<<<<<<< HEAD
 		
 		/*
 		 * CHAINES INDEPENDANTES
@@ -198,29 +204,30 @@ public class CalculesActivitesTempsChaines {
 		/*
 		 * CHAINES DONT LES QUANTITES SONT LIMITEES MAIS NE SONT PAS EN CONCURRENCE
 		 */
-=======
-		//MAJ des stocks pour les chaine independantes
-		for (ChaineDeProduction c: chaines_independantes) {
-			this.majEntree(c, elements);
-			this.majSortie(c, elements);
-		}
->>>>>>> cac59ed4a39a0aa38a5b7ffcdeff3034c7031746
 		//Pour les chaines dont les quantites demandées en entrée sont limitées (non achetable) mais ne se disputent pas les memes elements avec les autres
-		//On récupère la chaine dont elle dépend
+		//On récupère les chaines dont elle dépend
 		for (ChaineDeProduction c : chaines) {
-			for (ChaineDeProduction c1 : chaines_entrees_limites_non_concurrence) {
-				for(Element elEntree : c1.getEntree().keySet()) {
+			for (ChaineDeProduction chaine_pere : chaines_entrees_limites_non_concurrence) {
+				for(Element elEntree : chaine_pere.getEntree().keySet()) {
 					for (Element elSorti: c.getSortie().keySet()) {
 						if ((elEntree.getCode() == elSorti.getCode()) && elEntree.getAchat()==0) {
-							chaines_entrees_limites_non_concurrence_dependances.put(c, c1.getCode());
+							chaines_entrees_limites_non_concurrence_dependances_fils.add(c);
+							chaines_entrees_limites_non_concurrence_peres.add(chaine_pere);
 						}
 					}
 				}
 			}
 		}
+		
+		//On remplie ensuite la chaine (graphe) chaines_limites_non_concurrence_peres_fils
+		for (ChaineDeProduction c: chaines_entrees_limites_non_concurrence) {
+			ArrayList<ChaineDeProduction> a = new ArrayList<>();
+			a = this.get_dependances_chaines_concurrence(chaines_entrees_limites_non_concurrence_dependances_fils, 
+															chaines_entrees_limites_non_concurrence_peres, c.getCode());
+			chaines_entrees_limites_non_concurrence_peres_fils.put(c, a);
+		}		
 
 		
-<<<<<<< HEAD
 		//Affiche les chaines dont dependent les chaines dont les elements en entrees sont non achetable mais aucune concurrence
 		for (ChaineDeProduction c : chaines_entrees_limites_non_concurrence_peres_fils.keySet()) {
 			System.out.println("Chaines entrees limités sans concurrence " + c.getCode());
@@ -243,54 +250,29 @@ public class CalculesActivitesTempsChaines {
 							if ((eStock.getQuantite() < c.getEntree().get(eChaine))) {
 								System.out.println(c.getCode() + " ne dispose pas d'élement suffisant pour produire");
 								System.out.println("\tElement concerné: " + eChaine.getCode() + ":" + eChaine.getNom());
-=======
-		for (ChaineDeProduction c : chaines_entrees_limites_non_concurrence) {
-			if (!chaines_entrees_limites_non_concurrence_dependances.containsValue(c.getCode())) {
-				chaines_entrees_limites_sans_dependances.add(c);
-			}
-		}
-		
-		//Si les elements en entrée d'une chaine ne sont pas achetable et qu'aucune chaine produisant cet élement en entrée n'a
-		//été selectionné, alors on regarde dans le stock si l'élement en question est en quantité suffisante
-		for (ChaineDeProduction c : chaines_entrees_limites_sans_dependances) {
-			for (ChaineDeProduction c1 : list_chaines_usine) {
-				if (c.getCode() == c1.getCode()) {
-					for (Element eUsine : c1.getEntree().keySet()) {
-						for (Element eChaine : c.getEntree().keySet()) {
-							if (eUsine.getCode() == eChaine.getCode()) {
-								if (eUsine.getQuantite() < c.getEntree().get(eChaine)) {
-									System.out.println(c.getCode() + " ne dispose pas d'elements suffisants pour produire");
-									System.out.println("Element concerné: " + eChaine.getCode() + ":" + eChaine.getNom());
-								}
-								else {
-									System.out.println("OK");
-								}
->>>>>>> cac59ed4a39a0aa38a5b7ffcdeff3034c7031746
 							}
 						}
 					}
 				}
+				
+			}
+			else {
+				for (ChaineDeProduction c1 : chaines_entrees_limites_non_concurrence_peres_fils.get(c)) {
+					System.out.println("Dependances: " + c1.getCode());
+				}
 			}
 		}
 		
-		
-		//Affiche les chaines dont dependent les chaines dont les elements en entrees sont non achetable mais aucune concurrence
-		for (ChaineDeProduction c : chaines_entrees_limites_non_concurrence_dependances.keySet()) {
-			System.out.println("La chaine: " + chaines_entrees_limites_non_concurrence_dependances.get(c) + " depend de la chaine " + c.getCode());
-			System.out.println("La chaine: " + chaines_entrees_limites_non_concurrence_dependances.get(c) +
-					" a un temsp de " + this.rechercheChaine(chaines, chaines_entrees_limites_non_concurrence_dependances.get(c)).getTemps()
-					+ " et depend de " + c.getCode() + " qui a un temps de " + c.getTemps());
-			System.out.println("On aura ainsi un temps total de " + (this.rechercheChaine(chaines, chaines_entrees_limites_non_concurrence_dependances.get(c)).getTemps() + c.getTemps()));
-		}
-		
-		
+		/*
+		 * CHAINES DONT LES QUANTITES SONT LIMITEES ET SONT EN CONCURRENCE
+		 */
 		//Pour les chaines dont les quantites demandées en entrée sont limitées (non achetable) et se disputent les memes élements
-		//On recupère la chaine ou les chaines dont elle dépend
+		//On recupère les chaines dont elle dépend
 		for (ChaineDeProduction c : chaines) {
 			for (ChaineDeProduction c1 : chaine_disputant_meme_entree) {
 				for(Element elEntree : c1.getEntree().keySet()) {
 					for (Element elSorti: c.getSortie().keySet()) {
-						if (elEntree.getCode() == elSorti.getCode()) {
+						if (elEntree.getCode() == elSorti.getCode() && elEntree.getAchat()==0) {
 							//System.out.println("La chaine " + c1.getCode() + " depend de " + c.getCode());
 							chaines_entrees_limites_concurrence_dependances_fils.add(c);
 							chaines_entrees_limites_concurrence_peres.add(c1);
@@ -300,31 +282,46 @@ public class CalculesActivitesTempsChaines {
 			}
 		}
 		
-		int j = 0;
-		int temps = 0;
-		//Blocage ici, il faut checker la stratégie a prendre lorsque les chaines se disputent les memes elements
-		//Checker si la quantité totale des elements en entree est disponible pour toutes les chaines
-		//Checker celui qui prendra le moins de temps.
+		//On remplie ensuite la chaine (graphe) chaines_limites_concurrence_peres_fils
 		for (ChaineDeProduction c: chaine_disputant_meme_entree) {
-			temps = c.getTemps();
 			ArrayList<ChaineDeProduction> a = new ArrayList<>();
 			a = this.get_dependances_chaines_concurrence(chaines_entrees_limites_concurrence_dependances_fils, 
 															chaines_entrees_limites_concurrence_peres, c.getCode());
-			
-			
-			for (ChaineDeProduction tmp : a) {
-				this.majEntree(c, elements);
-				this.majSortie(c, elements);
-			}
-			System.out.println(c.getCode() + " a un temps de " + c.getTemps() + " et pour dependances:");
-			for (ChaineDeProduction tmp : a) {
-				System.out.println("\t> " + tmp.getCode() + " avec un temps de " + tmp.getTemps());
-				temps += tmp.getTemps();
-			}
-			
-			System.out.println("Temps total pour la chaine " + c.getCode() + ": " + temps);
-			System.out.println("-------");
+			chaines_entrees_limites_concurrence_peres_fils.put(c, a);
 		}		
+		
+		for (ChaineDeProduction c : chaines_entrees_limites_concurrence_peres_fils.keySet()) {
+			//Si les chaines dont dépend la chaine qui demande des entrées non achetable est vide
+			if (chaines_entrees_limites_concurrence_peres_fils.get(c).isEmpty()) {
+				System.out.println("La chaine dont dépend " + c.getCode() + " n'a pas été sélectionner");
+				for (Element eChaine: c.getEntree().keySet()) {
+					for (Element eStock : elements) {
+						//Element non achetable en quantité insuffisante
+						if (eChaine.getCode() == eStock.getCode() && eStock.getAchat() == 0) {
+							if ((eStock.getQuantite() < c.getEntree().get(eChaine))) {
+								System.out.println(c.getCode() + " ne dispose pas d'élement suffisant pour produire");
+								System.out.println("\tElement concerné: " + eChaine.getCode() + ":" + eChaine.getNom());
+							}
+							else {
+								System.out.println("OK");
+							}
+						}
+						//Element achetable en quantité insuffisante
+						else if(eChaine.getCode() == eStock.getCode()){
+							if ((eStock.getQuantite() < c.getEntree().get(eChaine))) {
+								System.out.println(c.getCode() + " ne dispose pas d'élement suffisant pour produire");
+								System.out.println("Element concerné: " + eChaine.getCode() + ":" + eChaine.getNom());
+							}
+						}
+					}
+				}
+			}
+			else {
+				for (ChaineDeProduction c1 : chaines_entrees_limites_concurrence_peres_fils.get(c)) {
+					System.out.println("Dependances: " + c1.getCode());
+				}
+			}
+		}
 		
 	}
 	

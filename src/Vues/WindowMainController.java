@@ -146,9 +146,9 @@ public class WindowMainController{
 		this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
 		this.stockages = new ArrayList<>();
-		String cheminElements = "../DonneesV2/elements.csv";
-		String cheminChaines = "../DonneesV2/chaines.csv";
-		String cheminStockages = "../DonneesV2/stockage.csv";
+		String cheminElements = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV2/elements.csv";
+		String cheminChaines = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV2/chaines.csv";
+		String cheminStockages = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV2/stockage.csv";
     	DonneesLibraryCSV data = new DonneesLibraryCSV(cheminElements, cheminChaines, cheminStockages);
 		this.elements = data.getElements();
 		this.chaines = data.getChaines();
