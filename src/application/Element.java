@@ -18,6 +18,7 @@ public class Element {
 	private StringProperty unite = new SimpleStringProperty();
 	private DoubleProperty achat = new SimpleDoubleProperty();
 	private DoubleProperty vente = new SimpleDoubleProperty();
+	private StringProperty stockage = new SimpleStringProperty();
 	private int demande;
 	
 	/**
@@ -28,7 +29,7 @@ public class Element {
 	 * @param achat
 	 * @param vente
 	 */
-	public Element(String code, String nom, double quantite, String unite, double achat, double vente, int demande) {
+	public Element(String code, String nom, double quantite, String unite, double achat, double vente, String stockage, int demande) {
 		super();
 		this.code = new SimpleStringProperty(code);
 		this.nom = new SimpleStringProperty(nom);
@@ -36,13 +37,25 @@ public class Element {
 		this.unite = new SimpleStringProperty(unite);
 		this.achat = new SimpleDoubleProperty(achat);
 		this.vente = new SimpleDoubleProperty(vente);
+		this.stockage = new SimpleStringProperty(stockage);
 		this.demande = demande;
 	}
 	
+	/**
+	 * @param e
+	 */
 	public Element(Element e) {
-		this(e.getCode(), e.getNom(), e.getQuantite(), e.getUnite(), e.getAchat(), e.getVente(), e.getDemande());
+		this(e.getCode(), e.getNom(), e.getQuantite(), e.getUnite(), e.getAchat(), e.getVente(), e.getStockage(), e.getDemande());
 	}
 	
+	public String getStockage() {
+		return stockage.getValue();
+	}
+
+	public void setStockage(String stockage) {
+		this.stockage.set(stockage);
+	}
+
 	/**
 	 * @return
 	 */
@@ -134,9 +147,7 @@ public class Element {
 	@Override
 	public String toString() {
 		return "Element [code=" + code + ", nom=" + nom + ", quantite=" + quantite + ", unite=" + unite + ", achat="
-				+ achat + ", vente=" + vente + ", demande=" + demande + "]";
+				+ achat + ", vente=" + vente + ", stockage=" + stockage + ", demande=" + demande + "]";
 	}
-
-	
 	
 }

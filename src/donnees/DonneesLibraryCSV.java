@@ -54,12 +54,15 @@ public class DonneesLibraryCSV extends GestionDonneesFichiers{
 			    if(record.get("Quantite") != null) {
 				    quantite = Double.parseDouble(record.get("Quantite"));
 			    }
+			    
 			    String unite = record.get("unite");
 			    
 			    double achat = 0.0;
 			    if(record.get("achat") != null) {
 			    	achat = Double.parseDouble(record.get("achat"));
 			    }
+			    
+			    String stockage = record.get("stockage");
 			    
 			    double vente = 0.0;
 			    if(record.get("vente") != null){
@@ -68,7 +71,7 @@ public class DonneesLibraryCSV extends GestionDonneesFichiers{
 			    
 			    int demande = Integer.parseInt(record.get("Demande"));
 				
-				Element el = new Element(code, nom, quantite, unite, achat, vente, demande);
+				Element el = new Element(code, nom, quantite, unite, achat, vente, stockage, demande);
 				this.elements.add(el);
 			}
 			elem.close();
