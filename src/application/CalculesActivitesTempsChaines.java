@@ -102,7 +102,7 @@ public class CalculesActivitesTempsChaines {
 		i++;
 	}
 	
-	public void calculTemps(ArrayList<Element> elements, ArrayList<ChaineDeProduction> list_chaines_usine, ArrayList<ChaineDeProduction> chaines, Double[] niveau, ArrayList<Stockage> stockages) {
+	public void calculTemps(ArrayList<Element> elements, ArrayList<ChaineDeProduction> list_chaines_usine, ArrayList<ChaineDeProduction> chaines, Double[] niveau) {
 		ArrayList<ChaineDeProduction> chaines_independantes = new ArrayList<>();
 		ArrayList<ChaineDeProduction> chaines_entrees_limites = new ArrayList<>();
 		ArrayList<ChaineDeProduction> chaines_entrees_limites_non_concurrence = new ArrayList<>();
@@ -160,11 +160,14 @@ public class CalculesActivitesTempsChaines {
 				double qteProduite = sortie.getQuantite(); //on recupère la quantité produite
 				int nbCuves = (int) Math.ceil(qteProduite/sortie.getStockage().getCapacite()); //on calcule le nombre de cuves à utiliser
 				if(nbCuves < sortie.getStockage().getQuantiteDispo()) {
+					sortie.getStockage().reduireQuantite(nbCuves);
+					/*
 					for(Stockage sto : stockages) {
 						if(sortie.getStockage().getCode().equals(sto.getCode())) {
 							sto.reduireQuantite(nbCuves); // on met a jour les moyens de stockage dispo							
 						}
 					}
+					*/
 				}
 				else {
 					stockImpossible += "Il manque "+nbCuves+" recipent(s) pour stocker des "+sortie.getNom()+"\n";
@@ -177,11 +180,14 @@ public class CalculesActivitesTempsChaines {
 				Stockage simulStockage = new Stockage(entree.getStockage());
 				int nbCuves = (int) Math.ceil(qteProduite/simulStockage.getCapacite()); //on calcule le nombre de cuves à utiliser
 				if(nbCuves < entree.getStockage().getQuantiteDispo()) {
+					entree.getStockage().reduireQuantite(nbCuves);
+					/*
 					for(Stockage sto : stockages) {
 						if(entree.getStockage().getCode().equals(sto.getCode())) {
 							sto.reduireQuantite(nbCuves); // on met a jour les moyens de stockage dispo							
 						}
 					}
+					*/
 				}
 				else {
 					stockImpossible += "Il manque "+nbCuves+" recipent(s) pour stocker des "+entree.getNom()+" en entree de la chaine "+c.getNom()+"\n";

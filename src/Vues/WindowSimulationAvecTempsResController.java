@@ -197,7 +197,7 @@ public class WindowSimulationAvecTempsResController {
         }
 		
     	CalculesActivitesTempsChaines calc = new CalculesActivitesTempsChaines();
-    	calc.calculTemps(this.elements, listChainesUsines, this.chaines, niveau, this.stockages);
+    	calc.calculTemps(this.elements, listChainesUsines, this.chaines, niveau);
     	
     }
 }
