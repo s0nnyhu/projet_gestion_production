@@ -1,6 +1,8 @@
 package Vues;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import application.ChaineDeProduction;
 import application.Element;
@@ -117,12 +119,14 @@ public class WindowMainController{
      */
     @FXML
     void chargerDonnees() {
+    	Path currentRelativePath = Paths.get("");
+    	String s = currentRelativePath.toAbsolutePath().toString();
 		this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
 		this.stockages = new ArrayList<>();
-		String cheminElements = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV2/elements.csv";
-		String cheminChaines = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV2/chaines.csv";
-		String cheminStockages = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV2/stockage.csv";
+		String cheminElements = s + "/elements.csv";
+		String cheminChaines = s + "/chaines.csv";
+		String cheminStockages = s + "/stockage.csv";
 
     	DonneesLibraryCSV data = new DonneesLibraryCSV(cheminElements, cheminChaines, cheminStockages);
 		this.elements = data.getElements();
