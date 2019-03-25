@@ -26,10 +26,15 @@ public class CalculesActivitesTempsChaines {
 	private int tpsAvecConcurrences;
 	private int tpsTotal;
 	
-	public CalculesActivitesTempsChaines() {
 
-	}
-
+	/**
+	 * Permet de calculer l'efficacité d'une chaine de production, en prenant en compte les élements à acheter et en mettant à jour le stock
+	 * @param elements
+	 * @param chaines
+	 * @param niveau
+	 * @param listAchat
+	 * @param production
+	 */
 	public void calcul(ArrayList<Element> elements, ArrayList<ChaineDeProduction> chaines, Double[] niveau,ArrayList<Element> listAchat, ArrayList<Production> production) {
 		boolean estPossible = false;
 		int i = 0;
@@ -115,6 +120,13 @@ public class CalculesActivitesTempsChaines {
 		i++;
 	}
 	
+	/**
+	 * Permet d'évaluer si la production est possible dans les temps, en prenant en compte les élements non achetables et le stockage
+	 * @param elements
+	 * @param list_chaines_usine
+	 * @param chaines
+	 * @param niveau
+	 */
 	public void calculTemps(ArrayList<Element> elements, ArrayList<ChaineDeProduction> list_chaines_usine, ArrayList<ChaineDeProduction> chaines, Double[] niveau) {
 		this.estPossible = true;
 		this.chainesIndependants = "";
@@ -174,17 +186,10 @@ public class CalculesActivitesTempsChaines {
 			HashMap<Element, Double> sorties = c.getSortie();
 			this.stockImpossible = "";
 			for(Element sortie : sorties.keySet()) { //pour chaque sortie
-				double qteProduite = sortie.getQuantite(); //on recup�re la quantit� produite
-				int nbCuves = (int) Math.ceil(qteProduite/sortie.getStockage().getCapacite()); //on calcule le nombre de cuves � utiliser
+				double qteProduite = sortie.getQuantite(); //on recupère la quantité produite
+				int nbCuves = (int) Math.ceil(qteProduite/sortie.getStockage().getCapacite()); //on calcule le nombre de cuves à utiliser
 				if(nbCuves < sortie.getStockage().getQuantiteDispo()) {
 					sortie.getStockage().reduireQuantite(nbCuves);
-					/*
-					for(Stockage sto : stockages) {
-						if(sortie.getStockage().getCode().equals(sto.getCode())) {
-							sto.reduireQuantite(nbCuves); // on met a jour les moyens de stockage dispo							
-						}
-					}
-					*/
 				}
 				else {
 					this.stockImpossible += "Il manque "+nbCuves+" recipent(s) pour stocker des "+sortie.getNom()+"\n";
@@ -193,9 +198,9 @@ public class CalculesActivitesTempsChaines {
 			//Gestion du stockage des entree des chaines
 			HashMap<Element, Double> entrees = c.getEntree();
 			for(Element entree : entrees.keySet()) { //pour chaque sortie
-				double qteProduite = entree.getQuantite(); //on recup�re la quantit� produite
+				double qteProduite = entree.getQuantite(); //on recupère la quantité produite
 				Stockage simulStockage = new Stockage(entree.getStockage());
-				int nbCuves = (int) Math.ceil(qteProduite/simulStockage.getCapacite()); //on calcule le nombre de cuves � utiliser
+				int nbCuves = (int) Math.ceil(qteProduite/simulStockage.getCapacite()); //on calcule le nombre de cuves à utiliser
 				if(nbCuves < entree.getStockage().getQuantiteDispo()) {
 					entree.getStockage().reduireQuantite(nbCuves);
 					/*
@@ -251,14 +256,12 @@ public class CalculesActivitesTempsChaines {
 		for (ChaineDeProduction c : chaines_independantes) {
 			this.majEntree(c, elements);
 			this.majSortie(c, elements);
-			//System.out.println(c.getCode() + " mettra " + c.getTemps() + "h pour produire les élements suivants:");
 			this.chainesIndependants += c.getCode() + " mettra " + c.getTemps() + "h pour produire les élements suivants:\n";
 			//Vu que les chaînes démarrent en parallèle, le temps mis seras celle la plus longue
 			if (c.getTemps()>=this.tpsIndependant) {
 				this.tpsIndependant = c.getTemps();
 			}
 			for (Element e : c.getSortie().keySet()) {
-				//System.out.println("\t > " + c.getSortie().get(e) + " " + e.getNom());
 				this.chainesIndependants += "\t > " + c.getSortie().get(e) + " " + e.getNom() + "\n";
 			}
 		}
@@ -300,15 +303,13 @@ public class CalculesActivitesTempsChaines {
 			this.majSortie(c, elements);
 			System.out.println("Chaines entrees limités sans concurrence " + c.getCode());
 			if (chaines_entrees_limites_non_concurrence_peres_fils.get(c).isEmpty()) {
-				//System.out.println("La chaine dont dépend " + c.getCode() + " n'a pas été sélectionner");
 				this.chainesDependantsSansConcurrences += "La chaine dont dépend " + c.getCode() + " n'a pas été sélectionner\n";
 				for (Element eChaine: c.getEntree().keySet()) {
 					for (Element eStock : elements) {
 						//Element non achetable en quantité insuffisante
 						if (eChaine.getCode() == eStock.getCode() && eStock.getAchat() == 0) {
 							if ((eStock.getQuantite() < c.getEntree().get(eChaine))) {
-								//System.out.println(c.getCode() + " ne dispose pas d'élement suffisant pour produire");
-								//System.out.println("Element concerné: " + eChaine.getCode() + ":" + eChaine.getNom());
+								this.estPossible = false;
 								this.chainesDependantsSansConcurrences += c.getCode() + " ne dispose pas d'élement suffisant pour produire\n";
 								this.chainesDependantsSansConcurrences += "\tElement concerné: " + eChaine.getCode() + ":" + eChaine.getNom() + "\n";
 							}
@@ -396,7 +397,6 @@ public class CalculesActivitesTempsChaines {
 			else {
 				int tpsFils = 0;
 				for (ChaineDeProduction c1 : chaines_entrees_limites_concurrence_peres_fils.get(c)) {
-					//System.out.println("Dependances: " + c1.getCode());
 					tpsFils += c1.getTemps();
 					
 				}
@@ -445,6 +445,9 @@ public class CalculesActivitesTempsChaines {
 	}
 	
 	
+	/**
+	 * @return temps total de production
+	 */
 	public int getTpsTotal() {
 		this.tpsTotal = 0;
 		if (this.tpsSansConcurrences >= this.tpsAvecConcurrences) {
@@ -458,6 +461,11 @@ public class CalculesActivitesTempsChaines {
 		}
 		return tpsTotal;
 	}
+	
+	
+	/**
+	 * @return temps total de production (String)
+	 */
 	public String getStrTpsTotal() {
 		//Vu les démarrages en parallèles et la prises en compte du temps directements dans les dépendances,
 		//Le temps total sera le temps maximal
@@ -474,22 +482,41 @@ public class CalculesActivitesTempsChaines {
 		return "Le temps total de production est de "+this.tpsTotal + "h\n";
 	}
 	
+	
+	/**
+	 * @return possibilite de la production si les elements non achetables sont disponibles en quantité suffisante ou non
+	 */
 	public boolean getEstPossible() {
 		return this.estPossible;
 	}
 	
+	/**
+	 * @return Détail du démarrage des chaines indépendantes
+	 */
 	public String getChainesIndependants() {
 		return this.chainesIndependants;
 	}
 	
+	/**
+	 * @return Détail du démarrage et des dépendances des chaines qui ne se disputent pas les memes elements mais sont dépendants.
+	 */
 	public String getChainesDependantsSansConcurrences() {
 		return this.chainesDependantsSansConcurrences;
 	}
 	
+	/**
+	 * @return Détail du démarrage et des dépendances des chaines qui se disputent les memes elements
+	 */
 	public String getChainesDependantsAvecConcurrences() {
 		return this.chainesDependantsAvecConcurrences;
 	}
 	
+	/**
+	 * @param list_dependances
+	 * @param list_peres
+	 * @param code d'une chaine
+	 * @return Retourne une arraylist de chaines correspondant aux dépendances d'une chaine
+	 */
 	private ArrayList<ChaineDeProduction> get_dependances_chaines_concurrence(ArrayList<ChaineDeProduction> list_dependances,
 			ArrayList<ChaineDeProduction> list_peres, String code) {
 		int i = 0;
@@ -505,15 +532,12 @@ public class CalculesActivitesTempsChaines {
 	}
 	
 	
-	private ChaineDeProduction rechercheChaine(ArrayList<ChaineDeProduction> c, String code) {
-		for(ChaineDeProduction c1 : c) {
-			if(c1.getCode() == code) {
-				return c1;
-			}
-		}
-		return null;
-	}
-	
+	/**
+	 * @param chaine
+	 * @param elements
+	 * @param niveau
+	 * @param indice
+	 */
 	private void majEntree(ChaineDeProduction c, ArrayList<Element> elements, Double[] niveau, int indice) {
 		for (Element elEntree: c.getEntree().keySet()) {
 			for (Element elStock : elements) {
@@ -525,6 +549,12 @@ public class CalculesActivitesTempsChaines {
 		}
 	}
 	
+	/**
+	 * @param chaine
+	 * @param elements
+	 * @param niveau
+	 * @param indice
+	 */
 	private void majSortie(ChaineDeProduction c, ArrayList<Element> elements, Double[] niveau, int indice) {
 		for (Element elSorti : c.getSortie().keySet()) {
 			for (Element elStock: elements) {
@@ -535,6 +565,10 @@ public class CalculesActivitesTempsChaines {
 		}
 	}
 	
+	/**
+	 * @param chaine
+	 * @param elements
+	 */
 	private void majEntree(ChaineDeProduction c, ArrayList<Element> elements) {
 		for (Element elEntree: c.getEntree().keySet()) {
 			for (Element elStock : elements) {
@@ -546,6 +580,10 @@ public class CalculesActivitesTempsChaines {
 		}
 	}
 	
+	/**
+	 * @param chaine
+	 * @param elements
+	 */
 	private void majSortie(ChaineDeProduction c, ArrayList<Element> elements) {
 		for (Element elSorti : c.getSortie().keySet()) {
 			for (Element elStock: elements) {
@@ -556,6 +594,11 @@ public class CalculesActivitesTempsChaines {
 		}
 	}
 	
+	/**
+	 * @param chaine
+	 * @param elements
+	 * @return cout de vente
+	 */
 	private double calculCoutVente(ChaineDeProduction c, ArrayList<Element> elements) {
 		double coutVente = 0;
 		for (Element elSorti : c.getSortie().keySet()) {
@@ -570,6 +613,9 @@ public class CalculesActivitesTempsChaines {
 		return coutVente;
 	}
 	
+	/**
+	 * @return La liste des stockages impossible (en forme de String)
+	 */
 	public String getStockImpossible() {
 		return this.stockImpossible;
 	}

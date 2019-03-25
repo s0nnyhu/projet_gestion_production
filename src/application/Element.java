@@ -8,7 +8,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 /**
- * @author R�gis
+ * @author R�gis
  *
  */
 public class Element {
@@ -23,6 +23,7 @@ public class Element {
 	private int demande;
 	
 	/**
+	 * Constructeur
 	 * @param code
 	 * @param nom
 	 * @param quantite
@@ -43,13 +44,17 @@ public class Element {
 		this.demande = demande;
 	}
 	/**
-	 * @param e
+	 * Constructeur
+	 * @param Element
 	 */
 	public Element(Element e) {
 		this(e.getCode(), e.getNom(), e.getQuantite(), e.getUnite(), e.getAchat(), e.getVente(), e.getStockage(), e.getDemande());
 	}
 	
 	
+	/**
+	 * @return Le nom du stock
+	 */
 	public String getNomStock() {
 		return nomStock.getValue();
 	}
@@ -62,37 +67,40 @@ public class Element {
 		return stockage;
 	}
 
+	/**
+	 * @param stockage
+	 */
 	public void setStockage(Stockage stockage) {
 		this.stockage = stockage;
 	}
 
 	/**
-	 * @return
+	 * @return Le code d'un élement
 	 */
 	public String getCode() {
 		return code.getValue();
 	}
 	/**
-	 * @param code
+	 * @param code: Le code d'un élement
 	 */
 	public void setCode(String code) {
 		this.code.set(code);
 	}
 	/**
-	 * @return
+	 * @return Le nom d'un élement
 	 */
 	public String getNom() {
 		return nom.getValue();
 	}
 
 	/**
-	 * @param nom
+	 * @param nom: le nom d'un élement
 	 */
 	public void setNom(String nom) {
 		this.nom.set(nom);
 	}
 	/**
-	 * @return
+	 * @return La quantité d'un élements dans l'usine
 	 */
 	public double getQuantite() {
 		return quantite.getValue();
@@ -104,7 +112,7 @@ public class Element {
 		this.quantite.set(quantite);
 	}
 	/**
-	 * @return
+	 * @return L'unité d'un élement
 	 */
 	public String getUnite() {
 		return unite.getValue();
@@ -116,39 +124,39 @@ public class Element {
 		this.unite.set(unite);
 	}
 	/**
-	 * @return
+	 * @return Le prix d'achat d'un élement
 	 */
 	public double getAchat() {
 		return achat.getValue();
 	}
 	/**
-	 * @param achat
+	 * @param achat: Le prix d'achat d'un élement
 	 */
 	public void setAchat(double achat) {
 		this.achat.set(achat);
 	}
 	/**
-	 * @return
+	 * @return Le prix de vente d'un élement
 	 */
 	public double getVente() {
 		return vente.getValue();
 	}
 	/**
-	 * @param vente
+	 * @param vente: Le prix de vente d'un élement
 	 */
 	public void setVente(double vente) {
 		this.vente.set(vente);
 	}
 	
 	/**
-	 * @return
+	 * @return La demande d'un élement
 	 */
 	public int getDemande() {
 		return demande;
 	}
 
 	/**
-	 * @param demande
+	 * @param demande: La demande d'un élement
 	 */
 	public void setDemande(int demande) {
 		this.demande = demande;

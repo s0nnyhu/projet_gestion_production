@@ -6,10 +6,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.CheckBox;
 
-/**
- * @author R�gis
- *
- */
 public class ChaineDeProduction implements Comparable<ChaineDeProduction> {
 	private CheckBox ckBox;
 	private StringProperty code = new SimpleStringProperty();
@@ -53,10 +49,16 @@ public class ChaineDeProduction implements Comparable<ChaineDeProduction> {
 	}
 	
 
+	/**
+	 * @return checkbox
+	 */
 	public CheckBox getCkBox() {
 		return ckBox;
 	}
 
+	/**
+	 * @param checkbox
+	 */
 	public void setCkBox(CheckBox ckBox) {
 		this.ckBox = ckBox;
 	}
@@ -65,90 +67,91 @@ public class ChaineDeProduction implements Comparable<ChaineDeProduction> {
 		this(c.getCode(), c.getNom(), c.getEntree(), c.getSortie(), c.getTemps());
 	}
 	/**
-	 * @return
+	 * @return Le code d'une chaine
 	 */
 	public String getCode() {
 		return code.getValue();
 	}
 	/**
-	 * @param code
+	 * @param code: Le code d'une chaine
 	 */
 	public void setCode(String code) {
 		this.code.set(code);
 	}
 	/**
-	 * @return
+	 * @return Le nom d'une chaine
 	 */
 	public String getNom() {
 		return nom.getValue();
 	}
 	/**
-	 * @param nom
+	 * @param nom: Le nom d'une chaine
 	 */
 	public void setNom(String nom) {
 		this.nom.set(nom);
 	}
 	
 	/**
-	 * @return
+	 * @return la satisfaction de la demande
 	 */
 	public String getSatisDemande() {
 		return satisDemande.getValue();
 	}
 
 	/**
-	 * @param satisDemande
+	 * @param La satisfaction de la demande (String)
 	 */
 	public void setSatisDemande(String satisDemande) {
 		this.satisDemande.set(satisDemande);
 	}
 
 	/**
-	 * @return
+	 * @return Les élements en entrée d'une chaine en String
 	 */
 	public String getStrEntree() {
 		return strEntree.getValue();
 	}
 	/**
-	 * @param strEntree
+	 * @param strEntree (Elements en entrée sous formes de String)
 	 */
 	public void setStrEntree(String strEntree) {
 		this.strEntree.set(strEntree);
 	}
 	
 	/**
-	 * @return
+	 * @return strSorti (Elements en sortie sous formes de String)
 	 */
 	public String getStrSorti() {
 		return strSorti.getValue();
 	}
 	/**
-	 * @param strSorti
+	 * @param Les élements en sortie d'une chaine en String
 	 */
 	public void setStrSorti(String strSorti) {
 		this.strSorti.set(strSorti);
 	}
 	
 	/**
-	 * @return
+	 * @return Les élements en sortie d'une chaine, HashMap<Element, Double>
 	 */
 	public HashMap<Element, Double> getEntree() {
 		return entree;
 	}
 	/**
-	 * @param entree
+	 * @param Les élements en entrée d'une chaine, HashMap<Element, Double>
 	 */
 	public void setEntree(HashMap<Element, Double> entree) {
 		this.entree = entree;
 	}
+	
 	/**
-	 * @return
+	 * @return Les élements en sortie d'une chaine, HashMap<Element, Double>
 	 */
 	public HashMap<Element, Double> getSortie() {
 		return sortie;
 	}
 	/**
-	 * @param sortie
+	 * @param sortie (HashMap<Element, Double> sortie)
 	 */
 	public void setSortie(HashMap<Element, Double> sortie) {
 		this.sortie = sortie;
@@ -156,7 +159,7 @@ public class ChaineDeProduction implements Comparable<ChaineDeProduction> {
 	
 
 	/**
-	 * @return
+	 * @return Demande de la chaine de production
 	 */
 	public int getDemande() {
 		return demande;
@@ -164,7 +167,7 @@ public class ChaineDeProduction implements Comparable<ChaineDeProduction> {
 
 
 	/**
-	 * @return
+	 * @return Temps de la chaine de production
 	 */
 	public int getTemps() {
 		return temps;

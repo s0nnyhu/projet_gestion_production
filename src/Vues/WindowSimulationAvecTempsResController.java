@@ -117,6 +117,10 @@ public class WindowSimulationAvecTempsResController {
 	protected ArrayList<Stockage> stockages;
 	
     
+    /**
+     * Permet de charger le tableau Production
+     * @param ObservableList <Production> p
+     */
     void chargerSimulationProduction(ObservableList <Production> p) {
 		this.colChaine.setCellValueFactory(
                 new PropertyValueFactory<Production, String>("nom"));
@@ -133,7 +137,8 @@ public class WindowSimulationAvecTempsResController {
    
 
     /**
-     * @param e
+     * Permet de charger la bouvelle liste de stocks (tableau)
+     * @param ObservableList <Element> e
      */
     void chargerTabNewStock(ObservableList <Element> e) {
     		this.colCode.setCellValueFactory(
@@ -151,8 +156,10 @@ public class WindowSimulationAvecTempsResController {
     		this.tabNewStock.setItems(e);
     }
     
+
     /**
-     * @param e
+     * Permet de charger la liste d'achats (tableau)
+     * @param ObservableList <Element> o
      */
     void chargerListeAchats(ObservableList <Element> o) {
 		this.codeAchat.setCellValueFactory(
@@ -164,6 +171,7 @@ public class WindowSimulationAvecTempsResController {
 		this.tableauAchats.setItems(o);
     }
     /**
+     * Permet le retour (bouton retour)
      * @param event
      */
     
@@ -174,6 +182,7 @@ public class WindowSimulationAvecTempsResController {
     }
 
     /**
+     * Permet d'initialiser les données de la fenetre
      * @param sto 
      * @param niveau
      */
@@ -291,8 +300,6 @@ public class WindowSimulationAvecTempsResController {
     	}
     	
     	this.vboxRes.getChildren().add(estPossible);
-    	//System.out.println(tpsCalc.getChainesIndependants());
-    	//System.out.println(tpsCalc.getChainesIndependants());
     	
     }
 }

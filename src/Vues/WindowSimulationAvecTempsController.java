@@ -84,6 +84,7 @@ public class WindowSimulationAvecTempsController {
 	
 
     /**
+     * Permet d'ouvir la fenetre resultat de la simulation
      * @param event
      */
     @FXML
@@ -161,6 +162,7 @@ public class WindowSimulationAvecTempsController {
     }
     
     /**
+     * Permet d'initisaliser les données
      * @param stockages 
      * 
      */

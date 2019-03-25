@@ -17,6 +17,11 @@ public class DonneesLibraryCSV extends GestionDonneesFichiers{
 	boolean elementsLoaded;
 	boolean stockageLoaded;
 
+	/**
+	 * Constructeur
+	 * @param cheminElements
+	 * @param cheminChaines
+	 */
 	public DonneesLibraryCSV(String cheminElements, String cheminChaines) {
 		// TODO Auto-generated constructor stub
 		this.elements = new ArrayList<>();
@@ -24,6 +29,12 @@ public class DonneesLibraryCSV extends GestionDonneesFichiers{
 		this.chargerDonnees(cheminElements, cheminChaines);
 	}
 
+	/**
+	 * Constructeur
+	 * @param cheminElements
+	 * @param cheminChaines
+	 * @param cheminStockages
+	 */
 	public DonneesLibraryCSV(String cheminElements, String cheminChaines, String cheminStockages) {
 		this.stockages = new ArrayList<>();
 		this.elements = new ArrayList<>();
@@ -31,30 +42,48 @@ public class DonneesLibraryCSV extends GestionDonneesFichiers{
 		this.chargerDonnees(cheminElements, cheminChaines, cheminStockages);
 	}
 
+	/* (non-Javadoc)
+	 * @see donnees.DonneesUsine#getElements()
+	 */
 	public ArrayList<Element> getElements() {
 		return this.elements;
 	}
 	
+	/**
+	 * @return liste des chaines
+	 */
 	public ArrayList<ChaineDeProduction> getChaines() {
 		return this.chaines;
 	}
 	
+	/**
+	 * @return liste des stockages
+	 */
 	public ArrayList<Stockage> getStockages(){
 		return this.stockages;
 	}
 	
+	/* (non-Javadoc)
+	 * @see donnees.DonneesUsine#chargerDonnees()
+	 */
 	@Override
 	public void chargerDonnees() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see donnees.DonneesUsine#chargerDonnees(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public void chargerDonnees(String path_elements, String path_chaines) {
 		this.chargerElements(path_elements);
 		this.chargerChaines(path_chaines);
 	}
 	
+	/* (non-Javadoc)
+	 * @see donnees.DonneesUsine#chargerDonnees(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public void chargerDonnees(String path_elements, String path_chaines, String path_stockage) {
 		this.chargerStockage(path_stockage);
@@ -62,6 +91,10 @@ public class DonneesLibraryCSV extends GestionDonneesFichiers{
 		this.chargerChaines(path_chaines);
 	}
 	
+	/**
+	 * Permet de charger le stockage
+	 * @param path_stockage
+	 */
 	private void chargerStockage(String path_stockage) {
 		try {
 			FileReader sto = new FileReader(path_stockage);
@@ -91,6 +124,10 @@ public class DonneesLibraryCSV extends GestionDonneesFichiers{
 		}
 	}
 	
+	/**
+	 * Permet de charger les élements
+	 * @param path_elements
+	 */
 	private void chargerElements(String path_elements) {
 		try {
 			FileReader elem = new FileReader(path_elements);
@@ -138,6 +175,10 @@ public class DonneesLibraryCSV extends GestionDonneesFichiers{
 		}
 	}
 
+	/**
+	 * Permet de charger les chaines
+	 * @param path_chaines
+	 */
 	private void chargerChaines(String path_chaines) {
 		try {
 			FileReader ch = new FileReader(path_chaines);

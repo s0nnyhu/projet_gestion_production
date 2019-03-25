@@ -44,6 +44,7 @@ public class WindowMainController{
 
 
     /**
+     * Permet d'ouvrir la fenetre de visualisation de l'état des stocks et du stockage
      * @param event
      */
     @FXML
@@ -77,6 +78,10 @@ public class WindowMainController{
     	
     }
     
+    /**
+     * Permet d'ouvrir la fenetre Simulation
+     * @param event
+     */
     @FXML
     void openSimulationTemps(ActionEvent event){
     	try {
@@ -107,14 +112,17 @@ public class WindowMainController{
     	}
     }
     
+    /**
+     * Permet de charger les données au clic du bouton
+     */
     @FXML
     void chargerDonnees() {
 		this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
 		this.stockages = new ArrayList<>();
-		String cheminElements = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV2/elements.csv";
-		String cheminChaines = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV2/chaines.csv";
-		String cheminStockages = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV2/stockage.csv";
+		String cheminElements = "elements.csv";
+		String cheminChaines = "chaines.csv";
+		String cheminStockages = "stockage.csv";
     	DonneesLibraryCSV data = new DonneesLibraryCSV(cheminElements, cheminChaines, cheminStockages);
 		this.elements = data.getElements();
 		this.chaines = data.getChaines();

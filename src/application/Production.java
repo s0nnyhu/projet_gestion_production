@@ -20,6 +20,7 @@ public class Production{
 	private StringProperty satisDemande;
 	
 	/**
+	 * Constructeur
 	 * @param chaine
 	 * @param coutVente
 	 * @param efficacite
@@ -38,6 +39,13 @@ public class Production{
 		this.satisDemande  = new SimpleStringProperty();
 	}
 
+	/**
+	 * Constructeur
+	 * @param chaine
+	 * @param coutVente
+	 * @param efficacite
+	 * @param temps
+	 */
 	public Production(ChaineDeProduction chaine, double coutVente, double efficacite, int temps) {
 		super();
 		this.nom = new SimpleStringProperty(chaine.getCode()+" : "+chaine.getNom());
@@ -52,19 +60,22 @@ public class Production{
 		this.satisDemande  = new SimpleStringProperty();
 	}
 	
+	/**
+	 * @return La demande d'une chaine de production
+	 */
 	public double getDemande() {
 		return demande;
 	}
 
 	/**
-	 * @return
+	 * @return La chaine correspondant à la production
 	 */
 	public ChaineDeProduction getChaine() {
 		return chaine;
 	}
 
 	/**
-	 * @param chaine
+	 * @param chaine: La chaine correspondant à la production
 	 */
 	public void setChaine(ChaineDeProduction chaine) {
 		this.chaine = chaine;
@@ -72,70 +83,70 @@ public class Production{
 
 
 	/**
-	 * @return
+	 * @return Le cout de vente d'une production
 	 */
 	public double getCoutVente() {
 		return coutVente.getValue();
 	}
 
 	/**
-	 * @param coutVente
+	 * @param coutVente: Le cout de vente d'une production
 	 */
 	public void setCoutVente(double coutVente) {
 		this.coutVente.set(coutVente);
 	}
 	
 	/**
-	 * @return
+	 * @return Le nom d'une production (qui est une chaine)
 	 */
 	public String getNom() {
 		return nom.getValue();
 	}
 
 	/**
-	 * @param nom
+	 * @param nom: Le nom d'une production (qui est une chaine)
 	 */
 	public void setnom(String nom) {
 		this.nom.set(nom);
 	}
 
 	/**
-	 * @return
+	 * @return L'éfficacité d'une production
 	 */
 	public double getEfficacite() {
 		return efficacite.getValue();
 	}
 
 	/**
-	 * @param efficacite
+	 * @param efficacite: L'efficacité d'une production
 	 */
 	public void setEfficacite(double efficacite) {
 		this.efficacite.set(efficacite);
 	}
 
 	/**
-	 * @return
+	 * @return Le temps d'une production
 	 */
 	public IntegerProperty getTemps() {
 		return temps;
 	}
 
 	/**
-	 * @param temps
+	 * @param temps: Le temps d'une production
 	 */
 	public void setTemps(int temps) {
 		this.temps.set(temps);
 	}
 	
 	/**
-	 * @param satisDemande
+	 * @param satisDemande: La satisfaction de la demande (String)
 	 */
 	public void setSatisDemande(String satisDemande) {
 		this.satisDemande.set(satisDemande);
 	}
 
 	/**
-	 * @return
+	 * @return La satisfaction de la demande
 	 */
 	public String getSatisDemande() {
 		return satisDemande.getValue();

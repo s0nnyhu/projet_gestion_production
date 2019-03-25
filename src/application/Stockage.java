@@ -1,7 +1,7 @@
 package application;
 
 /**
- * @author R�gis
+ * @author Régis
  *
  */
 public class Stockage {
@@ -12,6 +12,7 @@ public class Stockage {
 	
 	
 	/**
+	 * Constructeur
 	 * @param code
 	 * @param nom
 	 * @param capacite
@@ -26,7 +27,8 @@ public class Stockage {
 	
 	
 	/**
-	 * @param sto
+	 * Constructeur
+	 * @param stockage
 	 */
 	public Stockage(Stockage sto) {
 		this(sto.getCode(), sto.getNom(), sto.getCapacite(), sto.getQuantiteDispo());
@@ -34,49 +36,49 @@ public class Stockage {
 
 
 	/**
-	 * @return
+	 * @return Le code d'un mode de stockage
 	 */
 	public String getCode() {
 		return code;
 	}
 	
 	/**
-	 * @param code
+	 * @param code: Le code d'un mode de stockage
 	 */
 	public void setCode(String code) {
 		this.code = code;
 	}
 	
 	/**
-	 * @return
+	 * @return Le nom d'un stockage
 	 */
 	public String getNom() {
 		return nom;
 	}
 
 	/**
-	 * @param nom
+	 * @param nom: Le nom d'un stockage
 	 */
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
 	
 	/**
-	 * @return
+	 * @return La capacité d'un stockage
 	 */
 	public double getCapacite() {
 		return capacite;
 	}
 	
 	/**
-	 * @param capacite
+	 * @param capacite: La capacité d'un stockage
 	 */
 	public void setCapacite(double capacite) {
 		this.capacite = capacite;
 	}
 	
 	/**
-	 * @return
+	 * @return La quantité disponible dans un stockage
 	 */
 	public int getQuantiteDispo() {
 		return quantiteDispo;
@@ -90,7 +92,7 @@ public class Stockage {
 	}
 	
 	/**
-	 * @param q
+	 * @param quantite
 	 */
 	public void reduireQuantite(int q) {
 		this.setQuantiteDispo(quantiteDispo-q);
