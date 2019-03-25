@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/sonny/eclipse-workspace/projet_gestion_production/commons-csv-1.6/commons-csv-1.6.jar"/>
-	<classpathentry kind="lib" path="/home/sonny/eclipse-workspace/projet_gestion_production/commons-csv-1.6/commons-csv-1.6-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Régis/Desktop/MIAGE/Projet/projet_gestion_production/commons-csv-1.6/commons-csv-1.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Régis/Desktop/MIAGE/Projet/projet_gestion_production/commons-csv-1.6/commons-csv-1.6-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
