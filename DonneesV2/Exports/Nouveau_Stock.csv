@@ -1,0 +1,52 @@
+Code;Nom;Quantite;unite;achat;vente
+E001;Sucre;458.0;kg;1.0,0.0
+E002;farine;1430.0;kg;1.0,0.0
+E003;farine complete;0.0;kg;1.0,0.0
+E004;blanc oeuf;200.0;litre;2.0,0.0
+E005;jaune oeuf;400.0;litre;2.0,0.0
+E006;beurre;2496.0;kg;3.0,0.0
+E007;margarine;0.0;kg;2.0,0.0
+E008;huile palme;4996.0;litre;1.0,0.0
+E009;huile colza;1486.0;litre;2.0,0.0
+E010;poudre a lever;50.0;kg;2.0,0.0
+E011;beurre cacao;782.0;kg;3.0,0.0
+E012;pate cacao;126.0;kg;12.0,0.0
+E013;proteine de lait;0.0;kg;1.0,0.0
+E014;lait en poudre;482.0;kg;1.0,0.0
+E015;emulsifiant;10.0;litre;3.0,0.0
+E016;levure;85.0;unite;3.0,0.0
+E017;confiture abricot;50.0;litre;2.0,0.0
+E018;noix;50.0;kg;5.0,0.0
+E019;Chocolat 30 %;38.0;litre;10.0,8.0
+E020;Chocolat 40 %;30.0;litre;12.0,10.0
+E021;Chocolat 50 %;48.0;litre;0.0,16.0
+E022;Pate biscuit Q1;10.0;litre;0.0,0.0
+E023;Pate biscuit Q2;10.0;litre;0.0,0.0
+E024;Pate biscuit Q3;10.0;litre;0.0,0.0
+E025;Gateau marque A;10.0;carton;0.0,10.0
+E026;Gateau marque B;10.0;carton;0.0,8.0
+E027;Gateau marque C;10.0;carton;0.0,7.0
+E028;Pate levée huile;50.0;kg;0.0,0.0
+E029;Pate levée beurre;0.0;kg;0.0,0.0
+E030;Brioche;10.0;carton;0.0,14.0
+E031;Brioche beurre;0.0;carton;0.0,16.0
+E032;Pain chocolat A;0.0;carton;0.0,14.0
+E033;Pain chocolat B;0.0;carton;0.0,12.0
+E034;Biscuit marque A;0.0;carton;0.0,8.0
+E035;Biscuit marque B et C;0.0;carton;0.0,7.0
+E036;Pate crepes;25.0;litre;9.0,0.0
+E037;Crepes natures;0.0;carton;0.0,7.0
+E038;Crepes fourrees choc;0.0;carton;0.0,9.0
+E039;Crepes fourres abricot;0.0;carton;0.0,8.0
+E040;Brownies marque A;0.0;carton;0.0,10.0
+E041;Brownies marque B;0.0;carton;0.0,8.0
+E042;Cookies Choc marque A;0.0;carton;0.0,9.0
+E043;Cookies Choc marque B;0.0;carton;0.0,8.0
+E044;Cookies Choc/Noix marque A;0.0;carton;0.0,9.0
+E045;Cookies Choc/Noix marque B;0.0;carton;0.0,8.0
+E046;Pate Madeleines Q1;0.0;litre;0.0,0.0
+E047;Pate Madeleines Q2;0.0;litre;0.0,0.0
+E048;Madeleines marque A;0.0;carton;0.0,8.0
+E049;Madeleines marque B;0.0;carton;0.0,7.0
+E050;Madeleines Choc;0.0;carton;0.0,8.0
+E051;Poudre a lever;22.0;kg;2.0,0.0

@@ -1,0 +1,31 @@
+Code;Nom;Entree (code,qte);Sortie (code,qte);Temps;Personnels non qualifies;Personnels qualifies
+C001;Chocolat 30 %;(E012,3),(E014,5),(E011,2),(E001,3);(E019,10);1;2;0
+C002;Chocolat 40 %;(E012,4),(E014,4),(E011,2),(E001,2);(E020,10);1;2;0
+C003;Chocolat 50 %;(E012,5),(E011,5),(E001,2);(E021,10);1;1;1
+C004;Pate biscuit Q1;(E002,5),(E001,3),(E008,2),(E051,1);(E022,10);3;2;1
+C005;Pate biscuit Q2;(E002,5),(E001,3),(E009,2),(E015),(E051,1);(E023,10);2;1;1
+C006;Pate biscuit Q3;(E002,5),(E001,3),(E006,2),(E051,1);(E024,10);2;1;1
+C007;Gateau marque A;(E024, 5),(E021, 1);(E025,5);2;1;2
+C008;Gateau marque B;(E023, 5),(E020, 1);(E026,5);2;1;2
+C009;Gateau marque C;(E022, 5),(E019, 1);(E027,5);2;1;1
+C010;Pate levée huile;(E002,20),(E009,5),(E001,5),(E016,2);(E028,25);3;2;2
+C011;Pate levée beurre;(E002,20),(E006,5),(E001,5),(E016,2);(E029,25);3;2;2
+C012;Brioche;(E028,10);(E030,10);2;1;1
+C013;Brioche beurre;(E029,10);(E031,10);2;0;2
+C014;Pain chocolat A;(E028,9),(E020,3);(E032,10);2;1;1
+C015;Pain chocolat B;(E028,9),(E019,3);(E033,10);2;1;1
+C016;Biscuit marque A;(E022,7);(E034,7);1;3;0
+C017;Biscuit marque B et C;(E023,8);(E035,8);1;2;0
+C018;Pate crepes;(E002,10),(E001,2),(E014,5),(E009,2),(E015,1);(E036,12);2;0;1
+C019;Crepes natures;(E036,10);(E037,5);4;2;1
+C020;Crepes fourrees choc;(E036,10),(E019,3);(E038,5);5;2;2
+C021;Crepes fourres abricot;(E036,10),(E017,3);(E039,5);5;1;2
+C022;Brownies marque A;(E023, 5),(E005, 2),(E021,2),(E018,1);(E040,6);2;1;1
+C023;Brownies marque B;(E024, 5),(E005, 2),(E020,2),(E018,1);(E040,6);2;2;0
+C024;Cookies Choc;(E024,4),(E020,1);(E044,3),(E045,2);1;2;1
+C025;Cookies Choc/Noix;(E024,4),(E020,1),(E018,1);(E046,3),(E047,2);1;2;1
+C026;Pate Madeleines Q1;(E002,5),(E001,3),(E006,1),(E051,1),(E004,1),(E005,1);(E046,11);1;3;2
+C027;Pate Madeleines Q2;(E002,5),(E001,3),(E008,1),(E051,1),(E004,1),(E005,1);(E047,11);1;4;1
+C028;Madeleines marque A;(E046,5);(E048,5);2;1;1
+C029;Madeleines marque B;(E047,5);(E049,5);2;1;1
+C030;Madeleines Choc;(E047,5),(E019,1);(E050,5);2;2;1

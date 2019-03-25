@@ -1,4 +1,0 @@
-Code;Nom;Entree (code,qte);Sortie (code,qte)
-C001;Propulsion;(E004,1),(E002,0.5), (E003,0.1)  ;(E005,1)
-C002;Coques;(E002, 5),(E003,1);(E006,10)
-C003;Drones;(E005, 24),(E006,4),(E001,8);(E007,4)
