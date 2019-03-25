@@ -22,12 +22,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button id="btnEssaiProd" fx:id="btnEssaiProd" disable="true" mnemonicParsing="false" onAction="#openEssaisProd" prefHeight="40.0" prefWidth="335.0" text="Simulation d'essais de production">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="btnSimulationTemps" disable="true" mnemonicParsing="false" onAction="#openSimulationTemps" prefHeight="39.0" prefWidth="334.0" text="Simulation avec prise en compte du temps">
+            <Button fx:id="btnSimulationTemps" disable="true" mnemonicParsing="false" onAction="#openSimulationTemps" prefHeight="39.0" prefWidth="334.0" text="Effectuer une simulation de production">
                <font>
                   <Font size="14.0" />
                </font></Button>

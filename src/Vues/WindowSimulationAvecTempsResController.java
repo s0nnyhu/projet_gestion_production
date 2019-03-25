@@ -9,6 +9,7 @@ import java.util.Set;
 import application.CalculesActivitesTempsChaines;
 import application.ChaineDeProduction;
 import application.Element;
+import application.Production;
 import application.Stockage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,10 +28,24 @@ import javafx.stage.Stage;
 
 public class WindowSimulationAvecTempsResController {
 	
+	@FXML
+	private TableView<Production> tabSimulationProd;
 	
-	 @FXML
-    private TableView<ChaineDeProduction> tabSimulationProd;
+    @FXML
+    private TableColumn<Production, String> colChaine;
 
+    @FXML
+    private TableColumn<Production, Double> colCoutVente;
+
+    @FXML
+    private TableColumn<Production, Double> colEfficacite;
+
+    @FXML
+    private TableColumn<Production, String> colDemande;
+    
+    @FXML
+    private TableColumn<Production, String> colSatisfaction;
+    
     @FXML
     private TableColumn<ChaineDeProduction, String> tCode;
 
@@ -102,27 +117,21 @@ public class WindowSimulationAvecTempsResController {
 	protected ArrayList<Stockage> stockages;
 	
     
+    void chargerSimulationProduction(ObservableList <Production> p) {
+		this.colChaine.setCellValueFactory(
+                new PropertyValueFactory<Production, String>("nom"));
+		this.colCoutVente.setCellValueFactory(
+                new PropertyValueFactory<Production, Double>("coutVente"));
+		this.colEfficacite.setCellValueFactory(
+                new PropertyValueFactory<Production, Double>("efficacite"));
+		this.colDemande.setCellValueFactory(
+                new PropertyValueFactory<Production, String>("demande"));
+		this.colSatisfaction.setCellValueFactory(
+                new PropertyValueFactory<Production, String>("satisDemande"));
+		this.tabSimulationProd.setItems(p);
+    }
    
 
-    /**
-     * @param p
-     */
-    void chargerSimulationNouvelleChaine(ObservableList <ChaineDeProduction> c) {
-		this.tCode.setCellValueFactory(
-                new PropertyValueFactory<ChaineDeProduction, String>("code"));
-		this.tNom.setCellValueFactory(
-                new PropertyValueFactory<ChaineDeProduction, String>("nom"));
-		this.tEntree.setCellValueFactory(
-                new PropertyValueFactory<ChaineDeProduction, String>("strEntree"));
-		this.tSortie.setCellValueFactory(
-                new PropertyValueFactory<ChaineDeProduction, String>("strSorti"));
-		this.tTemps.setCellValueFactory(
-                new PropertyValueFactory<ChaineDeProduction, Integer>("temps"));
-		this.tSDemande.setCellValueFactory(
-                new PropertyValueFactory<ChaineDeProduction, String>("satisDemande"));
-		this.tabSimulationProd.setItems(c);
-    }
-    
     /**
      * @param e
      */
@@ -145,7 +154,7 @@ public class WindowSimulationAvecTempsResController {
     /**
      * @param e
      */
-    /*void chargerListeAchats(ObservableList <Element> o) {
+    void chargerListeAchats(ObservableList <Element> o) {
 		this.codeAchat.setCellValueFactory(
                 new PropertyValueFactory<Element, String>("code"));
 		this.nomAchat.setCellValueFactory(
@@ -153,7 +162,7 @@ public class WindowSimulationAvecTempsResController {
 		this.quantiteAchat.setCellValueFactory(
                 new PropertyValueFactory<Element, Double>("quantite"));
 		this.tableauAchats.setItems(o);
-    }*/
+    }
     /**
      * @param event
      */
@@ -169,10 +178,14 @@ public class WindowSimulationAvecTempsResController {
      * @param niveau
      */
     void initData(ArrayList<Element> el, HashMap<ChaineDeProduction, TextField> mapChaineNiveau, ArrayList<ChaineDeProduction> listChainesUsines, ArrayList<Stockage> sto) {
-		this.elements = new ArrayList<>();
+		/*
+		 * Copie profonde pour évaluation de la liste d'achats et des nouveaux stocks
+		 */
+    	this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
 		this.stockages = new ArrayList<>();
-
+		ArrayList<Element> listAchat = new ArrayList<>();
+		ArrayList<Production> production = new ArrayList<>();
 		Double niveau[] = new Double[mapChaineNiveau.values().size()];
 		
 		for (Element e : el) {
@@ -192,12 +205,94 @@ public class WindowSimulationAvecTempsResController {
             this.chaines.add(new ChaineDeProduction((ChaineDeProduction)pair.getKey()));
             TextField f = (TextField) pair.getValue();
             niveau[i] = Double.parseDouble(f.getText());
-            //System.out.println(ch.getCode() + " " + niveau[i]);
             i++;
         }
+        
+        /*
+         * Copie profond pour évaluation de le calcul du temps d'activités des chaines
+         */
+    	ArrayList<Element> tpsElement = new ArrayList<>();
+		ArrayList<ChaineDeProduction> tpsChaines = new ArrayList<>();
+		ArrayList<Stockage> tpsSto = new ArrayList<>();
+		Double tpsNiveau[] = new Double[mapChaineNiveau.values().size()];
 		
+		for (Element e : el) {
+			tpsElement.add(new Element(e));
+		}
+
+		for (Stockage s : sto) {
+			tpsSto.add(new Stockage(s));
+		}
+		
+		int j = 0;
+    	Iterator tpsIt = mapChaineNiveau.entrySet().iterator();
+        while (it.hasNext()) {
+            HashMap.Entry pair = (HashMap.Entry)it.next();
+            ChaineDeProduction ch = (ChaineDeProduction) pair.getKey();
+            
+            tpsChaines.add(new ChaineDeProduction((ChaineDeProduction)pair.getKey()));
+            TextField f = (TextField) pair.getValue();
+            tpsNiveau[i] = Double.parseDouble(f.getText());
+            j++;
+        }
+        
+        
+        /*
+         * Evaluation de la liste d'achats, des nouveaux stocks et de l'efficacité
+         */
     	CalculesActivitesTempsChaines calc = new CalculesActivitesTempsChaines();
-    	calc.calculTemps(this.elements, listChainesUsines, this.chaines, niveau);
+    	calc.calcul(elements, chaines, niveau, listAchat, production);
+    	ObservableList<Element> listAchats = FXCollections.observableArrayList(listAchat);
+    	ObservableList <Element> oElement = FXCollections.observableList(this.elements);
+    	ObservableList <Production> oProduction = FXCollections.observableList(production);
+    	chargerTabNewStock(oElement);
+    	chargerSimulationProduction(oProduction);
+    	chargerListeAchats(listAchats);
+    	
+    	/*
+    	 * Evaluation du temps d'activités des chaines.
+    	 */
+		
+    	CalculesActivitesTempsChaines tpsCalc = new CalculesActivitesTempsChaines();
+    	tpsCalc.calculTemps(this.elements, listChainesUsines, this.chaines, niveau);
+    	Label chaineIndependants = new Label("Les chaines suivantes sont indépendantes et peuvent démarrer en parallèles");
+    	chaineIndependants.setUnderline(true);
+    	Label chaineSansConcurrence = new Label("Les chaines suivantes dépendantes d'autres chaines mais ne sont pas en concurrences\n");
+    	chaineSansConcurrence.setUnderline(true);
+    	Label chaineAvecConcurrence = new Label("Les chaines suivantes dépendantes d'autres chaines et sont en concurrences");
+    	chaineAvecConcurrence.setUnderline(true);
+    	Label tempsTotal = new Label(tpsCalc.getStrTpsTotal());
+    	Label estPossible;
+    	if (tpsCalc.getEstPossible() && tpsCalc.getTpsTotal() <= 60 && tpsCalc.getStockImpossible() == "") {
+    		estPossible = new Label("La production est possible!");
+    		estPossible.setStyle("-fx-background-color: green;");
+    	}
+    	else {
+    		estPossible = new Label("La production ne pourra aboutir!");
+    		estPossible.setStyle("-fx-background-color: red;");
+    	}
+    	
+    	
+    	tempsTotal.setStyle("-fx-font-size:14px;");
+    	
+    	this.vboxRes.getChildren().add(chaineIndependants);
+    	this.vboxRes.getChildren().add(new Label(tpsCalc.getChainesIndependants()));
+    	
+    	this.vboxRes.getChildren().add(chaineSansConcurrence);
+    	this.vboxRes.getChildren().add(new Label(tpsCalc.getChainesDependantsSansConcurrences()));
+    	
+    	this.vboxRes.getChildren().add(chaineAvecConcurrence);
+    	this.vboxRes.getChildren().add(new Label(tpsCalc.getChainesDependantsAvecConcurrences()));
+    	
+    	this.vboxRes.getChildren().add(tempsTotal);
+    
+    	if (tpsCalc.getStockImpossible() != "") {
+    		this.vboxRes.getChildren().add(new Label(tpsCalc.getStockImpossible()));
+    	}
+    	
+    	this.vboxRes.getChildren().add(estPossible);
+    	//System.out.println(tpsCalc.getChainesIndependants());
+    	//System.out.println(tpsCalc.getChainesIndependants());
     	
     }
 }

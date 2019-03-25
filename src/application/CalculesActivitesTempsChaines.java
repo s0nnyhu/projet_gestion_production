@@ -3,12 +3,28 @@ package application;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class CalculesActivitesTempsChaines {
-	private String listeProdImpossible;
+	private boolean estPossible;
+	private String stockImpossible;
+	private String chainesIndependants;
+	private String chainesDependantsSansConcurrences;
+	private String chainesDependantsAvecConcurrences;
+	private int tpsIndependant;
+	private int tpsSansConcurrences;
+	private int tpsAvecConcurrences;
+	private int tpsTotal;
 	
 	public CalculesActivitesTempsChaines() {
 
@@ -17,7 +33,6 @@ public class CalculesActivitesTempsChaines {
 	public void calcul(ArrayList<Element> elements, ArrayList<ChaineDeProduction> chaines, Double[] niveau,ArrayList<Element> listAchat, ArrayList<Production> production) {
 		boolean estPossible = false;
 		int i = 0;
-		this.listeProdImpossible = "";
 		double coutVente = 0;
 		double efficacite = 0;
 		double totalAchatChaine = 0;
@@ -72,9 +87,7 @@ public class CalculesActivitesTempsChaines {
     			}
 				efficacite = coutVente-totalAchatChaine;
     		}
-			if (estPossible == false) {
-				this.listeProdImpossible += c.getCode() + ": PRODUCTION IMPOSSIBLE\n";
-				
+			if (estPossible == false) {				
 				Production p = new Production(c, 0, 0);
 				p.setSatisDemande("0% satisfait");
     			production.add(p);
@@ -103,6 +116,10 @@ public class CalculesActivitesTempsChaines {
 	}
 	
 	public void calculTemps(ArrayList<Element> elements, ArrayList<ChaineDeProduction> list_chaines_usine, ArrayList<ChaineDeProduction> chaines, Double[] niveau) {
+		this.estPossible = true;
+		this.chainesIndependants = "";
+		this.chainesDependantsSansConcurrences = "";
+		this.chainesDependantsAvecConcurrences = "";
 		ArrayList<ChaineDeProduction> chaines_independantes = new ArrayList<>();
 		ArrayList<ChaineDeProduction> chaines_entrees_limites = new ArrayList<>();
 		ArrayList<ChaineDeProduction> chaines_entrees_limites_non_concurrence = new ArrayList<>();
@@ -155,10 +172,10 @@ public class CalculesActivitesTempsChaines {
 			
 			//Gestion du stockage des sorties des chaines
 			HashMap<Element, Double> sorties = c.getSortie();
-			String stockImpossible = "";
+			this.stockImpossible = "";
 			for(Element sortie : sorties.keySet()) { //pour chaque sortie
-				double qteProduite = sortie.getQuantite(); //on recup�re la quantit� produite
-				int nbCuves = (int) Math.ceil(qteProduite/sortie.getStockage().getCapacite()); //on calcule le nombre de cuves � utiliser
+				double qteProduite = sortie.getQuantite(); //on recup�re la quantit� produite
+				int nbCuves = (int) Math.ceil(qteProduite/sortie.getStockage().getCapacite()); //on calcule le nombre de cuves � utiliser
 				if(nbCuves < sortie.getStockage().getQuantiteDispo()) {
 					sortie.getStockage().reduireQuantite(nbCuves);
 					/*
@@ -170,15 +187,15 @@ public class CalculesActivitesTempsChaines {
 					*/
 				}
 				else {
-					stockImpossible += "Il manque "+nbCuves+" recipent(s) pour stocker des "+sortie.getNom()+"\n";
+					this.stockImpossible += "Il manque "+nbCuves+" recipent(s) pour stocker des "+sortie.getNom()+"\n";
 				}
 			}
 			//Gestion du stockage des entree des chaines
 			HashMap<Element, Double> entrees = c.getEntree();
 			for(Element entree : entrees.keySet()) { //pour chaque sortie
-				double qteProduite = entree.getQuantite(); //on recup�re la quantit� produite
+				double qteProduite = entree.getQuantite(); //on recup�re la quantit� produite
 				Stockage simulStockage = new Stockage(entree.getStockage());
-				int nbCuves = (int) Math.ceil(qteProduite/simulStockage.getCapacite()); //on calcule le nombre de cuves � utiliser
+				int nbCuves = (int) Math.ceil(qteProduite/simulStockage.getCapacite()); //on calcule le nombre de cuves � utiliser
 				if(nbCuves < entree.getStockage().getQuantiteDispo()) {
 					entree.getStockage().reduireQuantite(nbCuves);
 					/*
@@ -190,15 +207,13 @@ public class CalculesActivitesTempsChaines {
 					*/
 				}
 				else {
-					stockImpossible += "Il manque "+nbCuves+" recipent(s) pour stocker des "+entree.getNom()+" en entree de la chaine "+c.getNom()+"\n";
+					this.stockImpossible += "Il manque "+nbCuves+" recipent(s) pour stocker des "+entree.getNom()+" en entree de la chaine "+c.getNom()+"\n";
 				}
 			}
-			System.out.println(stockImpossible);
 			i++;
 		}
 		
 		//Pour chaque chaines dont les élements en entrées sont en quantités limités, on sépare ceux qui se disputent les meme chaines
-		boolean entree_commun = true;
 		for(ChaineDeProduction c1: chaines_entrees_limites) {
 			for(ChaineDeProduction c2: chaines_entrees_limites) {
 				for (Element e1: c1.getEntree().keySet()) {
@@ -232,14 +247,23 @@ public class CalculesActivitesTempsChaines {
 		 * CHAINES INDEPENDANTES
 		 */
 		// Rappel: Les elements en entrées des chaines_independantes sont tous achetable
+		this.tpsIndependant = 0;
 		for (ChaineDeProduction c : chaines_independantes) {
 			this.majEntree(c, elements);
 			this.majSortie(c, elements);
-			System.out.println(c.getCode() + " mettra " + c.getTemps() + "h pour produire les élements suivants:");
+			//System.out.println(c.getCode() + " mettra " + c.getTemps() + "h pour produire les élements suivants:");
+			this.chainesIndependants += c.getCode() + " mettra " + c.getTemps() + "h pour produire les élements suivants:\n";
+			//Vu que les chaînes démarrent en parallèle, le temps mis seras celle la plus longue
+			if (c.getTemps()>=this.tpsIndependant) {
+				this.tpsIndependant = c.getTemps();
+			}
 			for (Element e : c.getSortie().keySet()) {
-				System.out.println("\t > " + c.getSortie().get(e) + " " + e.getNom());
+				//System.out.println("\t > " + c.getSortie().get(e) + " " + e.getNom());
+				this.chainesIndependants += "\t > " + c.getSortie().get(e) + " " + e.getNom() + "\n";
 			}
 		}
+		this.chainesIndependants += "\nTemps mis: " + this.tpsIndependant + "h\n\n";
+		
 
 		
 		
@@ -269,29 +293,27 @@ public class CalculesActivitesTempsChaines {
 			chaines_entrees_limites_non_concurrence_peres_fils.put(c, a);
 		}		
 
-		
+		this.tpsSansConcurrences = 0;
 		//Affiche les chaines dont dependent les chaines dont les elements en entrees sont non achetable mais aucune concurrence
 		for (ChaineDeProduction c : chaines_entrees_limites_non_concurrence_peres_fils.keySet()) {
+			this.majEntree(c, elements);
+			this.majSortie(c, elements);
 			System.out.println("Chaines entrees limités sans concurrence " + c.getCode());
 			if (chaines_entrees_limites_non_concurrence_peres_fils.get(c).isEmpty()) {
-				System.out.println("La chaine dont dépend " + c.getCode() + " n'a pas été sélectionner");
+				//System.out.println("La chaine dont dépend " + c.getCode() + " n'a pas été sélectionner");
+				this.chainesDependantsSansConcurrences += "La chaine dont dépend " + c.getCode() + " n'a pas été sélectionner\n";
 				for (Element eChaine: c.getEntree().keySet()) {
 					for (Element eStock : elements) {
 						//Element non achetable en quantité insuffisante
 						if (eChaine.getCode() == eStock.getCode() && eStock.getAchat() == 0) {
 							if ((eStock.getQuantite() < c.getEntree().get(eChaine))) {
-								System.out.println(c.getCode() + " ne dispose pas d'élement suffisant pour produire");
-								System.out.println("Element concerné: " + eChaine.getCode() + ":" + eChaine.getNom());
+								//System.out.println(c.getCode() + " ne dispose pas d'élement suffisant pour produire");
+								//System.out.println("Element concerné: " + eChaine.getCode() + ":" + eChaine.getNom());
+								this.chainesDependantsSansConcurrences += c.getCode() + " ne dispose pas d'élement suffisant pour produire\n";
+								this.chainesDependantsSansConcurrences += "\tElement concerné: " + eChaine.getCode() + ":" + eChaine.getNom() + "\n";
 							}
 							else {
-								System.out.println("OK");
-							}
-						}
-						//Element achetable en quantité insuffisante
-						else if(eChaine.getCode() == eStock.getCode()){
-							if ((eStock.getQuantite() < c.getEntree().get(eChaine))) {
-								System.out.println(c.getCode() + " ne dispose pas d'élement suffisant pour produire");
-								System.out.println("\tElement concerné: " + eChaine.getCode() + ":" + eChaine.getNom());
+								this.chainesDependantsSansConcurrences += "(Element en stock suffisant), " + c.getCode() + " mettra " + c.getTemps() + "h pour finir\n";
 							}
 						}
 					}
@@ -300,16 +322,31 @@ public class CalculesActivitesTempsChaines {
 			}
 			else {
 				for (ChaineDeProduction c1 : chaines_entrees_limites_non_concurrence_peres_fils.get(c)) {
-					System.out.println("Dependances: " + c1.getCode());
+					this.chainesDependantsSansConcurrences += c.getCode() + " démarrera après " + c1.getCode() + " et mettra " + c.getTemps() + "h + " + c1.getTemps() + "h, soit " + (c1.getTemps() + c.getTemps()) + "h pour produire les élements suivants:\n";
+					if (c1.getTemps() + c.getTemps() >= this.tpsSansConcurrences) {
+						this.tpsSansConcurrences = c1.getTemps() + c.getTemps();
+					}
+					for (Element e : c.getSortie().keySet()) {
+						//System.out.println("\t > " + c.getSortie().get(e) + " " + e.getNom());
+						this.chainesDependantsSansConcurrences += "\t > " + c.getSortie().get(e) + " " + e.getNom() + "\n";
+					}
 				}
 			}
 		}
+		this.chainesDependantsSansConcurrences += "Temps mis: " + this.tpsSansConcurrences + "h\n\n";
 		
 		/*
 		 * CHAINES DONT LES QUANTITES SONT LIMITEES ET SONT EN CONCURRENCE
 		 */
 		//Pour les chaines dont les quantites demandées en entrée sont limitées (non achetable) et se disputent les memes élements
 		//On recupère les chaines dont elle dépend
+		//Nous aurons ainsi une suite de deux chaines, l'une avec les fils et l'autre avec les pères
+		//Exemple:
+		//chaines_entrees_limites_concurrence_dependances_fils : C1, C1, C3, C4,
+		//chaines_entrees_limites_concurrence_peres			   : P1, P2, P2, P1,
+		// Ainsi, comme l'arraylist est ordonné, on saura que P1 et P2 dépendent de C1 etc
+		
+		this.tpsAvecConcurrences = 0;
 		for (ChaineDeProduction c : chaines) {
 			for (ChaineDeProduction c1 : chaine_disputant_meme_entree) {
 				for(Element elEntree : c1.getEntree().keySet()) {
@@ -332,44 +369,125 @@ public class CalculesActivitesTempsChaines {
 			chaines_entrees_limites_concurrence_peres_fils.put(c, a);
 		}		
 		
+		Map<ChaineDeProduction, Integer> peres_tpsFils = new HashMap<>();
 		for (ChaineDeProduction c : chaines_entrees_limites_concurrence_peres_fils.keySet()) {
 			//Si les chaines dont dépend la chaine qui demande des entrées non achetable est vide
 			if (chaines_entrees_limites_concurrence_peres_fils.get(c).isEmpty()) {
-				System.out.println("La chaine dont dépend " + c.getCode() + " n'a pas été sélectionner");
 				for (Element eChaine: c.getEntree().keySet()) {
 					for (Element eStock : elements) {
 						//Element non achetable en quantité insuffisante
 						if (eChaine.getCode() == eStock.getCode() && eStock.getAchat() == 0) {
 							if ((eStock.getQuantite() < c.getEntree().get(eChaine))) {
+								this.chainesDependantsAvecConcurrences += c.getCode() + " ne dispose pas d'élement suffisant pour produire";
+								this.chainesDependantsAvecConcurrences += "\tElement concerné: " + eChaine.getCode() + ":" + eChaine.getNom();
 								System.out.println(c.getCode() + " ne dispose pas d'élement suffisant pour produire");
 								System.out.println("\tElement concerné: " + eChaine.getCode() + ":" + eChaine.getNom());
 							}
 							else {
-								System.out.println("OK");
-							}
-						}
-						//Element achetable en quantité insuffisante
-						else if(eChaine.getCode() == eStock.getCode()){
-							if ((eStock.getQuantite() < c.getEntree().get(eChaine))) {
-								System.out.println(c.getCode() + " ne dispose pas d'élement suffisant pour produire");
-								System.out.println("Element concerné: " + eChaine.getCode() + ":" + eChaine.getNom());
+								this.majEntree(c, elements);
+								this.majSortie(c, elements);
+								this.chainesDependantsAvecConcurrences += c.getCode() + " a besoin de " + eStock.getNom() + ":\n";
+								this.chainesDependantsAvecConcurrences += "\t(Element en stock suffisant), " + c.getCode() + " mettra " + c.getTemps() + "h pour finir\n";
 							}
 						}
 					}
 				}
 			}
 			else {
+				int tpsFils = 0;
 				for (ChaineDeProduction c1 : chaines_entrees_limites_concurrence_peres_fils.get(c)) {
-					System.out.println("Dependances: " + c1.getCode());
+					//System.out.println("Dependances: " + c1.getCode());
+					tpsFils += c1.getTemps();
+					
 				}
+				peres_tpsFils.put(c,  tpsFils);
 			}
 		}
 		
+		this.tpsAvecConcurrences = 0;
+		Map<ChaineDeProduction, Integer> ChainesTrieesTempsAscendant = peres_tpsFils.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+		
+		for (ChaineDeProduction c2: ChainesTrieesTempsAscendant.keySet()) {
+			//Le temps total sera donc le temps maximum
+			this.majEntree(c2, elements);
+			this.majSortie(c2, elements);
+			if(c2.getTemps() + ChainesTrieesTempsAscendant.get(c2) > this.tpsAvecConcurrences) {
+				this.tpsAvecConcurrences = c2.getTemps() + ChainesTrieesTempsAscendant.get(c2);
+			}
+			for (ChaineDeProduction c3 : chaines_entrees_limites_concurrence_peres_fils.keySet()) {
+				if (c2.getCode() == c3.getCode()) {
+					this.chainesDependantsAvecConcurrences += c3.getCode() + " mettra " + c3.getTemps() + "h et démarrera après:\n";
+					//On récupère les dépendanes
+					for (ChaineDeProduction c4 : chaines_entrees_limites_concurrence_peres_fils.get(c3)) {
+						this.chainesDependantsAvecConcurrences += "\t>" + c4.getCode() + "\n";
+						//On verifie si la quantité produite par le fils en sortie est suffisante
+						for (Element eFils : c4.getSortie().keySet()) {
+							for (Element ePeres: c2.getEntree().keySet()) {
+								if (eFils.getCode() == ePeres.getCode()) {
+									if (c4.getSortie().get(eFils) < c2.getEntree().get(ePeres)) {
+										this.estPossible = false;
+									}
+								}
+							}
+						}
+					}
+					this.chainesDependantsAvecConcurrences += "\t pour produire les élements suivants: \n";
+					for (Element e : c2.getSortie().keySet()) {
+						this.chainesDependantsAvecConcurrences += "\t\t > " + c2.getSortie().get(e) + " " + e.getNom() + "\n";
+					}
+				}
+			}
+		}
+		this.chainesDependantsAvecConcurrences += "Temps mis: " + this.tpsAvecConcurrences + "h\n\n\n";
 	}
 	
-
-	public String getChaineIndependant(String str) {
-		return str;
+	
+	public int getTpsTotal() {
+		this.tpsTotal = 0;
+		if (this.tpsSansConcurrences >= this.tpsAvecConcurrences) {
+			this.tpsTotal = this.tpsSansConcurrences;
+		}
+		else {
+			this.tpsTotal = this.tpsAvecConcurrences;
+		}
+		if (this.tpsTotal <= this.tpsIndependant) {
+			this.tpsTotal = this.tpsIndependant;
+		}
+		return tpsTotal;
+	}
+	public String getStrTpsTotal() {
+		//Vu les démarrages en parallèles et la prises en compte du temps directements dans les dépendances,
+		//Le temps total sera le temps maximal
+		this.tpsTotal = 0;
+		if (this.tpsSansConcurrences >= this.tpsAvecConcurrences) {
+			this.tpsTotal = this.tpsSansConcurrences;
+		}
+		else {
+			this.tpsTotal = this.tpsAvecConcurrences;
+		}
+		if (this.tpsTotal <= this.tpsIndependant) {
+			this.tpsTotal = this.tpsIndependant;
+		}
+		return "Le temps total de production est de "+this.tpsTotal + "h\n";
+	}
+	
+	public boolean getEstPossible() {
+		return this.estPossible;
+	}
+	
+	public String getChainesIndependants() {
+		return this.chainesIndependants;
+	}
+	
+	public String getChainesDependantsSansConcurrences() {
+		return this.chainesDependantsSansConcurrences;
+	}
+	
+	public String getChainesDependantsAvecConcurrences() {
+		return this.chainesDependantsAvecConcurrences;
 	}
 	
 	private ArrayList<ChaineDeProduction> get_dependances_chaines_concurrence(ArrayList<ChaineDeProduction> list_dependances,
@@ -395,6 +513,7 @@ public class CalculesActivitesTempsChaines {
 		}
 		return null;
 	}
+	
 	private void majEntree(ChaineDeProduction c, ArrayList<Element> elements, Double[] niveau, int indice) {
 		for (Element elEntree: c.getEntree().keySet()) {
 			for (Element elStock : elements) {
@@ -451,12 +570,8 @@ public class CalculesActivitesTempsChaines {
 		return coutVente;
 	}
 	
-	public String getListeProdImpossible() {
-		return listeProdImpossible;
-	}
-
-	public void setListeProdImpossible(String listeProdImpossible) {
-		this.listeProdImpossible = listeProdImpossible;
+	public String getStockImpossible() {
+		return this.stockImpossible;
 	}
 	
 }

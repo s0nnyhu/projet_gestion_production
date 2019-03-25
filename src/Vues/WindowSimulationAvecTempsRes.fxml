@@ -10,19 +10,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="898.0" prefWidth="1251.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vues.WindowSimulationAvecTempsResController">
+<AnchorPane prefHeight="895.0" prefWidth="1290.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vues.WindowSimulationAvecTempsResController">
    <children>
-      <TableView id="EssaiDeProd" fx:id="tabSimulationProd" layoutX="41.0" layoutY="68.0" prefHeight="427.0" prefWidth="750.0" AnchorPane.bottomAnchor="403.0" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="460.0" AnchorPane.topAnchor="68.0">
+      <TableView id="EssaiDeProd" fx:id="tabSimulationProd" layoutX="41.0" layoutY="68.0" prefHeight="413.0" prefWidth="750.0" AnchorPane.bottomAnchor="414.0" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="499.0" AnchorPane.topAnchor="68.0">
         <columns>
-          <TableColumn id="chaine" fx:id="tCode" prefWidth="39.0" text="Code" />
-          <TableColumn id="coutVente" fx:id="tNom" minWidth="0.0" prefWidth="116.0" text="Nom" />
-          <TableColumn id="benef" fx:id="tEntree" minWidth="0.0" prefWidth="260.0" text="Entrée" />
-            <TableColumn id="benef" fx:id="tSortie" minWidth="0.0" prefWidth="195.0" text="Sortie" />
-            <TableColumn fx:id="tTemps" prefWidth="44.0" text="Temps" />
-            <TableColumn fx:id="tSDemande" prefWidth="94.0" text="Demande" />
+          <TableColumn id="chaine" fx:id="colChaine" prefWidth="87.0" text="Chaines" />
+          <TableColumn id="coutVente" fx:id="colCoutVente" minWidth="0.0" prefWidth="196.0" text="Cout de vente" />
+          <TableColumn id="benef" fx:id="colEfficacite" minWidth="0.0" prefWidth="182.0" text="Efficacite" />
+            <TableColumn fx:id="colDemande" prefWidth="106.0" text="Demande" />
+            <TableColumn fx:id="colSatisfaction" prefWidth="177.0" text="Satisfaction" />
         </columns>
       </TableView>
-      <Button id="retour" fx:id="retour" layoutX="1083.0" layoutY="860.0" mnemonicParsing="false" onAction="#retour" text="Retour" />
+      <Button id="retour" fx:id="retour" layoutX="1153.0" layoutY="858.0" mnemonicParsing="false" onAction="#retour" text="Retour" />
       <TitledPane layoutX="41.0" layoutY="524.0" prefHeight="319.0" prefWidth="750.0" text="Nouveaux Stocks">
          <content>
             <TableView fx:id="tabNewStock" prefHeight="293.0" prefWidth="750.0">
@@ -42,9 +41,9 @@
             <Font size="22.0" />
          </font>
       </Label>
-      <ScrollPane layoutX="816.0" layoutY="101.0" prefHeight="740.0" prefWidth="431.0">
+      <ScrollPane layoutX="816.0" layoutY="101.0" prefHeight="390.0" prefWidth="467.0">
          <content>
-            <VBox fx:id="vboxRes" prefHeight="737.0" prefWidth="425.0" />
+            <VBox fx:id="vboxRes" prefHeight="395.0" prefWidth="707.0" />
          </content>
       </ScrollPane>
       <Label layoutX="816.0" layoutY="68.0" text="Résultat" textAlignment="CENTER" underline="true">
@@ -52,5 +51,16 @@
             <Font size="16.0" />
          </font>
       </Label>
+      <TitledPane fx:id="listeAchats" animated="false" layoutX="824.0" layoutY="524.0" prefHeight="319.0" prefWidth="449.0" text="Liste des Achats">
+         <content>
+            <TableView fx:id="tableauAchats" prefHeight="292.0" prefWidth="253.0">
+               <columns>
+                  <TableColumn fx:id="codeAchat" prefWidth="173.0" text="Code" />
+                  <TableColumn fx:id="nomAchat" minWidth="1.0" prefWidth="129.0" text="Nom" />
+                  <TableColumn fx:id="quantiteAchat" minWidth="0.0" prefWidth="145.0" text="Quantité" />
+               </columns>
+            </TableView>
+         </content>
+      </TitledPane>
    </children>
 </AnchorPane>

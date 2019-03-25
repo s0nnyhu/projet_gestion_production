@@ -41,41 +41,7 @@ public class WindowMainController{
 	protected ArrayList<ChaineDeProduction> chaines;
 
 	protected ArrayList<Stockage> stockages;
-	
-    /**
-     * @param event
-     */
-    @FXML
-    void openEssaisProd(ActionEvent event){
-    	try {
-    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowSimulationProd.fxml"));     
 
-        	Parent root = (Parent)fxmlLoader.load();          
-        	WindowSimulationProdController controller = fxmlLoader.<WindowSimulationProdController>getController();
-        	
-        	controller.initData(this.elements, this.chaines);
-        	Scene scene = new Scene(root); 
-        	Stage stage = new Stage();
-        	stage.setTitle("Evaluation de la production");
-        	stage.setScene(scene);    
-
-        	stage.show();   
-    	}
-    	catch(IOException e1) {
-        	Alert alert = new Alert(AlertType.ERROR);
-        	alert.getDialogPane().setMinWidth(500);
-        	alert.setTitle("Erreur");
-        	alert.setHeaderText("Une erreur est survenue!");
-        	alert.setContentText("Une erreur IOException est survenue!");
-        	alert.showAndWait().ifPresent(rs -> {
-        	    if (rs == ButtonType.OK) {
-        	        System.out.println("Pressed OK.");
-        	    }
-        	});
-    	}
-    	
-    	
-    }
 
     /**
      * @param event
@@ -146,16 +112,15 @@ public class WindowMainController{
 		this.elements = new ArrayList<>();
 		this.chaines = new ArrayList<>();
 		this.stockages = new ArrayList<>();
-		String cheminElements = "../DonneesV2/elements.csv";
-		String cheminChaines = "../DonneesV2/chaines.csv";
-		String cheminStockages = "../DonneesV2/stockage.csv";
+		String cheminElements = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV2/elements.csv";
+		String cheminChaines = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV2/chaines.csv";
+		String cheminStockages = "/home/sonny/eclipse-workspace/projet_gestion_production/src/DonneesV2/stockage.csv";
     	DonneesLibraryCSV data = new DonneesLibraryCSV(cheminElements, cheminChaines, cheminStockages);
 		this.elements = data.getElements();
 		this.chaines = data.getChaines();
 		this.stockages = data.getStockages();
 		if(data.getLoaded()) {
 	    	btnVisuStocks.setDisable(false);
-			btnEssaiProd.setDisable(false);	
 			btnSimulationTemps.setDisable(false);
 		}
 		else {

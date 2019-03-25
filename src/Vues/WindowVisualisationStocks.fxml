@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.6259426847662142" orientation="VERTICAL" prefHeight="665.0" prefWidth="806.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vues.WindowVisualisationStocksController">
+<SplitPane dividerPositions="0.6259426847662142" orientation="VERTICAL" prefHeight="678.0" prefWidth="899.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vues.WindowVisualisationStocksController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
@@ -58,20 +58,20 @@
                   </Label>
                </top>
                <left>
-                  <TableView fx:id="tabStockage" prefHeight="193.0" prefWidth="543.0" BorderPane.alignment="CENTER">
+                  <TableView fx:id="tabStockage" prefHeight="164.0" prefWidth="875.0" BorderPane.alignment="CENTER">
                      <columns>
-                        <TableColumn fx:id="tNomSto" prefWidth="259.0" text="Stockage" />
-                        <TableColumn fx:id="tCapacite" prefWidth="118.0" text="Capacité" />
-                        <TableColumn fx:id="tQuantiteSto" prefWidth="151.0" text="Quantité disponible" />
+                        <TableColumn fx:id="tNomSto" prefWidth="347.0" text="Stockage" />
+                        <TableColumn fx:id="tCapacite" prefWidth="267.0" text="Capacité" />
+                        <TableColumn fx:id="tQuantiteSto" prefWidth="260.0" text="Quantité disponible" />
                      </columns>
                      <BorderPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </BorderPane.margin>
                   </TableView>
                </left>
-               <center>
+               <bottom>
                   <Button fx:id="btnRetour" alignment="BOTTOM_LEFT" mnemonicParsing="false" onAction="#retour" text="Retour" BorderPane.alignment="CENTER" />
-               </center>
+               </bottom>
             </BorderPane>
          </children>
       </AnchorPane>
