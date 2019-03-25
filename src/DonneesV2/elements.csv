@@ -17,17 +17,17 @@ E015;emulsifiant;10;litre;3;NA;cl;0
 E016;levure;89;unite;3;NA;cp;0
 E017;confiture abricot;50;litre;2;NA;clr;0
 E018;noix;50;kg;5;NA;p;0
-E019;Chocolat 30%;20;litre;10;8;cl;0
-E020;Chocolat 40%;12;litre;12;10;cl;0
-E021;Chocolat 50%;30;litre;NA;16;cl;0
+E019;Chocolat 30 %;20;litre;10;8;cl;0
+E020;Chocolat 40 %;12;litre;12;10;cl;0
+E021;Chocolat 50 %;30;litre;NA;16;cl;0
 E022;Pate biscuit Q1;0;litre;NA;NA;clr;0
 E023;Pate biscuit Q2;0;litre;NA;NA;clr;0
 E024;Pate biscuit Q3;0;litre;NA;NA;clr;0
 E025;Gateau marque A;0;carton;NA;10;p;200
 E026;Gateau marque B;0;carton;NA;8;p;300
 E027;Gateau marque C;0;carton;NA;7;p;250
-E028;Pate levÃ©e huile;0;kg;NA;NA;cb;0
-E029;Pate levÃ©e beurre;0;kg;NA;NA;cb;0
+E028;Pate levée huile;0;kg;NA;NA;cb;0
+E029;Pate levée beurre;0;kg;NA;NA;cb;0
 E030;Brioche;10;carton;NA;14;p;300
 E031;Brioche beurre;0;carton;NA;16;p;100
 E032;Pain chocolat A;0;carton;NA;14;p;50
@@ -45,8 +45,8 @@ E043;Cookies Choc marque B;0;carton;NA;8;p;400
 E044;Cookies Choc/Noix marque A;0;carton;NA;9;p;150
 E045;Cookies Choc/Noix marque B;0;carton;NA;8;p;300
 E046;Pate Madeleines Q1;0;litre;NA;NA;cb;0
-E047;Pate Madeleines Q2;0;litre;10;NA;cb;0
+E047;Pate Madeleines Q2;0;litre;NA;NA;cb;0
 E048;Madeleines marque A;0;carton;NA;8;p;200
 E049;Madeleines marque B;0;carton;NA;7;p;150
-E050;Madeleines Choc;0;carton;9;8;p;100
+E050;Madeleines Choc;0;carton;NA;8;p;100
 E051;Poudre a lever;28;kg;2;NA;cp;0
